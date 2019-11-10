@@ -25,6 +25,61 @@ function gorg_customize_register( $wp_customize ) {
 			'render_callback' => 'gorg_customize_partial_blogdescription',
 		) );
 	}
+	$wp_customize->add_section('gorg_custom_header',
+		array(
+				'title' => esc_html__('General Options', 'gorg'),
+				'priority' => 2,
+				'panel' => 'gorg_options_panel'
+		));
+$wp_customize->add_section('gorg_social_icons',
+		array(
+				'title' => esc_html__('Social Media Options', 'gorg'),
+				'priority' => 2,
+				'panel' => 'gorg_options_panel'
+		));
+
+$wp_customize->add_section(
+	'about_options',
+	array(
+		'title'    => esc_html__( 'Home Welcome Options','gorg' ),
+		'panel' => 'gorg_options_panel',
+		'priority' => 5,
+	)
+);
+
+$wp_customize->add_section('gorg_catalogue',
+		array(
+				'title' => esc_html__('Home Catalogue Options', 'gorg'),
+				'priority' => 7,
+				'panel' => 'gorg_options_panel'
+		));
+	
+
+$wp_customize->add_section('contact_section',
+		array(
+			'title' => esc_html__('Contact Us Options', 'gorg'),
+			'priority' => 10,
+			'panel' => 'gorg_options_panel'
+		));
+// $wp_customize->add_section('contact_map_section',
+// 		array(
+// 			'title' => esc_html__('Contact Us Map', 'gorg'),
+// 			'priority' => 11,
+// 			'panel' => 'gorg_options_panel'
+// 		));
+$wp_customize->add_section('footer_options',
+		array(
+				'title' => esc_html__('Footer Options', 'gorg'),
+				'priority' => 12,
+				'panel' => 'gorg_options_panel'
+		));
+
+require get_template_directory() . '/inc/customizer/functions/register-panel.php';
+require get_template_directory() . '/inc/customizer/functions/banner-options.php';
+require get_template_directory() . '/inc/customizer/functions/theme-options.php';
+require get_template_directory() . '/inc/customizer/functions/social-icons.php';
+require get_template_directory() . '/inc/customizer/functions/contact-options.php';
+require get_template_directory() . '/inc/customizer/functions/footer-options.php';
 }
 add_action( 'customize_register', 'gorg_customize_register' );
 
@@ -53,3 +108,10 @@ function gorg_customize_preview_js() {
 	wp_enqueue_script( 'gorg-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), '20151215', true );
 }
 add_action( 'customize_preview_init', 'gorg_customize_preview_js' );
+
+function theme_customize_style() {
+    wp_enqueue_style( 'gorg-customizer-css', get_template_directory_uri() . '/inc/customizer/css/customizer-control.css', array(), '1.0.2' );
+    wp_enqueue_style( 'gorg-sortable-css', get_template_directory_uri() . '/assets/sortable/customizer-control.css', array(), '1.0.2' );
+    wp_enqueue_script( 'gorg-customizer-css', get_template_directory_uri() . '/inc/customizer/assets/customizer.js', array('jquery'), '20151215', true );
+}
+add_action( 'customize_controls_enqueue_scripts', 'theme_customize_style');

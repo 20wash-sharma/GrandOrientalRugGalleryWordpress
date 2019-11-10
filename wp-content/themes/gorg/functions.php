@@ -178,6 +178,14 @@ require get_template_directory() . '/inc/template-functions.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/lib/gorg-functions.php';
+require get_template_directory() . '/inc/customizer/gorg-default-values.php';
+require get_template_directory() . '/inc/customizer/functions/customizer-control.php';
+require get_template_directory() . '/inc/customizer/functions/sanitize-functions.php';
+require get_template_directory() . '/inc/customizer/gorg-color-picker/gorg-color-picker.php';
+
+require get_template_directory() . '/inc/custom-breadcrumb.php';
+require get_template_directory() . '/bt4navwalker.php';
 
 /**
  * Load Jetpack compatibility file.
@@ -185,6 +193,12 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+if(!function_exists('gorg_get_theme_options')):
+    function gorg_get_theme_options() {
+        return wp_parse_args(  get_option( 'gorg_theme_options', array() ), gorg_get_option_defaults_values() );
+    }
+endif;
 
 /**
  * Load WooCommerce compatibility file.

@@ -238,53 +238,6 @@ if (!function_exists('gorg_slider_default_query')) {
     }
 }
 
-
-if (!function_exists('gorg_single_image_banner')) {
-
-    function gorg_single_image_banner()
-    {
-        $customizer_options = gorg_get_theme_options();
-        $image = $customizer_options['upload_banner_image'];
-        $title = $customizer_options['slider_image_title'];
-        $description = $customizer_options['slider_image_description'];
-        $btntxt = $customizer_options['single_btn1'];
-        $btnlink = $customizer_options['single_link1'];
-        if (!empty($image)) {
-            $background_style = "style='background-image:url(" . esc_url($image) . ")'";
-        } else {
-            $background_style = "";
-        }
-
-        if ($title || $description || $btnlink || $btntxt) {
-            ?>
-<div class="banner-wrapper">
-	<div class="row">
-		<div class="city-ds-banner-slider">
-
-			<div class="slider-item">
-				<div class="city-ds-slider" <?php echo wp_kses_post($background_style) ?>>
-					<div class="container">
-						<div class="banner-text-wrap">
-							<?php
-                                        if ($title)
-                                            echo '<h2>' . esc_html($title) . '</h2>';
-                                        if ($description)
-                                            echo '<p>' . esc_html($description) . '</p>';
-                                        if ($btnlink && $btntxt) {
-                                            echo '<a href="' . esc_url($btnlink) . '" class="btn btn-default">' . esc_html($btntxt) . '</a>';
-                                        }
-                                        ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<?php }
-    }
-}
-
 if (!function_exists('gorg_social_icon')) {
     function gorg_social_icon()
     {

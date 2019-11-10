@@ -61,12 +61,7 @@ $wp_customize->add_section('contact_section',
 			'priority' => 10,
 			'panel' => 'gorg_options_panel'
 		));
-// $wp_customize->add_section('contact_map_section',
-// 		array(
-// 			'title' => esc_html__('Contact Us Map', 'gorg'),
-// 			'priority' => 11,
-// 			'panel' => 'gorg_options_panel'
-// 		));
+
 $wp_customize->add_section('footer_options',
 		array(
 				'title' => esc_html__('Footer Options', 'gorg'),

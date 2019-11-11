@@ -188,6 +188,11 @@ require get_template_directory() . '/inc/custom-breadcrumb.php';
 require get_template_directory() . '/bt4navwalker.php';
 
 /**
+ * Custom Post Types
+ */
+require get_template_directory() . '/post-types/home_slider.php';
+
+/**
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {

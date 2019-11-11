@@ -6,6 +6,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
         $gorg_default_values = array(
 
             'gorg_reset_all' 				=> 0,
+            /*header*/
+            'white_logo' =>'',
             
             /* Slider Settings */
             'show_custom_pagination' =>0,

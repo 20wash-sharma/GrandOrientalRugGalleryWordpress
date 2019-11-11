@@ -61,22 +61,22 @@ $wp_customize->add_control('gorg_theme_options[gorg_social_twitter]',
         'type' => 'text',
     )
 );
-// $wp_customize->add_setting('gorg_theme_options[gorg_social_linkedin]',
-//     array(
-//         'default' => $gorg_setting['gorg_social_linkedin'],
-//         'sanitize_callback' => 'esc_url_raw',
-//         'type' => 'option',
-//         'capability' => 'manage_options'
-//     )
-// );
-// $wp_customize->add_control('gorg_theme_options[gorg_social_linkedin]',
-//     array(
-//         'priority' => 425,
-//         'label' => esc_html__('Linkedin Link', 'gorg'),
-//         'section' => 'gorg_social_icons',
-//         'type' => 'text',
-//     )
-// );
+$wp_customize->add_setting('gorg_theme_options[gorg_social_linkedin]',
+    array(
+        'default' => $gorg_setting['gorg_social_linkedin'],
+        'sanitize_callback' => 'esc_url_raw',
+        'type' => 'option',
+        'capability' => 'manage_options'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[gorg_social_linkedin]',
+    array(
+        'priority' => 425,
+        'label' => esc_html__('Linkedin Link', 'gorg'),
+        'section' => 'gorg_social_icons',
+        'type' => 'text',
+    )
+);
 $wp_customize->add_setting('gorg_theme_options[gorg_social_googleplus]',
     array(
         'default' => $gorg_setting['gorg_social_googleplus'],
@@ -93,36 +93,36 @@ $wp_customize->add_control('gorg_theme_options[gorg_social_googleplus]',
         'type' => 'text',
     )
 );
-// $wp_customize->add_setting('gorg_theme_options[gorg_social_instagram]',
-//     array(
-//         'default' => $gorg_setting['gorg_social_instagram'],
-//         'sanitize_callback' => 'esc_url_raw',
-//         'type' => 'option',
-//         'capability' => 'manage_options'
-//     )
-// );
-// $wp_customize->add_control('gorg_theme_options[gorg_social_instagram]',
-//     array(
-//         'priority' => 480,
-//         'label' => esc_html__('Instagram Link', 'gorg'),
-//         'section' => 'gorg_social_icons',
-//         'type' => 'text',
-//     )
-// );
-// $wp_customize->add_setting('gorg_theme_options[gorg_social_youtube]',
-//     array(
-//         'default' => $gorg_setting['gorg_social_youtube'],
-//         'sanitize_callback' => 'esc_url_raw',
-//         'type' => 'option',
-//         'capability' => 'manage_options'
-//     )
-// );
-// $wp_customize->add_control('gorg_theme_options[gorg_social_youtube]',
-//     array(
-//         'priority' => 480,
-//         'label' => esc_html__('Youtube Link', 'gorg'),
-//         'section' => 'gorg_social_icons',
-//         'type' => 'text',
-//     )
-// );
+$wp_customize->add_setting('gorg_theme_options[gorg_social_instagram]',
+    array(
+        'default' => $gorg_setting['gorg_social_instagram'],
+        'sanitize_callback' => 'esc_url_raw',
+        'type' => 'option',
+        'capability' => 'manage_options'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[gorg_social_instagram]',
+    array(
+        'priority' => 480,
+        'label' => esc_html__('Instagram Link', 'gorg'),
+        'section' => 'gorg_social_icons',
+        'type' => 'text',
+    )
+);
+$wp_customize->add_setting('gorg_theme_options[gorg_social_youtube]',
+    array(
+        'default' => $gorg_setting['gorg_social_youtube'],
+        'sanitize_callback' => 'esc_url_raw',
+        'type' => 'option',
+        'capability' => 'manage_options'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[gorg_social_youtube]',
+    array(
+        'priority' => 480,
+        'label' => esc_html__('Youtube Link', 'gorg'),
+        'section' => 'gorg_social_icons',
+        'type' => 'text',
+    )
+);
 ?>

@@ -89,5 +89,25 @@ $wp_customize->add_control('select_about_page', array(
     'settings' => 'gorg_theme_options[select_about_page]',
     'priority' => 2,
 ));
+//white logo
+
+$wp_customize->add_setting(
+    'gorg_theme_options[white_logo]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['white_logo'],
+        'sanitize_callback' => 'esc_url_raw',
+        'capability' => 'edit_theme_options',
+    )
+);
+
+$wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'white_logo', array(
+            'label' => esc_html__('White Logo', 'gorg'),
+            'section' => 'title_tagline',
+            'priority' => 9,
+            'settings' => 'gorg_theme_options[white_logo]',
+        )
+    )
+);
 
 ?>

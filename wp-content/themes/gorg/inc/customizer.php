@@ -37,6 +37,11 @@ $wp_customize->add_section('gorg_social_icons',
 				'priority' => 2,
 				'panel' => 'gorg_options_panel'
 		));
+		$wp_customize->add_section('banner_options', array(
+			'title' => esc_html__('Home Banner Options','gorg'),
+			'priority' =>3,
+			'panel' =>'gorg_options_panel'
+	));
 
 $wp_customize->add_section(
 	'about_options',

@@ -2337,7 +2337,16 @@ header.light_skin.nav-fixed .social_icons li a:hover {
 .full_screen, .full_screen .carousel-item {
 	height: 100vh;
 }
-
+.banner_section .banner_static_content {
+    position: absolute;
+    z-index: 1;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 40%;
+    bottom: 0;
+    text-align: left;
+}
 .banner_fs {
 	height: 100vh;
 	min-height: 45rem;

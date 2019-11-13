@@ -12,7 +12,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
             /* Slider Settings */
             'show_custom_pagination' =>0,
             'slider_posts'   =>5,
-           
+           //welcome
+           'welcome_text_limit' =>600,
             //services
             'service_title' =>'',
             'service_count' =>6,

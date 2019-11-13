@@ -89,6 +89,23 @@ $wp_customize->add_control('select_about_page', array(
     'settings' => 'gorg_theme_options[select_about_page]',
     'priority' => 2,
 ));
+
+$wp_customize->add_setting('gorg_theme_options[welcome_text_limit]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['welcome_text_limit'],
+        'sanitize_callback' => 'esc_html',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[welcome_text_limit]',
+    array(
+        'priority' => 3,
+        'label' => esc_html__('No. Of Characters', 'gorg'),
+        'type' => 'number',
+        'section' => 'about_options',
+        'settings' => 'gorg_theme_options[welcome_text_limit]',
+    )
+);
 //white logo
 
 $wp_customize->add_setting(

@@ -21,6 +21,23 @@ $wp_customize->add_control(new gorg_checkbox_Customize_Controls(
         )
     )
 );
+$wp_customize->add_setting(
+    'gorg_theme_options[footer_logo]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['footer_logo'],
+        'sanitize_callback' => 'esc_url_raw',
+        'capability' => 'edit_theme_options',
+    )
+);
+
+$wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'footer_logo', array(
+            'label' => esc_html__('Footer Logo', 'gorg'),
+            'section' => 'footer_options',
+            'settings' => 'gorg_theme_options[footer_logo]',
+        )
+    )
+);
 
 $wp_customize->add_setting('gorg_theme_options[footer_text]',
     array(
@@ -33,9 +50,24 @@ $wp_customize->add_setting('gorg_theme_options[footer_text]',
 $wp_customize->add_control('footer_text',
     array(
         'label' => esc_html__('Footer Text', 'gorg'),
-        'type' => 'text',
+        'type' => 'textarea',
         'section' => 'footer_options',
         'settings' => 'gorg_theme_options[footer_text]',
+    ));
+$wp_customize->add_setting('gorg_theme_options[footer_copyright]',
+    array(
+        'default' => $gorg_setting['footer_copyright'],
+        'type' => 'option',
+        'sanitize_callback' => 'sanitize_text_field'
+    )
+);
+
+$wp_customize->add_control('footer_copyright',
+    array(
+        'label' => esc_html__('Footer copyright', 'gorg'),
+        'type' => 'text',
+        'section' => 'footer_options',
+        'settings' => 'gorg_theme_options[footer_copyright]',
     ));
 
 $wp_customize->add_setting('gorg_theme_options[developed_by_text]',

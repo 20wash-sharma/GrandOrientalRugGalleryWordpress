@@ -10,6 +10,23 @@
  */
 
 ?>
+<?php
+    $gorg_settings = gorg_get_theme_options();
+    $footer_email = $gorg_settings['contact_email'];
+    $footer_phone = $gorg_settings['contact_fphone'];
+    $footer_phone1 = $gorg_settings['contact_sphone'];
+    $footer_fax = $gorg_settings['contact_fax'];
+    $footer_address = $gorg_settings['contact_address']; 
+    $footer_logo = $gorg_settings['footer_logo'];
+    $twitter = $gorg_settings['gorg_social_twitter'];
+    $linkedin = $gorg_settings['gorg_social_linkedin'];
+    $google = $gorg_settings['gorg_social_googleplus'];
+    $instagram = $gorg_settings['gorg_social_instagram'];
+    $youtube = $gorg_settings['gorg_social_youtube'];
+    $facebook = $gorg_settings['gorg_social_facebook'];
+    $footer_text = $gorg_settings['footer_text'];
+    $footer_copyright = $gorg_settings['footer_copyright'];
+    ?>
 <!-- START FOOTER SECTION --> 
 <footer class="background_bg">
 	<div class="top_footer text_white">
@@ -17,17 +34,29 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.2s">
                 	<div class="footer_logo">
-                    	<a href="index.html"><img alt="logo" src="<?php echo get_template_directory_uri();?>/assets/images/logo_white.png"></a>
+                    <?php if(!empty($footer_logo)):?>
+                    	<a href="<?php echo home_url('/');?>"><img alt="logo" src="<?php echo $footer_logo; ?>"></a>
+                        <?php endif;?>
                     </div>
-                    <p>Phasellus blandit massa enim. elit id varius nunc. Lorem ipsum dolor sit amet, consectetur industry.</p>
+                    <p><?php if(!empty($footer_text)): echo $footer_text; endif;?></p>
                    
                     <h6>Follow Us</h6>
                     <ul class="list_none footer_social">
-                    	<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-                        <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-                        <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
-                        <li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
-                        <li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+                        <?php if($facebook): ?>
+                    	<li><a href="<?php echo esc_url($facebook);?>"><i class="ion-social-facebook"></i></a></li>
+                        <?php endif;?>
+                        <?php if($twitter): ?>
+                        <li><a href="<?php echo esc_url($twitter);?>"><i class="ion-social-twitter"></i></a></li>
+                        <?php endif;?>
+                        <?php if($google): ?>
+                        <li><a href="<?php echo esc_url($google);?>"><i class="ion-social-googleplus"></i></a></li>
+                        <?php endif;?>
+                        <?php if($youtube): ?>
+                        <li><a href="<?php echo esc_url($youtube);?>"><i class="ion-social-youtube-outline"></i></a></li>
+                        <?php endif;?>
+                        <?php if($instagram): ?>
+                        <li><a href="<?php echo esc_url($instagram);?>"><i class="ion-social-instagram-outline"></i></a></li>
+                        <?php endif;?>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.3s">
@@ -44,19 +73,21 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.4s">
                     <h6 class="widget_title">Contact Us</h6>
                     <ul class="contact_info contact_info_light list_none">
+                    <?php if($footer_address): ?>
                         <li>
                             <span class="ti-location-pin"></span>
-                            <address>Grand Oriental Rug Gallery,<br/>
-                                383 Aragon Ave,<br/>
-                                Coral Gables Miami, FL 33134</address>
+                            <address><?php echo $footer_address;?></address>
                         </li>
+                    <?php endif;?>
+                    <?php if($footer_email):?>
                         <li>
                             <span class="ti-email"></span>
-                            <a href="mailto:info@sitename.com">info@grandorientalruggallery.com</a>
+                            <a href="mailto:<?php echo $footer_email;?>"><?php echo $footer_email;?></a>
                         </li>
+                    <?php endif;?>
                         <li>
                             <span class="ti-mobile"></span>
-                            <address>Phone: 305 442 4500,<br/> Cell: 305 490 1936,<br/> Fax: 305 442 4502</address>
+                            <address><?php if($footer_phone):?> Phone: <?php echo $footer_phone; endif;?><?php if($footer_phone1): ?>,<br/> Cell: <?php echo $footer_phone1; endif;?><?php if($footer_fax):?>,<br/> Fax: <?php echo $footer_fax; endif;?></address>
                         </li>
                     </ul>
                 </div>
@@ -72,7 +103,7 @@
     	<div class="container">
         	<div class="row align-items-center">
             	<div class="col-md-6">
-                	<p class="copyright m-md-0 text-center text-md-left">&copy; 2019 All Rights Reserved by GORG.</p>
+                	<p class="copyright m-md-0 text-center text-md-left"><?php if(!empty($footer_copyright)): echo $footer_copyright; endif;?></p>
                 </div>
                 <div class="col-md-6">
                 	<ul class="list_none footer_link text-center text-md-right">

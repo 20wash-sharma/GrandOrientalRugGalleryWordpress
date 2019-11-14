@@ -53,7 +53,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
 
             //footer options
             'show_developer_footer'                 =>1,
-			'footer_text'							=> esc_html__('Copyright','gorg'),
+            'footer_text'                           =>'',
+			'footer_copyright'						=> esc_html__('Copyright','gorg'),
 			'developed_by_text'						=> esc_html__('Roshan Banstola','gorg'),
 			'developed_by_link'						=> esc_url('https://rpbanstola.com.np'),
 

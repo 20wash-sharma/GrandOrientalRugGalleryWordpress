@@ -56,24 +56,44 @@ $wp_customize->add_control('gorg_theme_options[contact_fphone]',
         'settings' => 'gorg_theme_options[contact_fphone]',
     )
 );
-// $wp_customize->add_setting(
-//     'gorg_theme_options[contact_sphone]',
-//     array(
-//         'default' => $gorg_setting['contact_sphone'],
-//         'type' => 'option',
-//         'capability' => 'edit_theme_options',
-//         'sanitize_callback' => 'esc_html',
-//     )
-// );
+$wp_customize->add_setting(
+    'gorg_theme_options[contact_sphone]',
+    array(
+        'default' => $gorg_setting['contact_sphone'],
+        'type' => 'option',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_html',
+    )
+);
 
-// $wp_customize->add_control('gorg_theme_options[contact_sphone]',
-//     array(
-//         'label' => esc_html__('Contact Phone 2', 'gorg'),
-//         'type' => 'text',
-//         'section' => 'contact_section',
-//         'settings' => 'gorg_theme_options[contact_sphone]',
-//     )
-// );
+$wp_customize->add_control('gorg_theme_options[contact_sphone]',
+    array(
+        'label' => esc_html__('Contact Phone Number (Optional)', 'gorg'),
+        'type' => 'text',
+        'section' => 'contact_section',
+        'settings' => 'gorg_theme_options[contact_sphone]',
+    )
+);
+
+//fax
+$wp_customize->add_setting(
+    'gorg_theme_options[contact_fax]',
+    array(
+        'default' => $gorg_setting['contact_fax'],
+        'type' => 'option',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_html',
+    )
+);
+
+$wp_customize->add_control('gorg_theme_options[contact_fax]',
+    array(
+        'label' => esc_html__('Fax Number', 'gorg'),
+        'type' => 'text',
+        'section' => 'contact_section',
+        'settings' => 'gorg_theme_options[contact_fax]',
+    )
+);
 $wp_customize->add_setting(
     'gorg_theme_options[contact_work]',
     array(

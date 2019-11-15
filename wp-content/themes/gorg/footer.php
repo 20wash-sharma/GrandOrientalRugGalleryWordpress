@@ -60,15 +60,9 @@
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.3s">
-                	<h6 class="widget_title">USEFUL LINKS</h6>
-                    <ul class="list_none widget_links">
-                    	<li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Available Sizes</a></li>
-                        <li><a href="#">Carpet pads & Rug Pad</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
+                <?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
+						<?php dynamic_sidebar( 'footer-1' ); ?>
+						<?php endif; ?>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.4s">
                     <h6 class="widget_title">Contact Us</h6>
@@ -93,7 +87,9 @@
                 </div>
                 <div class="col-lg-4 col-md-6 animation" data-animation="fadeInUp" data-animation-delay="0.5s">
                     <div class="facebook-widget">
-                        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FGORG383%2F&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="250" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    <?php if ( is_active_sidebar( 'footer-2' ) ) : ?>
+						<?php dynamic_sidebar( 'footer-2' ); ?>
+						<?php endif; ?>
                     </div>
                 </div>
             </div>

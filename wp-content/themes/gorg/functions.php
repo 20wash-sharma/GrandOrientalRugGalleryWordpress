@@ -131,6 +131,15 @@ function gorg_widgets_init() {
 		'before_title'  => '<h6 class="widget_title">',
 		'after_title'   => '</h6>',
 	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Footer Bottom Menu', 'gorg' ),
+		'id'            => 'footer-3',
+		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),
+		'before_widget' => '<div id="%1$s" class="list_none footer_link text-center text-md-right %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h6 class="widget_title">',
+		'after_title'   => '</h6>',
+	) );
 }
 add_action( 'widgets_init', 'gorg_widgets_init' );
 

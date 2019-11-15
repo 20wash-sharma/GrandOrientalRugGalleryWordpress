@@ -102,11 +102,9 @@
                 	<p class="copyright m-md-0 text-center text-md-left"><?php if(!empty($footer_copyright)): echo $footer_copyright; endif;?></p>
                 </div>
                 <div class="col-md-6">
-                	<ul class="list_none footer_link text-center text-md-right">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    	<li><a href="#">Site Map</a></li>
-                    </ul>
+                <?php if ( is_active_sidebar( 'footer-3' ) ) : ?>
+						<?php dynamic_sidebar( 'footer-3' ); ?>
+						<?php endif; ?>
                 </div>
             </div>
         </div>

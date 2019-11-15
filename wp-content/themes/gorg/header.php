@@ -66,7 +66,7 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <li><i class="ti-mobile"></i><?php echo $gorg_phone_number;?></li>
                     <?php endif;?>
                     <?php if($gorg_address):?>
-                        <li><i class="ti-location-pin"></i><?php echo $gorg_address;?></li>
+                        <li><i class="ti-location-pin"></i><?php echo wp_strip_all_tags($gorg_address);?></li>
                     <?php endif;?>
                     </ul>
                 </div>

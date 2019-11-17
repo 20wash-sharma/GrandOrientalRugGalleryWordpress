@@ -140,10 +140,28 @@ $wp_customize->add_setting(
 
 $wp_customize->add_control('gorg_theme_options[testimonial_title]',
     array(
+        'priority' => 1,
         'label' => esc_html__('Section Title', 'gorg'),
         'type' => 'text',
         'section' => 'gorg_testimonial',
         'settings' => 'gorg_theme_options[testimonial_title]',
+    )
+);
+
+$wp_customize->add_setting('gorg_theme_options[testimonial_limit]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['testimonial_limit'],
+        'sanitize_callback' => 'esc_html',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[testimonial_limit]',
+    array(
+        'priority' => 3,
+        'label' => esc_html__('No. Of Testimonails', 'gorg'),
+        'type' => 'number',
+        'section' => 'gorg_testimonial',
+        'settings' => 'gorg_theme_options[testimonial_limit]',
     )
 );
 

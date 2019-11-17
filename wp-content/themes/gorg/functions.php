@@ -218,6 +218,7 @@ require get_template_directory() . '/bt4navwalker.php';
  * Custom Post Types
  */
 require get_template_directory() . '/post-types/home_slider.php';
+require get_template_directory() . '/post-types/gorg_testimonial.php';
 
 /**
  * Load Jetpack compatibility file.

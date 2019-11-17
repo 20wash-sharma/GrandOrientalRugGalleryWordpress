@@ -127,4 +127,24 @@ $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'white_
     )
 );
 
+//testimonial Options
+$wp_customize->add_setting(
+    'gorg_theme_options[testimonial_title]',
+    array(
+        'default' => $gorg_setting['testimonial_title'],
+        'type' => 'option',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'wp_kses_post',
+    )
+);
+
+$wp_customize->add_control('gorg_theme_options[testimonial_title]',
+    array(
+        'label' => esc_html__('Section Title', 'gorg'),
+        'type' => 'text',
+        'section' => 'gorg_testimonial',
+        'settings' => 'gorg_theme_options[testimonial_title]',
+    )
+);
+
 ?>

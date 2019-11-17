@@ -58,7 +58,13 @@ $wp_customize->add_section('gorg_catalogue',
 				'priority' => 7,
 				'panel' => 'gorg_options_panel'
 		));
-	
+
+$wp_customize->add_section('gorg_testimonial',
+	array(
+		'title' => esc_html__('Home Testimonial Options', 'gorg'),
+		'priority' => 8,
+		'panel' => 'gorg_options_panel'
+	));	
 
 $wp_customize->add_section('contact_section',
 		array(

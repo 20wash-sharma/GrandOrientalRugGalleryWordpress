@@ -180,6 +180,10 @@ li#accordion-section-about_options>h3.accordion-section-title:before {
   content: "\f119";
 }
 
+li#accordion-section-gorg_testimonial>h3.accordion-section-title:before {
+  content: "\f473";
+}
+
 li#accordion-section-gorg_partners_logo>h3.accordion-section-title:before {
   content: "\f448";
 }

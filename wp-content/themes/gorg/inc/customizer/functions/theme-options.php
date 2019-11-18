@@ -23,7 +23,7 @@ $wp_customize->add_control('gorg_theme_options[gorg_reset_all]',
         'section' => 'gorg_custom_header',
         'type' => 'checkbox',
     ));
-    $wp_customize->add_setting('gorg_theme_options[catalogue_title]',
+$wp_customize->add_setting('gorg_theme_options[catalogue_title]',
     array(
         'type' => 'option',
         'default' => $gorg_setting['catalogue_title'],
@@ -162,6 +162,41 @@ $wp_customize->add_control('gorg_theme_options[testimonial_limit]',
         'type' => 'number',
         'section' => 'gorg_testimonial',
         'settings' => 'gorg_theme_options[testimonial_limit]',
+    )
+);
+
+//homepage featured product
+$wp_customize->add_setting('gorg_theme_options[featured_title]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['featured_title'],
+        'sanitize_callback' => 'wp_kses_post',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[featured_title]',
+    array(
+        'priority' => 2,
+        'label' => esc_html__('Product Featured Title', 'gorg'),
+        'type' => 'text',
+        'section' => 'gorg_featured',
+        'settings' => 'gorg_theme_options[featured_title]',
+    )
+);
+
+$wp_customize->add_setting('gorg_theme_options[featured_limit]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['featured_limit'],
+        'sanitize_callback' => 'esc_html',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[featured_limit]',
+    array(
+        'priority' => 2,
+        'label' => esc_html__('No. of Featured Products', 'gorg'),
+        'type' => 'number',
+        'section' => 'gorg_featured',
+        'settings' => 'gorg_theme_options[featured_limit]',
     )
 );
 

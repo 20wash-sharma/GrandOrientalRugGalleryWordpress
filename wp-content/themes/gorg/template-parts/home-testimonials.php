@@ -9,7 +9,7 @@ $testimonial_limit = $gorg_settings['testimonial_limit'];
     	<div class="row">
         	<div class="col-md-12 animation" data-animation="fadeInUp" data-animation-delay="0.1s">
             	<div class="heading_s1 text-center">
-                	<h2><?php echo ($testimonial_title) ? $testimonial_title : 'Clients Testimonials';?></h2>
+                	<h2><?php echo __(($testimonial_title) ? $testimonial_title : 'Clients Testimonials','gorg');?></h2>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@ $testimonial_limit = $gorg_settings['testimonial_limit'];
                             <div class="testi_meta">
                                 <h6><?php the_title();?></h6>
                                 <span><?php if($designation): echo $designation;  endif;?></span>
-                            	<p><?php if($testimonial_content): echo $testimonial_content; endif;?></p>
+                            	<p><?php if($testimonial_content): echo __($testimonial_content,'gorg'); endif;?></p>
                             </div>
                         </div>
                     </div>

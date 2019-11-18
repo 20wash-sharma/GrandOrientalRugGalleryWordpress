@@ -38,7 +38,7 @@
                     	<a href="<?php echo home_url('/');?>"><img alt="logo" src="<?php echo $footer_logo; ?>"></a>
                         <?php endif;?>
                     </div>
-                    <p><?php if(!empty($footer_text)): echo $footer_text; endif;?></p>
+                    <p><?php if(!empty($footer_text)): echo __($footer_text,'gorg'); endif;?></p>
                    
                     <h6>Follow Us</h6>
                     <ul class="list_none footer_social">
@@ -65,7 +65,7 @@
 						<?php endif; ?>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.4s">
-                    <h6 class="widget_title">Contact Us</h6>
+                    <h6 class="widget_title"><?php echo __('Contact Us','gorg');?></h6>
                     <ul class="contact_info contact_info_light list_none">
                     <?php if($footer_address): ?>
                         <li>

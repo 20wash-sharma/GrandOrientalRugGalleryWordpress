@@ -18,6 +18,7 @@ $catalogue_limit = $gorg_settings['catalogue_count'];
                     'taxonomy' => 'product_cat',
                     'orderby' => 'menu_order',
                     'field' => 'name',
+                    'number' =>$catalogue_limit,
                     'order' => 'ASC',
                     'hide_empty' => false
                 );

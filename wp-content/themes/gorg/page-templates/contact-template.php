@@ -15,25 +15,7 @@ get_header();?>
 	$contact_form = $gorg_settings['contact_form'];
 	$map_iframe = $gorg_settings['contact_map_iframe'];
 	?>
-<!-- START SECTION BANNER -->
-<section class="background_bg breadcrumb_section overlay_bg2 page-title-light" data-img-src="<?php echo get_template_directory_uri();?>/assets/images/service_bg.jpg">
-	<div class="container">
-    	<div class="row">
-        	<div class="col-md-12 text-center">
-            	<div class="page-title">
-            		<h1><?php echo get_the_title();?></h1>
-                </div>
-                <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Contact</li>
-                  </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- END SECTION BANNER --> 
+<?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>
 <!-- START SECTION CONTACT -->
 <section class="small_pb contact-info">
 	<div class="container">

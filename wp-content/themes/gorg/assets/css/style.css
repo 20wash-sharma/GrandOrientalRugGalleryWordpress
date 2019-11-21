@@ -5984,6 +5984,9 @@ select[multiple] option {
 .header_wrap.fixed-top+.breadcrumb_section {
 	padding-top: 200px;
 }
+.separator{
+	padding:0 5px;
+}
 
 /*===================================*
   18. END BREADCRUMB SECTION

@@ -64,7 +64,7 @@ if ( !class_exists( 'WP_Bootstrap_Navwalker' ) ) {
       }
 
       $this->dropdown = true;
-      $output         .= $n . str_repeat( $t, $depth ) . '<ul class="sub-menu">' . $n;
+      $output         .= $n . str_repeat( $t, $depth ) . '<ul class="dropdown-menu">' . $n;
     }
 
     /**
@@ -236,14 +236,18 @@ if ( !class_exists( 'WP_Bootstrap_Navwalker' ) ) {
       $item_classes = array( 'nav-link' );
 
       if ( $args->walker->has_children ) {
-        $item_classes[] = 'dropdown-toggle';
+        $item_classes[] = 'dropdown-toggle ';
       }
 
       if ( 0 < $depth ) {
         $item_classes = array_diff( $item_classes, [ 'nav-link' ] );
         $item_classes[] = 'dropdown-item';
       }
-
+      //by roshan
+      if ( 1 == $depth && $args->walker->has_children) {
+        $item_classes = array_diff( $item_classes, [ 'nav-link' ] );
+        $item_classes[] = 'dropdown-item dropdown-toggler';
+      }
       $item_output = $args->before;
       if ( 0 < $depth ) {
         $item_output.='<li>';

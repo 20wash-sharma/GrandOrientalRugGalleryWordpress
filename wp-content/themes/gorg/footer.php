@@ -111,10 +111,7 @@
     </div>
 </footer>
 <!-- END FOOTER SECTION --> 
-
 <a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a> 
-
 <?php wp_footer(); ?>
-
 </body>
 </html>

@@ -33,7 +33,7 @@ get_header();?>
 						wp_reset_query();
 					?>
                     </ul>
-                    <div class="tab-content tab_content_slider">
+                    <div class="tab-content tab-gallery mt-4 pt-2">
 					<?php
 					$counter = 0;
 					$gallery_args = array(

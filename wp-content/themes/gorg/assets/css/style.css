@@ -7389,6 +7389,19 @@ select[multiple] option {
 	background-color: #7b4d1c;
 	color: #fff;
 }
+.tab-gallery.tab-content>.tab-pane.active {
+	height: auto;
+	display: block;
+	z-index: 1;
+}
+
+.tab-gallery.tab-content>.tab-pane {
+	display: block;
+	height: 0;
+	transition: all 0s ease-in-out;
+	position: relative;
+	z-index: -3;
+}
 
 .tab_content_slider.tab-content>.tab-pane.active {
 	height: auto;

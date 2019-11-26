@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Locations Page
+ * Template Name: Locations Template
  */
 get_header();?>
 <?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>

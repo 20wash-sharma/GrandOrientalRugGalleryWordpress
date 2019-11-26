@@ -220,6 +220,7 @@ require get_template_directory() . '/bt4navwalker.php';
 require get_template_directory() . '/post-types/home_slider.php';
 require get_template_directory() . '/post-types/gorg_testimonial.php';
 require get_template_directory() . '/post-types/location.php';
+require get_template_directory() . '/post-types/gorg_gallery.php';
 
 /**
  * Load Jetpack compatibility file.

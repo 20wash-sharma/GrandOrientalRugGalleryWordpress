@@ -6,219 +6,78 @@ get_header();?>
 <?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>
 <section id="gallery">
 	<div class="container">
-        <div class="row mb-3 mb-sm-5">
-            <div class="col-md-12 text-center animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0.3s" style="animation-delay: 0.3s; opacity: 1;">
-                <ul class="list_none portfolio_filter filter_tab1">
-                    <li><a href="#" class="current" data-filter="*">all</a></li>
-                    <li><a href="#" data-filter=".room" class="">In Room Setting</a></li>
-                    <li><a href="#" data-filter=".event">Media Event</a></li>
-                </ul>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-md-12">
-                <ul class="portfolio_container gutter_small work_col4 image_gallery gallery_hover_style1 animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0.4s" style="animation-delay: 0.4s; opacity: 1; position: relative; height: 562.501px;">
-                	<li class="grid-sizer"></li>
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 0%; top: 0px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img1.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img1.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                     <!-- START PORTFOLIO ITEM -->
-                     <li class="portfolio-item room" style="position: absolute; left: 25%; top: 266.45px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img10.jpg">
-                                <div class="gallery_img">
-                                    <img src="assets/images/gallery/gallery_small_img10.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 25%; top: 0px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img2.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img2.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 25%; top: 0px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img3.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img3.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                     <!-- START PORTFOLIO ITEM -->
-                     <li class="portfolio-item room" style="position: absolute; left: 50%; top: 370px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img12.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img12.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 50%; top: 0px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img4.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img4.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 75%; top: 0px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img7.jpg">
-                                <div class="gallery_img">
-                                    <img src="assets/images/gallery/gallery_small_img7.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 25%; top: 192.5px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img8.jpg">
-                                <div class="gallery_img">
-                                    <img src="assets/images/gallery/gallery_small_img8.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 25%; top: 266.45px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img5.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img5.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item event" style="position: absolute; left: 75%; top: 192.5px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img6.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img6.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 0%; top: 214.688px; animation: 0s ease 0s 1 normal none running none; display: none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img11.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img11.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item event" style="position: absolute; left: 75%; top: 0px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img13.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img13.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item room" style="position: absolute; left: 0%; top: 214.688px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img9.jpg">
-                                <div class="gallery_img">
-                                    <img src="assets/images/gallery/gallery_small_img9.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                   
-                    <!-- START PORTFOLIO ITEM -->
-                    <li class="portfolio-item event" style="position: absolute; left: 75%; top: 347.813px; animation: 0s ease 0s 1 normal none running none;">
-                        <div class="image_gallery_item">
-                            <a href="assets/images/gallery/gallery_img14.jpg">
-                            	<div class="gallery_img">
-                                	<img src="assets/images/gallery/gallery_small_img14.jpg" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <!-- END PORTFOLIO ITEM -->
-                   
-                </ul>
-            </div>
+			
+			<div class="col-md-12">
+				<div class="tab-style3">
+                    <ul class="nav nav-tabs justify-content-center" role="tablist">
+					<?php
+					global $post;
+					$counter = 0;
+					$count_galleries = wp_count_posts( 'gorg_gallery' )->publish; 
+					$gallery_args = array(
+						'post_type' => 'gorg_gallery',
+						'posts_per_page'=> -1
+					);
+					$gallery_query = new WP_query($gallery_args);
+					if($gallery_query->have_posts()):
+						while($gallery_query->have_posts()):$gallery_query->the_post();
+						?>
+						<li class="nav-item">
+                        	<a class="nav-link <?php if($counter== 0): echo 'active'; endif;?>" id="<?php echo $post->post_name;?>" data-toggle="tab" href="#tab<?php echo get_the_ID();?>" role="tab" aria-controls="<?php echo $post->post_name;?>" aria-selected="true"><?php echo get_the_title();?></a>
+                      	</li>
+					<?php
+						$counter++; 
+						endwhile;
+						endif;
+						wp_reset_query();
+					?>
+                    </ul>
+                    <div class="tab-content tab_content_slider">
+					<?php
+					$counter = 0;
+					$gallery_args = array(
+						'post_type' => 'gorg_gallery',
+						'posts_per_page'=> -1
+					);
+					$gallery_query = new WP_query($gallery_args);
+					if($gallery_query->have_posts()):
+						while($gallery_query->have_posts()):$gallery_query->the_post();
+						$gallery_images = get_field('add_gallery_images');
+						?>
+                      <div class="tab-pane fade <?php if($counter== 0): echo 'active show'; endif;?>" id="tab<?php echo get_the_ID();?>" role="tabpanel" aria-labelledby="<?php echo $post->post_name;?>">
+					  	<ul class="portfolio_container work_col4 gutter_small image_gallery gallery_hover_style2">
+							<li class="grid-sizer"></li> 
+							<?php 
+							if($gallery_images):
+							foreach($gallery_images as $gallery_image){ ?>
+								<li class="portfolio-item">
+								<div class="image_gallery_item">
+									<a href="<?php echo $gallery_image['url'];?>">
+										<div class="gallery_img">
+											<img src="<?php echo $gallery_image['sizes']['medium'];?>" alt="image">
+										</div>
+										<div class="gallary_hover_box">
+											<i class="ti-zoom-in"></i>
+										</div>
+									</a>
+								</div>
+							</li>
+						<?php	
+						}   
+					endif;
+						?>   
+						</ul>
+					  </div>
+					  <?php
+					  	$counter++; 
+						endwhile;
+						endif;
+						wp_reset_query();
+					?>
+                    </div>
+				</div>
+			</div>
         </div>
     </div>
 </section>

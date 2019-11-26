@@ -7170,7 +7170,7 @@ select[multiple] option {
 	background-color: #eee;
 	border: 0 !important;
 	border-radius: 4px;
-	padding: 10px 30px;
+	/* padding: 10px 30px; */
 	display: block;
 	text-align: center;
 }

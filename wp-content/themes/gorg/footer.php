@@ -32,7 +32,7 @@
 	<div class="top_footer text_white">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.2s">
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 	<div class="footer_logo">
                     <?php if(!empty($footer_logo)):?>
                     	<a href="<?php echo home_url('/');?>"><img alt="logo" src="<?php echo $footer_logo; ?>"></a>
@@ -59,12 +59,12 @@
                         <?php endif;?>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.3s">
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                 <?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
 						<?php dynamic_sidebar( 'footer-1' ); ?>
 						<?php endif; ?>
                 </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 animation" data-animation="fadeInUp" data-animation-delay="0.4s">
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <h6 class="widget_title"><?php echo __('Contact Us','gorg');?></h6>
                     <ul class="contact_info contact_info_light list_none">
                     <?php if($footer_address): ?>
@@ -85,7 +85,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-4 col-md-6 animation" data-animation="fadeInUp" data-animation-delay="0.5s">
+                <div class="col-lg-4 col-md-6">
                     <div class="facebook-widget">
                     <?php if ( is_active_sidebar( 'footer-2' ) ) : ?>
 						<?php dynamic_sidebar( 'footer-2' ); ?>

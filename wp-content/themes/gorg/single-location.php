@@ -24,7 +24,9 @@ get_header();
 		endwhile; // End of the loop.
 		?>		</div>
 				<div class="col-lg-4 mt-lg-0 mt-4 pt-3 pt-lg-0">
-				<?php get_sidebar('location');?>
+					<div class="location-sidebar-wrapper">
+						<?php get_sidebar('location');?>
+					</div>
 				</div>
 			</div>
 		</div><!-- container -->

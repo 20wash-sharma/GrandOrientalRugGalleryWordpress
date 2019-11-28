@@ -114,6 +114,15 @@ function gorg_widgets_init() {
 		'after_title'   => '</h6>',
 	) );
 	register_sidebar( array(
+		'name'          => esc_html__( 'Location Sidebar', 'gorg' ),
+		'id'            => 'sidebar-location',
+		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h5 class="widget_title">',
+		'after_title'   => '</h5>',
+	) );
+	register_sidebar( array(
 		'name'          => esc_html__( 'Footer Quick Links', 'gorg' ),
 		'id'            => 'footer-1',
 		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),

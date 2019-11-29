@@ -28,9 +28,15 @@ function gorg_customize_register( $wp_customize ) {
 	$wp_customize->add_section('gorg_custom_header',
 		array(
 				'title' => esc_html__('General Options', 'gorg'),
-				'priority' => 2,
+				'priority' => 1,
 				'panel' => 'gorg_options_panel'
 		));
+$wp_customize->add_section('gorg_cta_section',
+array(
+		'title' => esc_html__('GORG CTA Options', 'gorg'),
+		'priority' => 2,
+		'panel' => 'gorg_options_panel'
+));
 $wp_customize->add_section('gorg_social_icons',
 		array(
 				'title' => esc_html__('Social Media Options', 'gorg'),

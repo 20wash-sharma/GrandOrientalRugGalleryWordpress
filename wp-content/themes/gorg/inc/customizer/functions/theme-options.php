@@ -199,5 +199,90 @@ $wp_customize->add_control('gorg_theme_options[featured_limit]',
         'settings' => 'gorg_theme_options[featured_limit]',
     )
 );
+//CTa options
+$wp_customize->add_setting('gorg_theme_options[cta_title]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['cta_title'],
+        'sanitize_callback' => 'wp_kses_post',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[cta_title]',
+    array(
+        'priority' => 1,
+        'label' => esc_html__('CTA Title', 'gorg'),
+        'type' => 'text',
+        'section' => 'gorg_cta_section',
+        'settings' => 'gorg_theme_options[cta_title]',
+    )
+);
+//cta content
+$wp_customize->add_setting('gorg_theme_options[cta_content]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['cta_content'],
+        'sanitize_callback' => 'wp_kses_post',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[cta_content]',
+    array(
+        'priority' => 2,
+        'label' => esc_html__('CTA Content', 'gorg'),
+        'type' => 'textarea',
+        'section' => 'gorg_cta_section',
+        'settings' => 'gorg_theme_options[cta_content]',
+    )
+);
+//btn text
+$wp_customize->add_setting('gorg_theme_options[cta_btn_text]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['cta_btn_text'],
+        'sanitize_callback' => 'wp_kses_post',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[cta_btn_text]',
+    array(
+        'priority' => 3,
+        'label' => esc_html__('CTA Button Text', 'gorg'),
+        'type' => 'text',
+        'section' => 'gorg_cta_section',
+        'settings' => 'gorg_theme_options[cta_btn_text]',
+    )
+);
+$wp_customize->add_setting('gorg_theme_options[cta_btn_link]',
+    array(
+        'default' => $gorg_setting['cta_btn_link'],
+        'sanitize_callback' => 'esc_url_raw',
+        'type' => 'option',
+        'capability' => 'manage_options'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[cta_btn_link]',
+    array(
+        'priority' => 4,
+        'label' => esc_html__('CTA Button Link', 'gorg'),
+        'section' => 'gorg_cta_section',
+        'type' => 'text',
+    )
+);
+$wp_customize->add_setting(
+    'gorg_theme_options[cta_bg_img]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['cta_bg_img'],
+        'sanitize_callback' => 'esc_url_raw',
+        'capability' => 'edit_theme_options',
+    )
+);
+
+$wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'cta_bg_img', array(
+            'priority' => 4,
+            'label' => esc_html__('CTA Background Image', 'gorg'),
+            'section' => 'gorg_cta_section',
+            'settings' => 'gorg_theme_options[cta_bg_img]',
+        )
+    )
+);
 
 ?>

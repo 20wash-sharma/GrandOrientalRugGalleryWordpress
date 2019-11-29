@@ -6,16 +6,17 @@ get_header();?>
 <?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>
 <!-- START SECTION SERVICES -->
 <?php 
+$gorg_settings = gorg_get_theme_options();
 $cleaning_process = get_field('cleaning_process_steps');
-$cta_title		= get_field('cta_title');
-$cta_content	= get_field('cta_content');
-$cta_button_text	= get_field('cta_button_text');
-$cta_button_link	= get_field('cta_button_link');
+$cta_title		= $gorg_settings['cta_title'];
+$cta_content	= $gorg_settings['cta_content'];
+$cta_button_text	= $gorg_settings['cta_btn_text'];
+$cta_button_link	= $gorg_settings['cta_btn_link'];
+$cta_bg             = $gorg_settings['cta_bg_img'];
 $res_section_title 	= get_field('section_title');
 $res_section_content 	= get_field('section_content');
 $vid_bg_img 		= get_field('video_background_image');
 $youtube_link		= get_field('youtube_video_link');
-
 ?>
 <section class="small_pb">
         <div class="container">
@@ -34,8 +35,8 @@ $youtube_link		= get_field('youtube_video_link');
 						<?php if($cleaning_process): echo __($cleaning_process); endif;?>
                     </div>
                     <div class="blue_overlay_bg mt-4 cta_section_mini radius_box_10 text_white position-relative background_bg"
-                        data-img-src="<?php echo get_template_directory_uri();?>/assets/images/cta_img.jpg"
-                        style="background: url(<?php echo get_template_directory_uri();?>/assets/images/cta_img.jpg;) center center / cover;">
+                        data-img-src="<?php echo ($cta_bg) ? $cta_bg : get_template_directory_uri().'/assets/images/cta_img.jpg';?>"
+                        style="background: url(<?php echo ($cta_bg) ? $cta_bg : get_template_directory_uri().'/assets/images/cta_img.jpg';?>) center center / cover;">
                         <div class="position-relative">
                             <div class="heading_s3 mb-md-3 heading_light">
                                 <h3 class="font-weight-light"><?php if($cta_title): echo __($cta_title); endif;?></h3>

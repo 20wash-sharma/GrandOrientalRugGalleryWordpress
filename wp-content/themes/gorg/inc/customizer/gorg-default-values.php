@@ -43,7 +43,11 @@ if(!function_exists('gorg_get_option_defaults_values')):
             'gorg_social_googleplus'			=> '',
             'gorg_social_instagram'			=> '',
             'gorg_social_youtube'				=> '',
-
+            /*cta options*/
+            'cta_title'                 =>'CTA Title Here',
+            'cta_content'               =>'CTA Content Here',
+            'cta_btn_text'              =>'Contact Us',
+            'cta_btn_link'              =>'#',
             /*Contact Us */
 			'gorg_contact_address' 		=> '',
 			'gorg_contact_phone' 			=> '',

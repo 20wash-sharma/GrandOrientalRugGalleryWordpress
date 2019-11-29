@@ -170,6 +170,9 @@ li#accordion-section-gorg_catalogue>h3.accordion-section-title:before {
 li#accordion-section-gorg_featured>h3.accordion-section-title:before {
   content: "\f312";
 }
+li#accordion-section-gorg_cta_section>h3.accordion-section-title:before {
+  content: "\f488";
+}
 
 li#accordion-section-gorg_why_us>h3.accordion-section-title:before {
   content: "\f345";

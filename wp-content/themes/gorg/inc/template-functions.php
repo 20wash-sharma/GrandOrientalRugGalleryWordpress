@@ -11,17 +11,35 @@
  * @param array $classes Classes for the body element.
  * @return array
  */
+add_filter( 'gorg_get_sidebar', 'replace_store_sidebar' );
+function replace_store_sidebar($sidebar) {
+
+	if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
+		$sidebar = 'gorg-woo-shop-sidebar';
+	} elseif ( is_product() ) {
+		$sidebar = 'gorg-woo-single-sidebar';
+	}
+
+	return $sidebar;
+}
+
 function gorg_body_classes( $classes ) {
+	$gorg_settings = gorg_get_theme_options();
+	$sidebar_name = $gorg_settings['gorg_shop_page_sidebar'];
+	if ( wp_is_mobile() ) {
+		$classes[] = 'gorg-header-break-point';
+	} else {
+		$classes[] = 'gorg-desktop';
+	}
 	// Adds a class of hfeed to non-singular pages.
 	if ( ! is_singular() ) {
 		$classes[] = 'hfeed';
 	}
-
-	// Adds a class of no-sidebar when there is no sidebar present.
-	if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-		$classes[] = 'no-sidebar';
+	if ( is_shop() ) {
+		// Sidebar location.
+	$page_layout = 'gorg-' .$sidebar_name;
+	$classes[]   = esc_attr( $page_layout );
 	}
-
 	return $classes;
 }
 add_filter( 'body_class', 'gorg_body_classes' );
@@ -35,3 +53,6 @@ function gorg_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'gorg_pingback_header' );
+
+
+

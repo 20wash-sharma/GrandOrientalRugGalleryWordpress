@@ -131,6 +131,25 @@ if ( ! function_exists( 'gorg_woocommerce_product_columns_wrapper' ) ) {
 }
 add_action( 'woocommerce_before_shop_loop', 'gorg_woocommerce_product_columns_wrapper', 40 );
 
+
+function store_sidebar_layout() {
+
+	if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
+
+		$gorg_settings = gorg_get_theme_options();
+		$woo_sidebar = $gorg_settings['gorg_shop_page_sidebar'];
+		if ( 'default' !== $woo_sidebar ) {
+
+			$sidebar_layout = $woo_sidebar;
+		}
+		else {
+			$sidebar_layout = 'left-sidebar';
+		}
+	}
+
+	return $sidebar_layout;
+}
+
 if ( ! function_exists( 'gorg_woocommerce_product_columns_wrapper_close' ) ) {
 	/**
 	 * Product columns wrapper close.
@@ -146,8 +165,15 @@ add_action( 'woocommerce_after_shop_loop', 'gorg_woocommerce_product_columns_wra
 /**
  * Remove default WooCommerce wrapper.
  */
+
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
+remove_action( 'woocommerce_before_main_content','woocommerce_breadcrumb', 20, 0);
+remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
 
 if ( ! function_exists( 'gorg_woocommerce_wrapper_before' ) ) {
 	/**
@@ -157,12 +183,24 @@ if ( ! function_exists( 'gorg_woocommerce_wrapper_before' ) ) {
 	 *
 	 * @return void
 	 */
-	function gorg_woocommerce_wrapper_before() {
-		?>
-		<div id="primary" class="content-area">
-			<main id="main" class="site-main" role="main">
+function gorg_woocommerce_wrapper_before() { ?>
+<section>
+    <div class="container">
+        <div class="row">
 			<?php
-	}
+		
+		$site_sidebar = store_sidebar_layout();
+		if($site_sidebar =='default'){
+			get_sidebar();
+		}
+			if ( 'left-sidebar' == $site_sidebar ) {
+				get_sidebar();
+			}
+			?>
+
+			<div class="col-lg-9 col-md-8">
+            <?php
+}
 }
 add_action( 'woocommerce_before_main_content', 'gorg_woocommerce_wrapper_before' );
 
@@ -175,11 +213,19 @@ if ( ! function_exists( 'gorg_woocommerce_wrapper_after' ) ) {
 	 * @return void
 	 */
 	function gorg_woocommerce_wrapper_after() {
-			?>
-			</main><!-- #main -->
-		</div><!-- #primary -->
-		<?php
-	}
+		?>
+			</div>
+<?php
+$site_sidebar = store_sidebar_layout();
+if ( 'right-sidebar' == $site_sidebar ) {
+	get_sidebar();
+}
+?>
+ </div> <!-- row -->
+    </div> <!-- container -->
+	</section> <!-- section -->
+	<?php
+}
 }
 add_action( 'woocommerce_after_main_content', 'gorg_woocommerce_wrapper_after' );
 
@@ -193,48 +239,50 @@ add_action( 'woocommerce_after_main_content', 'gorg_woocommerce_wrapper_after' )
 			gorg_woocommerce_header_cart();
 		}
 	?>
- */
+*/
 
 if ( ! function_exists( 'gorg_woocommerce_cart_link_fragment' ) ) {
-	/**
-	 * Cart Fragments.
-	 *
-	 * Ensure cart contents update when products are added to the cart via AJAX.
-	 *
-	 * @param array $fragments Fragments to refresh via AJAX.
-	 * @return array Fragments to refresh via AJAX.
-	 */
-	function gorg_woocommerce_cart_link_fragment( $fragments ) {
-		ob_start();
-		gorg_woocommerce_cart_link();
-		$fragments['a.cart-contents'] = ob_get_clean();
+/**
+* Cart Fragments.
+*
+* Ensure cart contents update when products are added to the cart via AJAX.
+*
+* @param array $fragments Fragments to refresh via AJAX.
+* @return array Fragments to refresh via AJAX.
+*/
+function gorg_woocommerce_cart_link_fragment( $fragments ) {
+ob_start();
+gorg_woocommerce_cart_link();
+$fragments['a.cart-contents'] = ob_get_clean();
 
-		return $fragments;
-	}
+return $fragments;
+}
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'gorg_woocommerce_cart_link_fragment' );
 
 if ( ! function_exists( 'gorg_woocommerce_cart_link' ) ) {
-	/**
-	 * Cart Link.
-	 *
-	 * Displayed a link to the cart including the number of items present and the cart total.
-	 *
-	 * @return void
-	 */
-	function gorg_woocommerce_cart_link() {
-		?>
-		<a class="cart-contents" href="<?php echo esc_url( wc_get_cart_url() ); ?>" title="<?php esc_attr_e( 'View your shopping cart', 'gorg' ); ?>">
-			<?php
+/**
+* Cart Link.
+*
+* Displayed a link to the cart including the number of items present and the cart total.
+*
+* @return void
+*/
+function gorg_woocommerce_cart_link() {
+?>
+<a class="cart-contents" href="<?php echo esc_url( wc_get_cart_url() ); ?>"
+    title="<?php esc_attr_e( 'View your shopping cart', 'gorg' ); ?>">
+    <?php
 			$item_count_text = sprintf(
 				/* translators: number of items in the mini cart. */
 				_n( '%d item', '%d items', WC()->cart->get_cart_contents_count(), 'gorg' ),
 				WC()->cart->get_cart_contents_count()
 			);
 			?>
-			<span class="amount"><?php echo wp_kses_data( WC()->cart->get_cart_subtotal() ); ?></span> <span class="count"><?php echo esc_html( $item_count_text ); ?></span>
-		</a>
-		<?php
+    <span class="amount"><?php echo wp_kses_data( WC()->cart->get_cart_subtotal() ); ?></span> <span
+        class="count"><?php echo esc_html( $item_count_text ); ?></span>
+</a>
+<?php
 	}
 }
 
@@ -251,21 +299,21 @@ if ( ! function_exists( 'gorg_woocommerce_header_cart' ) ) {
 			$class = '';
 		}
 		?>
-		<ul id="site-header-cart" class="site-header-cart">
-			<li class="<?php echo esc_attr( $class ); ?>">
-				<?php gorg_woocommerce_cart_link(); ?>
-			</li>
-			<li>
-				<?php
+<ul id="site-header-cart" class="site-header-cart">
+    <li class="<?php echo esc_attr( $class ); ?>">
+        <?php gorg_woocommerce_cart_link(); ?>
+    </li>
+    <li>
+        <?php
 				$instance = array(
 					'title' => '',
 				);
 
 				the_widget( 'WC_Widget_Cart', $instance );
 				?>
-			</li>
-		</ul>
-		<?php
+    </li>
+</ul>
+<?php
 	}
 }
 /*Remove add to cart button & prices*/
@@ -280,3 +328,10 @@ function roshan_remove_prices( $price, $product ) {
 if ( ! is_admin() ) $price = '';
 return $price;
 }
+function gorg_woo_scripts() {
+//WOOCommerce Style
+wp_enqueue_style('woo-layout-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-layout.css', array(),'', 'all');
+wp_enqueue_style('woo-smallscreen-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-smallscreen.css', array(),'', 'all');
+wp_enqueue_style('woo-css', get_template_directory_uri().'/assets/woocommerce/woocommerce.css', array(),'', 'all');
+}
+add_action( 'wp_enqueue_scripts', 'gorg_woo_scripts' );

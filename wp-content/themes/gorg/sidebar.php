@@ -7,11 +7,13 @@
  * @package GORG
  */
 
-if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-	return;
-}
+$sidebar = apply_filters( 'gorg_get_sidebar', 'sidebar-1' );
 ?>
 
-<aside id="secondary" class="widget-area">
-	<?php dynamic_sidebar( 'sidebar-1' ); ?>
-</aside><!-- #secondary -->
+<div class="col-lg-3 col-md-4">
+	<div class="sidebar">
+		<?php if ( is_active_sidebar( $sidebar ) ) : ?>
+			<?php dynamic_sidebar( $sidebar ); ?>
+		<?php endif; ?>
+	</div><!-- .sidebar -->
+</div>

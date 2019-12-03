@@ -122,6 +122,26 @@ function gorg_widgets_init() {
 		'before_title'  => '<h5 class="widget_title">',
 		'after_title'   => '</h5>',
 	) );
+	//shop page
+	register_sidebar( array(
+		'name'          => esc_html__( 'WooCommerce Sidebar', 'gorg' ),
+		'id'            => 'gorg-woo-shop-sidebar',
+		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h5 class="widget_title">',
+		'after_title'   => '</h5>',
+	) );
+	//product single
+	register_sidebar( array(
+		'name'          => esc_html__( 'Product Sidebar', 'gorg' ),
+		'id'            => 'gorg-woo-single-sidebar',
+		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h5 class="widget_title">',
+		'after_title'   => '</h5>',
+	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Footer Quick Links', 'gorg' ),
 		'id'            => 'footer-1',
@@ -236,6 +256,16 @@ require get_template_directory() . '/post-types/gorg_gallery.php';
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
+}
+
+/**
+ * Check for WP_Customizer_Control existence before adding custom control because WP_Customize_Control
+ * is loaded on customizer page only
+ *
+ * @see _wp_customize_include()
+ */
+if ( class_exists( 'WP_Customize_Control' ) ) {
+	require_once  get_template_directory() . '/inc/class-customizer-range-value-control/class-customizer-range-value-control.php';
 }
 
 if(!function_exists('gorg_get_theme_options')):

@@ -84,6 +84,12 @@ $wp_customize->add_section('contact_section',
 			'priority' => 10,
 			'panel' => 'gorg_options_panel'
 		));
+$wp_customize->add_section('woo_section',
+		array(
+			'title' => esc_html__('Woocommerce Options', 'gorg'),
+			'priority' => 11,
+			'panel' => 'gorg_options_panel'
+		));
 
 $wp_customize->add_section('footer_options',
 		array(
@@ -97,7 +103,9 @@ require get_template_directory() . '/inc/customizer/functions/banner-options.php
 require get_template_directory() . '/inc/customizer/functions/theme-options.php';
 require get_template_directory() . '/inc/customizer/functions/social-icons.php';
 require get_template_directory() . '/inc/customizer/functions/contact-options.php';
+require get_template_directory() . '/inc/customizer/functions/woo-options.php';
 require get_template_directory() . '/inc/customizer/functions/footer-options.php';
+
 }
 add_action( 'customize_register', 'gorg_customize_register' );
 

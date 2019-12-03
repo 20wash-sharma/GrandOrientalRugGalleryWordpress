@@ -34,11 +34,6 @@ get_header( 'shop' ); ?>
     </div>
 </section>
 <!-- END SECTION BANNER --> 
-<div class="shop_area section-ptb-xl bg-cat--1">
-<div class="container">
-	<div class="row">
-		<div class="col-md-9">
-
 <?php
 
 /**
@@ -48,7 +43,7 @@ get_header( 'shop' ); ?>
  * @hooked woocommerce_breadcrumb - 20
  * @hooked WC_Structured_Data::generate_website_data() - 30
  */
-//do_action( 'woocommerce_before_main_content' );
+do_action( 'woocommerce_before_main_content' );
 
 ?>
 <?php
@@ -109,9 +104,6 @@ do_action( 'woocommerce_after_main_content' );
  *
  * @hooked woocommerce_get_sidebar - 10
  */
- ?>
-<div class="col-md-3">
-<?php do_action( 'woocommerce_sidebar' );?>
-</div>
-</div> </div></div>
-<?php get_footer( 'shop' );
+ do_action( 'woocommerce_sidebar' );
+
+get_footer( 'shop' );

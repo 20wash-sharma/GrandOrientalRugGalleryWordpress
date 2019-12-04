@@ -146,6 +146,7 @@ p.demo_store a,
   top: 32px;
 }
 
+
 /**
  * Utility classes
  */
@@ -181,14 +182,6 @@ p.demo_store a,
 .gorg-site-header-cart .gorg-shopping-cart-icon {
   display: initial;
   vertical-align: middle;
-}
-
-.woocommerce .gorg-site-header-cart .gorg-shopping-cart-icon:before,
-.gorg-site-header-cart .gorg-shopping-cart-icon:before {
-  content: "\e854";
-  font-family: 'Astra';
-  font-size: 18px;
-  font-size: 1.2857rem;
 }
 
 .woocommerce .gorg-site-header-cart .gorg-site-header-cart-data .widget_shopping_cart_content > ul,
@@ -694,6 +687,7 @@ p.demo_store a,
 
 .woocommerce div.product .product_title {
   margin: 0 0 0.5em 0;
+  font-weight: bold;
 }
 
 .woocommerce div.product .product_meta {
@@ -1464,17 +1458,20 @@ p.demo_store a,
   position: relative;
   text-decoration: none;
   overflow: visible;
-  padding: 0.5em 0.75em;
+  padding: 10px 30px;
   font-weight: 700;
-  border-radius: 3px;
+  border-radius: 40px;
   left: auto;
-  color: #515151;
-  background-color: #ebe9eb;
-  border: 0;
+  color: #333;
+  background-color: transparent;
+  border: 2px solid #333;
   display: inline-block;
   background-image: none;
   box-shadow: none;
   text-shadow: none;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.5s ease-in-out;
 }
 
 .woocommerce a.button.loading,
@@ -1514,10 +1511,10 @@ p.demo_store a,
 .woocommerce button.button:hover,
 .woocommerce input.button:hover,
 .woocommerce #respond input#submit:hover {
-  background-color: #dad8da;
   text-decoration: none;
   background-image: none;
-  color: #515151;
+  background-color: #333;
+    color: #fff;
 }
 
 .woocommerce a.button.alt,
@@ -2673,8 +2670,11 @@ p.demo_store a,
 .woocommerce .related.products h2,
 .woocommerce .woocommerce-tabs h2 {
   font-size: 1.5rem;
+ 
 }
-
+.woocommerce .related.products> h2{
+  font-weight: bold;
+}
 .woocommerce .comment-reply-title {
   font-size: 1.5rem;
   line-height: 1.3;

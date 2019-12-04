@@ -137,8 +137,9 @@ if ( ! function_exists( 'gorg_woocommerce_product_columns_wrapper' ) ) {
 }
 add_action( 'woocommerce_before_shop_loop', 'gorg_woocommerce_product_columns_wrapper', 40 );
 
-
-function store_sidebar_layout() {
+// Store Sidebar Layout.
+add_filter( 'gorg_page_layout', 'store_sidebar_layout' );
+function store_sidebar_layout($sidebar_layout ) {
 
 	if ( is_shop() || is_product_taxonomy() || is_checkout() || is_cart() || is_account_page() ) {
 
@@ -194,7 +195,7 @@ function gorg_woocommerce_wrapper_before() { ?>
         <div class="row">
             <?php
 		
-		$site_sidebar = store_sidebar_layout();
+		$site_sidebar = gorg_page_layout();
 		if($site_sidebar =='default'){
 			get_sidebar();
 		}
@@ -227,7 +228,7 @@ if ( ! function_exists( 'gorg_woocommerce_wrapper_after' ) ) {
 		?>
             </div>
             <?php
-$site_sidebar = store_sidebar_layout();
+$site_sidebar = gorg_page_layout();
 if ( 'right-sidebar' == $site_sidebar ) {
 	get_sidebar();
 }

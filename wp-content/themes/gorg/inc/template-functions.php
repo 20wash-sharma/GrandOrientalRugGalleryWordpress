@@ -23,6 +23,34 @@ function replace_store_sidebar($sidebar) {
 	return $sidebar;
 }
 
+/**
+ * Display Sidebars
+ */
+if ( ! function_exists( 'gorg_get_sidebar' ) ) {
+	/**
+	 * Get Sidebar
+	 *
+	 * @since 1.0.1.1
+	 * @param  string $sidebar_id   Sidebar Id.
+	 * @return void
+	 */
+	function gorg_get_sidebar( $sidebar_id ) {
+		if ( is_active_sidebar( $sidebar_id ) ) {
+			dynamic_sidebar( $sidebar_id );
+		} elseif ( current_user_can( 'edit_theme_options' ) ) {
+			?>
+			<div class="widget gorg-no-widget-row">
+				<p class='no-widget-text'>
+					<a href='<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>'>
+						<?php esc_html_e( 'Add Widget', 'gorg' ); ?>
+					</a>
+				</p>
+			</div>
+			<?php
+		}
+	}
+}
+
 function gorg_body_classes( $classes ) {
 	$gorg_settings = gorg_get_theme_options();
 	$sidebar_name = $gorg_settings['gorg_shop_page_sidebar'];
@@ -62,6 +90,49 @@ function gorg_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'gorg_pingback_header' );
+
+
+/**
+ * Site Sidebar
+ */
+if ( ! function_exists( 'gorg_page_layout' ) ) {
+
+	/**
+	 * Site Sidebar
+	 *
+	 * Default 'right sidebar' for overall site.
+	 */
+	function gorg_page_layout() {
+
+		if ( is_singular() ) {
+
+			// If post meta value is empty,
+			// Then get the POST_TYPE sidebar.
+			// $layout = astra_get_option_meta( 'site-sidebar-layout', '', true );
+
+			if ( empty( $layout ) ) {
+
+				$post_type = get_post_type();
+				$gorg_settings = gorg_get_theme_options();
+				$single_product_sidebar = $gorg_settings['gorg_single_product_page_sidebar'];
+
+				if ( 'post' === $post_type || 'page' === $post_type || 'product' === $post_type ) {
+					$layout = $single_product_sidebar;
+				}
+
+				if ( 'default' == $layout || empty( $layout ) ) {
+
+					// Get the global sidebar value.
+					// NOTE: Here not used `true` in the below function call.
+					$layout = $gorg_settings['gorg_single_product_page_sidebar'];
+				}
+			}
+		} 
+
+		return apply_filters( 'gorg_page_layout', $layout );
+	}
+}
+
 
 
 

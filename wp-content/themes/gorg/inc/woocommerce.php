@@ -29,8 +29,8 @@ add_action( 'after_setup_theme', 'gorg_woocommerce_setup' );
  * @return void
  */
 function gorg_woocommerce_scripts() {
-	wp_enqueue_style( 'gorg-woocommerce-style', get_template_directory_uri() . '/woocommerce.css' );
-
+	// wp_enqueue_style( 'gorg-woocommerce-style', get_template_directory_uri() . '/woocommerce.css' );
+	wp_enqueue_style('dashicons');
 	$font_path   = WC()->plugin_url() . '/assets/fonts/';
 	$inline_font = '@font-face {
 			font-family: "star";
@@ -76,7 +76,9 @@ add_filter( 'body_class', 'gorg_woocommerce_active_body_class' );
  * @return integer number of products.
  */
 function gorg_woocommerce_products_per_page() {
-	return 12;
+	$gorg_settings = gorg_get_theme_options();
+	$products_per_page = $gorg_settings['products_per_page'];
+	return $products_per_page;
 }
 add_filter( 'loop_shop_per_page', 'gorg_woocommerce_products_per_page' );
 
@@ -109,9 +111,11 @@ add_filter( 'loop_shop_columns', 'gorg_woocommerce_loop_columns' );
  * @return array $args related products args.
  */
 function gorg_woocommerce_related_products_args( $args ) {
+	$gorg_settings = gorg_get_theme_options();
+	$shop_grid = $gorg_settings['gorg_shop_column'];
 	$defaults = array(
-		'posts_per_page' => 3,
-		'columns'        => 3,
+		'posts_per_page' =>$shop_grid ,
+		'columns'        => $shop_grid,
 	);
 
 	$args = wp_parse_args( $defaults, $args );
@@ -188,7 +192,7 @@ function gorg_woocommerce_wrapper_before() { ?>
 <section>
     <div class="container">
         <div class="row">
-			<?php
+            <?php
 		
 		$site_sidebar = store_sidebar_layout();
 		if($site_sidebar =='default'){
@@ -198,15 +202,15 @@ function gorg_woocommerce_wrapper_before() { ?>
 				get_sidebar();
 			}
 			?>
-			<?php if('no-sidebar' == $site_sidebar){
+            <?php if('no-sidebar' == $site_sidebar){
 				$content_class = 'col-lg-12 col-md-12';
 			} 
 			else {
 				$content_class = 'col-lg-9 col-md-8';
 			}
 			?>
-			<div class="<?php echo $content_class;?>">
-            <?php
+            <div class="<?php echo $content_class;?>">
+                <?php
 }
 }
 add_action( 'woocommerce_before_main_content', 'gorg_woocommerce_wrapper_before' );
@@ -221,17 +225,17 @@ if ( ! function_exists( 'gorg_woocommerce_wrapper_after' ) ) {
 	 */
 	function gorg_woocommerce_wrapper_after() {
 		?>
-			</div>
-<?php
+            </div>
+            <?php
 $site_sidebar = store_sidebar_layout();
 if ( 'right-sidebar' == $site_sidebar ) {
 	get_sidebar();
 }
 ?>
- </div> <!-- row -->
+        </div> <!-- row -->
     </div> <!-- container -->
-	</section> <!-- section -->
-	<?php
+</section> <!-- section -->
+<?php
 }
 }
 add_action( 'woocommerce_after_main_content', 'gorg_woocommerce_wrapper_after' );
@@ -338,7 +342,23 @@ return $price;
 function gorg_woo_scripts() {
 //WOOCommerce Style
 wp_enqueue_style('woo-smallscreen-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-smallscreen.css', array(),'', 'all');
-wp_enqueue_style('woo-css', get_template_directory_uri().'/assets/woocommerce/woocommerce.css', array(),'', 'all');
 wp_enqueue_style('woo-layout-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-layout.css', array(),'', 'all');
+wp_enqueue_style('woo-css', get_template_directory_uri().'/assets/woocommerce/woocommerce.css', array(),'', 'all');
 }
 add_action( 'wp_enqueue_scripts', 'gorg_woo_scripts' );
+
+
+add_filter( 'post_class','single_product_class');
+function single_product_class($classes) {
+
+	if ( is_product() && 0 == get_post_meta( get_the_ID(), '_wc_review_count', true ) ) {
+		$classes[] = 'gorg-woo-product-no-review';
+	}
+	return $classes;
+}
+
+add_filter( 'comment_form_default_fields', 'roshan_comment_form_hide_cookies_consent' );
+function roshan_comment_form_hide_cookies_consent( $fields ) {
+	unset( $fields['cookies'] );
+	return $fields;
+}

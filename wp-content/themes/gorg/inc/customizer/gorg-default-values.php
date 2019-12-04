@@ -70,6 +70,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
             'contact_work' => '',
             'contact_email' => '',
             'contact_map_iframe' =>'',
+            //product page
+            'products_per_page' =>12,
 
 			);
 		return apply_filters( 'gorg_get_option_defaults_values', $gorg_default_values );

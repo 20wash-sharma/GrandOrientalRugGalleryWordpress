@@ -40,6 +40,15 @@ function gorg_body_classes( $classes ) {
 	$page_layout = 'gorg-' .$sidebar_name;
 	$classes[]   = esc_attr( $page_layout );
 	}
+	if ( is_shop() || is_product_taxonomy() ) {
+		$shop_grid = $gorg_settings['gorg_shop_column'];
+		$classes[] = 'columns-' . $shop_grid;
+		$classes[] = 'tablet-columns-' . $shop_grid;
+		$classes[] = 'mobile-columns-' . $shop_grid;
+
+		$classes[] = 'gorg-woo-shop-archive';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'gorg_body_classes' );

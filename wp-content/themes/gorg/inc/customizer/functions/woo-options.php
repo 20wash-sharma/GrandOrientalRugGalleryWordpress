@@ -65,7 +65,7 @@ $wp_customize->add_control( 'gorg_theme_options[gorg_single_product_page_sidebar
   'type' => 'select',
   'section' => 'woo_section',
   'label' => __( 'Single Product Page Sidebar' ),
-  'description' => __(),
+  'description' => __(''),
   'choices' => array(
       'default'       => __( 'Default', 'gorg' ),
       'no-sidebar'    => __( 'No Sidebar', 'gorg' ),

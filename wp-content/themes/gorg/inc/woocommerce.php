@@ -363,3 +363,11 @@ function roshan_comment_form_hide_cookies_consent( $fields ) {
 	unset( $fields['cookies'] );
 	return $fields;
 }
+function filter_clearfix(){
+	echo '<div class="clearfix"></div>';
+	}
+	add_action('woocommerce_before_shop_loop','filter_clearfix', 30);
+function roshan_note_filter(){
+echo do_shortcode('[wcpf_filter_notes]');
+}
+add_action('woocommerce_before_shop_loop','roshan_note_filter', 35);

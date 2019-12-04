@@ -42,7 +42,7 @@ Thumbs.db
 node_modules/
 bower_components/
 assets/components/
-build/
+#build/
 dist/
 packaged/
 wpcs/

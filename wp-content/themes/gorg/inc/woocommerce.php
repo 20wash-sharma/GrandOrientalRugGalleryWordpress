@@ -196,8 +196,14 @@ function gorg_woocommerce_wrapper_before() { ?>
 				get_sidebar();
 			}
 			?>
-
-			<div class="col-lg-9 col-md-8">
+			<?php if('no-sidebar' == $site_sidebar){
+				$content_class = 'col-lg-12 col-md-12';
+			} 
+			else {
+				$content_class = 'col-lg-9 col-md-8';
+			}
+			?>
+			<div class="<?php echo $content_class;?>">
             <?php
 }
 }

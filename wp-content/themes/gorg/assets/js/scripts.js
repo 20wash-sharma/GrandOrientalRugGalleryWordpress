@@ -378,55 +378,28 @@
 	});
 
 	/*===================================*
-	06. PORTFOLIO JS
+	06. gallery JS
 	*===================================*/
-	$(window).on("load", function () {
-		var $portfolio_selectors = $('.portfolio_container');
-		$portfolio_selectors.ready(function () {
-			$portfolio_selectors.isotope({
-				layoutMode: 'masonry',
-				itemSelector: '.portfolio-item',
-				percentPosition: true,
-				masonry: {
-					columnWidth: '.grid-sizer'
-				}
-			});
-			$portfolio_selectors.isotope();
-		});
+	var updateMasonry = function () {
+		$('.tab-pane.active').masonry({
+			itemSelector: '.portfolio-item',
+		})
+	}
 
-		var $portfolio_filter = $('.portfolio_filter > li > a');
-		$portfolio_filter.on('click', function () {
-			$portfolio_filter.removeClass('current');
-			$(this).addClass('current');
-			var selector = $(this).attr('data-filter');
-			//$portfolio_selectors.find('.portfolio-item').removeClass('animated').css("visibility", ""); // avoid problem to filter after sorting
-			$portfolio_selectors.find('.portfolio-item').each(function () {
-				/* remove perticular element from WOW array when you don't want animation on element after DOM lead */
-				// abc.removeBox(this);
-				$(this).css("-webkit-animation", "none");
-				$(this).css("-moz-animation", "none");
-				$(this).css("-ms-animation", "none");
-				$(this).css("animation", "none");
-			});
-			$portfolio_selectors.isotope({ filter: selector });
-			return false;
-		});
-
-		$('.portfolio_filter').change(function () {
-			$portfolio_selectors.isotope({
-				filter: this.value
-			});
-		});
-
-		$(window).resize(function () {
-			$portfolio_selectors.ready(function () {
-				setTimeout(function () {
-					$portfolio_selectors.find('.portfolio-item').removeClass('animation').removeClass('animated'); // avoid problem to filter after window resize
-					$portfolio_selectors.isotope('layout');
-				}, 300);
-			});
-		});
-	});
+	$('a[data-toggle="tab"]').on('shown.bs.tab', updateMasonry);
+	$(window).on('resize load', updateMasonry)
+	// $(window).on("load", function () {
+	// 	var $portfolio_selectors = $('.portfolio_container');
+	// 	$portfolio_selectors.ready(function () {
+	// 		$portfolio_selectors.masonry({
+	// 			// options
+	// 			itemSelector: '.portfolio-item',
+	// 			horizontalOrder: true,
+	// 			columnWidth: '.grid-sizer',
+	// 			percentPosition: true
+	// 		});
+	// 	});
+	// });
 
 	$(window).on("load", function () {
 		var $blog_selectors = $('.blog_container');

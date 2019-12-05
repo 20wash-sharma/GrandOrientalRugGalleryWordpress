@@ -45,8 +45,8 @@ get_header();?>
 						while($gallery_query->have_posts()):$gallery_query->the_post();
 						$gallery_images = get_field('add_gallery_images');
 						?>
-                      <div class="tab-pane fade <?php if($counter== 0): echo 'active show'; endif;?>" id="tab<?php echo get_the_ID();?>" role="tabpanel" aria-labelledby="<?php echo $post->post_name;?>">
-					  	<ul class="portfolio_container work_col4 gutter_small image_gallery gallery_hover_style2">
+                      <div class="tab-pane fade clearfix <?php if($counter== 0): echo 'active show'; endif;?>" id="tab<?php echo get_the_ID();?>" role="tabpanel" aria-labelledby="<?php echo $post->post_name;?>">
+					  	<ul class="portfolio_container clearfix work_col4 gutter_small image_gallery gallery_hover_style2">
 							<li class="grid-sizer"></li> 
 							<?php 
 							if($gallery_images):

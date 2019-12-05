@@ -142,7 +142,7 @@
 .woocommerce #content div.product div.images, .woocommerce-page div.product div.images,
 .woocommerce-page #content div.product div.images {
   float: left;
-  width: 48%;
+  width: 38%;
 }
 
 .woocommerce div.product div.thumbnails,
@@ -217,7 +217,7 @@
 .woocommerce #content div.product div.summary, .woocommerce-page div.product div.summary,
 .woocommerce-page #content div.product div.summary {
   float: right;
-  width: 48%;
+  width: 58%;
   clear: none;
 }
 

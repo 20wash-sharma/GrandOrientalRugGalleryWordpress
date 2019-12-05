@@ -387,19 +387,14 @@
 	}
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', updateMasonry);
-	$(window).on('resize load', updateMasonry)
-	// $(window).on("load", function () {
-	// 	var $portfolio_selectors = $('.portfolio_container');
-	// 	$portfolio_selectors.ready(function () {
-	// 		$portfolio_selectors.masonry({
-	// 			// options
-	// 			itemSelector: '.portfolio-item',
-	// 			horizontalOrder: true,
-	// 			columnWidth: '.grid-sizer',
-	// 			percentPosition: true
-	// 		});
-	// 	});
-	// });
+	$(window).on('resize load', updateMasonry);
+
+	var updateMasonrysingle = function () {
+		$('.single-gallery').masonry({
+			itemSelector: '.portfolio-item',
+		})
+	}
+	$(window).on('resize load', updateMasonrysingle);
 
 	$(window).on("load", function () {
 		var $blog_selectors = $('.blog_container');

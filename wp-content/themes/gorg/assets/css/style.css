@@ -746,7 +746,6 @@ button:focus {
 .form-control:focus, .custom-file-input:focus~.custom-file-label {
 	color: #000;
 	box-shadow: none;
-	height: 45px;
 }
 
 select.not_chosen, select option:first-child, select.not_chosen:focus, select.form-control.not_chosen, select.form-control option:first-child, select.not_chosen.form-control:focus {

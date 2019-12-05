@@ -371,3 +371,14 @@ function roshan_note_filter(){
 echo do_shortcode('[wcpf_filter_notes]');
 }
 add_action('woocommerce_before_shop_loop','roshan_note_filter', 35);
+
+// Update WooCommerce Flexslider options
+
+add_filter( 'woocommerce_single_product_carousel_options', 'roshan_update_woo_flexslider_options' );
+
+function roshan_update_woo_flexslider_options( $options ) {
+
+    $options['directionNav'] = true;
+
+    return $options;
+}

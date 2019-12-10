@@ -4135,14 +4135,14 @@ header.light_skin.nav-fixed .social_icons li a:hover {
 	display: none;
 }
 
-.loading {
+/* .loading {
 	background: url(../images/loading40fe.gif?hg) center center no-repeat;
 	font-size: 0 !important;
 	background-color: #000 !important;
 	border: 0;
 	height: 48px;
 	width: 50px;
-}
+} */
 
 #load-more {
 	transition: none;
@@ -7396,4 +7396,54 @@ margin:0;
 	background-color: #d4edda;
 	border-radius: 3px;
 	margin-top: 10px;
+}
+.product_info{
+	margin-top: 15px;
+}
+/*enquiry  button*/
+.quote-form button.wdm_enquiry{
+	position: relative;
+	background-color: transparent;
+    border: 1px solid #333 !important;
+    color: #333;
+	padding: 7px 15px !important;
+	cursor: pointer;
+	margin:0px !important;
+    text-transform: capitalize;
+	transition: all 0.2s ease-in-out;
+	font-size: .875rem;
+	line-height: 1.3 !important;
+	display: inline-block;
+    font-weight: 400 !important;
+	text-align: center;
+	border-radius: 40px;
+    vertical-align: middle;
+}
+.quote-form button.wdm_enquiry.added::after {
+    font-family: WooCommerce;
+    content: "\e017";
+    margin-left: .53em;
+	vertical-align: bottom;
+	transition: all 0.2s ease-in-out;
+}
+.quote-form button.wdm_enquiry.loading::after{
+    font-family: WooCommerce;
+    content: "\e01c";
+    vertical-align: top;
+    font-weight: 400;
+    position: absolute;
+    top: 7px !important;
+    right: 1em;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+.quote-form button.wdm_enquiry.loading {
+    padding-right: 2.618em !important;
+}
+.quote-form button.wdm_enquiry:hover{
+	background-color: #333;
+	color: #fff !important;
+	text-decoration: none;
+	box-shadow: none;
+    outline: medium none;
 }

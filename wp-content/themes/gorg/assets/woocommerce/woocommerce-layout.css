@@ -305,6 +305,7 @@
   position: relative;
   width: 22.05%;
   margin-left: 0;
+  text-align: center;
 }
 
 .woocommerce ul.products.columns-1 li.product, .woocommerce-page ul.products.columns-1 li.product {

@@ -56,7 +56,8 @@ $featured_limit = $gorg_settings['featured_limit'];
                                         <div class="product_title">
                                             <h5><a href="<?php the_permalink(); ?>"><?php the_title();?></a></h5>
                                         </div>
-                                    </div>   
+                                    </div> 
+                                    <?php do_action( 'woocommerce_after_shop_loop_item' );?>  
                                 </div>
                             </div>
                         </div>

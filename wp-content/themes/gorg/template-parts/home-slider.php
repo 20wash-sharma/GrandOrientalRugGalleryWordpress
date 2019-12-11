@@ -9,7 +9,7 @@
             $show_static_content= $gorg_settings['show_static_content'];
 			$static_content = $gorg_settings['slider_static_content'];
 			$static_title = $gorg_settings['slider_static_title'];
-			$counter = 1;
+			$hs_counter = 1;
 			$slider_args = array(
 				'post_type' =>'home_slider',
 				'posts_per_page' =>$show_count
@@ -20,7 +20,7 @@
 				$slider_text = get_field('slider_text');
 				$slider_readmore_link = get_field('read_more_link');
 				?>
-            <div class="carousel-item <?php if($counter == 1): echo 'active'; endif;?> background_bg overlay_bg" data-img-src="<?php echo get_the_post_thumbnail_url();?>">
+            <div class="carousel-item <?php if($hs_counter == 1): echo 'active'; endif;?> background_bg overlay_bg" data-img-src="<?php echo get_the_post_thumbnail_url();?>">
             <?php 
 				if($show_static_content == 0):
 				?>
@@ -41,7 +41,7 @@
                 </div>
                 <?php endif;?>
             </div>
-            <?php $counter++; endwhile; endif; wp_reset_postdata();?>
+            <?php $hs_counter++; endwhile; endif; wp_reset_postdata();?>
         </div>
         <?php 
 	if($show_static_content == 1):

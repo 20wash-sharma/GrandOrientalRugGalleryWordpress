@@ -348,8 +348,8 @@ return $price;
 }
 function gorg_woo_scripts() {
 //WOOCommerce Style
-wp_enqueue_style('woo-smallscreen-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-smallscreen.css', array(),'', 'all');
 wp_enqueue_style('woo-layout-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-layout.css', array(),'', 'all');
+wp_enqueue_style('woo-smallscreen-css', get_template_directory_uri().'/assets/woocommerce/woocommerce-smallscreen.css', array(),'', 'only screen and (max-width: 768px)');
 wp_enqueue_style('woo-css', get_template_directory_uri().'/assets/woocommerce/woocommerce.css', array(),'', 'all');
 }
 add_action( 'wp_enqueue_scripts', 'gorg_woo_scripts' );

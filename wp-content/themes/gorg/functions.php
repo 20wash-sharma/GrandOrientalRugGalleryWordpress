@@ -176,6 +176,7 @@ add_action( 'widgets_init', 'gorg_widgets_init' );
  * Enqueue scripts and styles.
  */
 function gorg_scripts() {
+	
 	wp_enqueue_style( 'gorg-style', get_stylesheet_uri() );
 	wp_enqueue_style('animate-css', get_template_directory_uri().'/assets/css/animate.css', array(),'', 'all');
 	wp_enqueue_style('bootstrap-css', get_template_directory_uri().'/assets/bootstrap/css/bootstrap.min.css', array(),'', 'all');

@@ -691,7 +691,7 @@ p.demo_store a,
 }
 
 .woocommerce div.product .product_meta {
-  border-top: 1px solid #ebebeb;
+  /* border-top: 1px solid #ebebeb; */
   padding-top: 1em;
   font-size: .9em;
   margin: 0 0 0.8em;
@@ -1590,8 +1590,8 @@ p.demo_store a,
 .woocommerce button.button.alt,
 .woocommerce input.button.alt,
 .woocommerce #respond input#submit.alt {
-  background-color: #a46497;
-  color: white;
+  background-color: transparent;
+  color: #333;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -1599,7 +1599,7 @@ p.demo_store a,
 .woocommerce button.button.alt:hover,
 .woocommerce input.button.alt:hover,
 .woocommerce #respond input#submit.alt:hover {
-  background-color: #935386;
+  background-color: #333;
   color: white;
 }
 

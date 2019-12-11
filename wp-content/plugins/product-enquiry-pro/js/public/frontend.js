@@ -26,14 +26,14 @@ var err_string = '';
         placeholder = prototype.placeholder = function () {
             var $this = this;
             $this
-            .filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]')
-            .not('.placeholder')
-            .bind({
-                'focus.placeholder': clearPlaceholder,
-                'blur.placeholder': setPlaceholder
-            })
-            .data('placeholder-enabled', true)
-            .trigger('blur.placeholder');
+                .filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]')
+                .not('.placeholder')
+                .bind({
+                    'focus.placeholder': clearPlaceholder,
+                    'blur.placeholder': setPlaceholder
+                })
+                .data('placeholder-enabled', true)
+                .trigger('blur.placeholder');
             return $this;
         };
 
@@ -108,16 +108,16 @@ var err_string = '';
 
     }
 
-    jQuery(document).on('input', '.wdm-modal_textarea, #wdm-message', function() {
+    jQuery(document).on('input', '.wdm-modal_textarea, #wdm-message', function () {
         var text_max = 500;
         var text_length = jQuery(this).val().length;
         var text_remaining = text_max - text_length;
 
         jQuery(this).next('#lbl-char').find('.wdmRemainingCount').html(text_remaining);
         if (text_remaining < 50) {
-            jQuery(this).next('#lbl-char').css('color','red');
+            jQuery(this).next('#lbl-char').css('color', 'red');
         } else {
-            jQuery(this).next('#lbl-char').css('color','#43454b');
+            jQuery(this).next('#lbl-char').css('color', '#43454b');
         }
     });
 
@@ -161,23 +161,23 @@ var err_string = '';
             if (input.type == 'password') {
                 if (!$input.data('placeholder-textinput')) {
                     try {
-                        $replacement = $input.clone().attr({'type': 'text'});
+                        $replacement = $input.clone().attr({ 'type': 'text' });
                     } catch (e) {
-                        $replacement = $('<input>').attr($.extend(args(this), {'type': 'text'}));
+                        $replacement = $('<input>').attr($.extend(args(this), { 'type': 'text' }));
                     }
                     $replacement
-                    .removeAttr('name')
-                    .data({
-                        'placeholder-password': $input,
-                        'placeholder-id': id
-                    })
-                    .bind('focus.placeholder', clearPlaceholder);
+                        .removeAttr('name')
+                        .data({
+                            'placeholder-password': $input,
+                            'placeholder-id': id
+                        })
+                        .bind('focus.placeholder', clearPlaceholder);
                     $input
-                    .data({
-                        'placeholder-textinput': $replacement,
-                        'placeholder-id': id
-                    })
-                    .before($replacement);
+                        .data({
+                            'placeholder-textinput': $replacement,
+                            'placeholder-id': id
+                        })
+                        .before($replacement);
                 }
                 $input = $input.removeAttr('id').hide().prev().attr('id', id).show();
                 // Note: `$input[0] != input` now!
@@ -217,18 +217,17 @@ jQuery(document).ready(function () {
         variation_id = '';
         variation_detail = "";
 
-        if(jQuery('.variation_id').length>0 && jQuery('.variation_id').val() =='' || jQuery('.variation_id').val() == 0)
-        {
+        if (jQuery('.variation_id').length > 0 && jQuery('.variation_id').val() == '' || jQuery('.variation_id').val() == 0) {
             alert(wdm_data.select_variation);
             return;
         }
-        else if (jQuery('.variation_id').length>0) {
+        else if (jQuery('.variation_id').length > 0) {
             variation_id = jQuery('.variation_id').val();
-            jQuery('select[name^=attribute_]').each(function(ind, obj){
-                if(variation_detail = ""){
+            jQuery('select[name^=attribute_]').each(function (ind, obj) {
+                if (variation_detail = "") {
                     variation_detail = jQuery(this).val();
-                }else{
-                    variation_detail = variation_detail.concat(','+jQuery(this).val());
+                } else {
+                    variation_detail = variation_detail.concat(',' + jQuery(this).val());
                 }
             });
         }
@@ -238,18 +237,17 @@ jQuery(document).ready(function () {
         txt_remark = '#wdm_remark_' + product_id;
         remark = jQuery(txt_remark).val();
         elem = jQuery(this);
-        quantity =1;
-        if(jQuery('input[name="quantity"]').length>0)
-        {
-            quantity =jQuery('input[name="quantity"]').val();
+        quantity = 1;
+        if (jQuery('input[name="quantity"]').length > 0) {
+            quantity = jQuery('input[name="quantity"]').val();
         }
         mydatavar = {
             action: 'wdm_add_product_in_enq_cart',
             'product_id': product_id,
             'remark': remark,
-            'product_quant':quantity,
-            'variation':variation_id,
-            'security' : jQuery('#AddCartNonce').val(),
+            'product_quant': quantity,
+            'variation': variation_id,
+            'security': jQuery('#AddCartNonce').val(),
         };
         jQuery(".quoteup_registered_parameter").each(function () {
             mydatavar[jQuery(this).attr('id')] = jQuery(this).val();
@@ -258,31 +256,31 @@ jQuery(document).ready(function () {
         jQuery('#wdm-cart-count').addClass('animated infinite pulse');
 
         jQuery.post(wdm_data.ajax_admin_url, mydatavar, function (response) {
-            if(response=='SECURITY_ISSUE'){
-             jQuery('.wdmquoteup-loader').css('display', 'none');
-             jQuery('#nonce_error').css('display', 'block');
-             elem.closest('form').css('display', 'none');
+            if (response == 'SECURITY_ISSUE') {
+                jQuery('.wdmquoteup-loader').css('display', 'none');
+                jQuery('#nonce_error').css('display', 'block');
+                elem.closest('form').css('display', 'none');
 
-             return false;
-         }
+                return false;
+            }
 
-         jQuery('.wdmquoteup-loader').css('display', 'none');
-         jQuery('.wdmquoteup-success-wrap').css('display', 'block');
-         elem.closest('form').css('display', 'none');
-         jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
-         var count_val = parseInt(response);
+            jQuery('.wdmquoteup-loader').css('display', 'none');
+            jQuery('.wdmquoteup-success-wrap').css('display', 'block');
+            elem.closest('form').css('display', 'none');
+            jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
+            var count_val = parseInt(response);
 
-         var count_txt = '';
-         if(count_val > 1) {
-            count_txt = response+ ' ' + wdm_data.products_added_in_quote_cart;
-        } else {
-            count_txt = response+' ' + wdm_data.product_added_in_quote_cart;
-        }
-        jQuery('#wdm-cart-count').children('a').html('<span class="wdm-quoteupicon wdm-quoteupicon-list"></span><span class="wdm-quoteupicon-count">' + response + '</span>');
-        jQuery('#wdm-cart-count').children('a').attr('title',count_txt);
-        jQuery('#wdm-cart-count').css('display','block');
+            var count_txt = '';
+            if (count_val > 1) {
+                count_txt = response + ' ' + wdm_data.products_added_in_quote_cart;
+            } else {
+                count_txt = response + ' ' + wdm_data.product_added_in_quote_cart;
+            }
+            jQuery('#wdm-cart-count').children('a').html('<span class="wdm-quoteupicon wdm-quoteupicon-list"></span><span class="wdm-quoteupicon-count">' + response + '</span>');
+            jQuery('#wdm-cart-count').children('a').attr('title', count_txt);
+            jQuery('#wdm-cart-count').css('display', 'block');
 
-    });
+        });
         return false;
 
     });
@@ -300,311 +298,298 @@ jQuery(document).ready(function () {
         jQuery("#txtemail").attr("placeholder", wdm_data.email_place);
     });
 
-// This function is for adding the products to the enquiry cart if MPE
-jQuery("body").on("click", '[id^="wdm-quoteup-trigger-"]', function (event) {
-    var selector = jQuery(this);
-    if(wdm_data.MPE=='yes'){
-      if(selector.hasClass('added')){
-          return;
-      }
-
-      id = jQuery(this).attr('id');
-      number = id.match("wdm-quoteup-trigger-(.*)");
-      product_id = number[1];
-
-    // This is for variable product support
-    variation_id = "";
-    var variation_detail = [];
-    var $variation_id_obj = '';
-    $variation_id_obj = jQuery(wdm_data.variation_id_selector);
-    // If variation Id element is not found.
-    if ($variation_id_obj.length == 0) {
-        $variation_id_obj = selector.closest('.summary.entry-summary').find('.variation_id:first-child');
-    }
-  
-    if($variation_id_obj.length > 0 && $variation_id_obj.val() == '' || $variation_id_obj.val() == 0)
-    {
-        alert(wdm_data.select_variation);
-        return;
-    }
-    else if ($variation_id_obj.length>0) {
-        variation_id = $variation_id_obj.val();
-        var variationSelectorElement = pepGetVariationSelectorElement();
-        variationSelectorElement.find('select[name^=attribute_]').each(function(ind, obj) {
-            name = jQuery(this).attr('name');
-            name = name.substring(10);
-            variation = name + " : " + jQuery(this).val();
-            variation_detail.push(variation);
-        });
-    }
-//ENd of code for variable product support
-
-txt_remark = '#wdm_remark_' + product_id;
-remark = jQuery(txt_remark).val();
-quantity =1;
-if(jQuery('input[name="quantity"]').length>0)
-{
-    quantity =jQuery('input[name="quantity"]').val();
-}
-
-var data = {
-    action: 'wdm_trigger_add_to_enq_cart',
-    'product_id': product_id,
-    'remark': remark,
-    'product_quant':quantity,
-    'variation':variation_id,
-    'variation_detail' : variation_detail,
-    'author_email' : jQuery(this).next('#author_email').val(),
-    'language' : jQuery('#wdmLocale').val(),
-    'security' : jQuery('#AddCartNonce').val(),
-};
-
-selector.addClass('loading');
-if (jQuery(event.target).is('a')){
-    selector.after('<img class=\'loading-image\' src="' + wdm_data.spinner_img_url + '"/>');
-    selector.prop('disabled', true);
-    event.preventDefault();
-}
-jQuery('[name^= attribute_]').change(function()
-{
- selector.html(wdm_data.view_quote_cart_link_with_text).removeClass('added'); 
- selector.text(wdm_data.buttonText);
- selector.removeAttr("onclick");
-});
-jQuery.post(wdm_data.ajax_admin_url, data, function (response) {
-    selector.html(wdm_data.view_quote_cart_link_with_text).addClass('added').removeClass('loading');
-        //If loading image is manually added, remove it after adding is succesful
-        if(selector.next().hasClass('loading-image')){
-         selector.next().remove();
-         selector.removeProp('disabled');
-     }
-        //Adding onclick link because browsers other than Chrome don't support redirecting to link on clicking the button
-        selector.attr('onclick', "location.href='" + wdm_data.view_quote_cart_link + "'");
-
-        jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
-        var intRegex = /^\d+$/;
-        if(!intRegex.test(response)){
-            return;
-        }
-        var count_val = parseInt(response);
-        var count_txt = '';
-        if(count_val > 1) {
-            count_txt = response+ ' ' + wdm_data.products_added_in_quote_cart;
-        } else {
-            count_txt = response+' ' + wdm_data.product_added_in_quote_cart;
-        }
-        jQuery('#wdm-cart-count').children('a').html('<span class="wdm-quoteupicon wdm-quoteupicon-list"></span><span class="wdm-quoteupicon-count">' + response + '</span>');
-        jQuery('#wdm-cart-count').children('a').attr('title',count_txt);
-        jQuery('#wdm-cart-count').css('display','block');
-    });
-}else{
-     //THis is for variable product support
-    // var $variation_id_obj = selector.closest('.summary.entry-summary').children('form').children('input.variation_id');
-
-    var $variation_id_obj = '';
-    $variation_id_obj = jQuery(wdm_data.variation_id_selector);
-    // If variation Id element is not found.
-    if ($variation_id_obj.length == 0) {
-        $variation_id_obj = selector.closest('.summary.entry-summary').find('.variation_id:first-child');
-    }
-
-    
-    if($variation_id_obj.length > 0 && $variation_id_obj.val() == '' || $variation_id_obj.val() == 0)
-    {
-        alert(wdm_data.select_variation);
-        return;
-    }
-//ENd of code for variable product support
-
-event.preventDefault();
-
-id = jQuery(this).attr('id');
-number = id.match("wdm-quoteup-trigger-(.*)");
-product_id = number[1];
-modal = jQuery('#wdm-quoteup-modal-'+product_id);
-header = modal.find('.wdm-modal-header');
-form = modal.find('.wdm-modal-body form');
-msg = jQuery('.wdm-msg');
-var number = id.match("wdm-quoteup-trigger-(.*)");
-if (header.parent().is("a")) {
-    header.unwrap();
-}
-if (form.parent().is("a")) {
-    form.unwrap();
-}
-if (msg.parent().is("a")) {
-    msg.unwrap();
-}
-jQuery('.wdm-quoteup-form').css('display', 'block');
-modal_id = "#wdm-quoteup-modal-" + number[1];
-formId = jQuery( modal_id ).find('form').attr('id');
-if(formId == 'frm_enquiry') {
-    jQuery( modal_id ).appendTo("#wdm-modal-clone");
-    var oldModalId = jQuery('#wdm-modal-clone').children().attr('id');
-    // jQuery('#wdm-modal-clone').children().attr('id', 'clone-'+oldModalId);
-    jQuery(modal_id).modal('show');
-} else {
-    jQuery( modal_id ).appendTo("#wdm-modal-clone");
-    jQuery('.wdm-quoteup-form').css('display', 'block');
-    modal_id = "#wdm-quoteup-modal-" + number[1];
-    jQuery(modal_id).modal('show');
-}
-
-jQuery('.wdm-modal-footer').css('display', 'block');
-jQuery('#error').css('display', 'none');
-jQuery('#nonce_error').css('display', 'none');
-jQuery('.wdmquoteup-success-wrap').css('display', 'none');
-}
-
-});
-
-jQuery('body').on('shown.bs.wdm-modal','.wdm-modal',function(e) {
-    id = jQuery(this).attr('id');
-    number = id.match("wdm-quoteup-modal-(.*)");
-    product_id = number[1];
-    jQuery('#wdm-quoteup-trigger-'+product_id).removeClass('loading');
-    jQuery('#wdm-cart-count').addClass('animated infinite pulse');
-    jQuery(this).find("input[type!='hidden']").first().focus();
-});
-
-jQuery('body').on('hidden.bs.wdm-modal','.wdm-modal',function(e) {
-    jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
-    // formId = jQuery("#wdm-modal-clone").find('form').attr('id');
-    /*if(formId == 'frm_enquiry') {
-        jQuery('#wdm-modal-clone').empty();        
-    }*/
-});
-
-/**
-*Function called on click of the Send button on the Enquiry form.
-* Each field is validated on the client side and appropriate error message are displayed if required.
-* The google recaptcha is verified.
-* If all checks are passed there is an ajax call with all the parameters sent to the Server side.
-* Ajax call is made to submit the enquiry.
-* If the ajax call fails error is shown.
-*/
-
-jQuery("body").on('click', ' [id^="btnSend_"]', function (e) {
-    e.preventDefault();
-    error_val = 0;
-    err_string = '';
-    var $this = jQuery(this);
-    var $form_data;    
-    id_send = $this.attr('id');
-    var id_array = id_send.match("btnSend_(.*)");
-
-    p_name = jQuery('#product_name_' + id_array[1]).val();
-
-    var message = jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtmsg').val();
-    var phone = jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtphone').val();
-    var fields = wdm_data.fields;
-    var error_field;
-//This is for variable product support
-variation_id = '';
-variation_detail = [];
-var $variation_id_obj = '';
-$variation_id_obj = jQuery(wdm_data.variation_id_selector);
-// If variation Id element is not found.
-if($variation_id_obj.length == 0) {
-    $variation_id_obj = jQuery('#wdm-quoteup-trigger-'+id_array[1]).closest('.summary.entry-summary').find('.variation_id:first-child');
-}
-
-if ($variation_id_obj.length>0) {
-    variation_id = $variation_id_obj.val();
-    jQuery('select[name^=attribute_]').each(function(ind, obj){
-        name = jQuery(this).attr('name');
-        name = name.substring(10);
-        variation = name + " : " + jQuery(this).val();
-        variation_detail.push(variation);
-    });
-}
-//End of variable product code
-nm_regex = /^[a-zA-Z ]+$/;
-var enquiry_field;
-
-if (fields.length > 0) {
-    error_field = jQuery(this).closest('.form_input').siblings('.form-errors-wrap');
-    error_field.css( 'display', 'none' );
-    jQuery('.error-list-item').remove();
-    jQuery( '.wdm-error' ).removeClass('wdm-error');
-    for (i = 0; i < fields.length; i++) {
-
-        if('txtdate' == fields[i].id)
-        {
-            enquiry_field = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('input[id^=' + fields[i].id + ']');
-        }
-        else
-        {
-            enquiry_field = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id);
-        }
-
-        var temp = enquiry_field.val();
-
-        var required = fields[i].required;
-        if (fields[i].validation !== "") {
-            var validation = new RegExp(fields[i].validation);
-        }
-
-        var message = fields[i].validation_message;
-        var flag = 0;
-        if (required == 'yes') {
-
-            if (fields[i].type == "file")
-            {
-
-                var attachedFiles = enquiry_field.prop('files');
-
-                if (attachedFiles.length < 1 || attachedFiles.length > 10) {
-                    enquiry_field.addClass('wdm-error');
-                    flag = 1;
-                    error_val = 1;
-                    err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
-                } else {
-                    flag = 0;
-                    enquiry_field.removeClass('wdm-error');
-                }
-            }else if (fields[i].type == "text" || fields[i].type == "textarea")
-            {
-
-                if (temp == "") {
-                    enquiry_field.addClass('wdm-error');
-                    flag = 1;
-                    error_val = 1;
-                    err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
-
-
-                } else {
-                    flag = 0;
-                    enquiry_field.removeClass('wdm-error');
-                }
+    // This function is for adding the products to the enquiry cart if MPE
+    jQuery("body").on("click", '[id^="wdm-quoteup-trigger-"]', function (event) {
+        var selector = jQuery(this);
+        if (wdm_data.MPE == 'yes') {
+            if (selector.hasClass('added')) {
+                return;
             }
 
-            else if (fields[i].type == "radio")
-            {
-                $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name=" + fields[i].id + "]").each(function () {
+            id = jQuery(this).attr('id');
+            number = id.match("wdm-quoteup-trigger-(.*)");
+            product_id = number[1];
 
-                    var temp1 = jQuery(this);
-                    if (temp1.is(":checked"))
-                    {
-                        flag = 1;
-                    }
+            // This is for variable product support
+            variation_id = "";
+            var variation_detail = [];
+            var $variation_id_obj = '';
+            $variation_id_obj = jQuery(wdm_data.variation_id_selector);
+            // If variation Id element is not found.
+            if ($variation_id_obj.length == 0) {
+                $variation_id_obj = selector.closest('.summary.entry-summary').find('.variation_id:first-child');
+            }
+
+            if ($variation_id_obj.length > 0 && $variation_id_obj.val() == '' || $variation_id_obj.val() == 0) {
+                alert(wdm_data.select_variation);
+                return;
+            }
+            else if ($variation_id_obj.length > 0) {
+                variation_id = $variation_id_obj.val();
+                var variationSelectorElement = pepGetVariationSelectorElement();
+                variationSelectorElement.find('select[name^=attribute_]').each(function (ind, obj) {
+                    name = jQuery(this).attr('name');
+                    name = name.substring(10);
+                    variation = name + " : " + jQuery(this).val();
+                    variation_detail.push(variation);
                 });
+            }
+            //ENd of code for variable product support
 
-                if (flag == 0)
-                {
+            txt_remark = '#wdm_remark_' + product_id;
+            remark = jQuery(txt_remark).val();
+            quantity = 1;
+            if (jQuery('input[name="quantity"]').length > 0) {
+                quantity = jQuery('input[name="quantity"]').val();
+            }
 
-                    error_val = 1;
-                    $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:#FCC !important;");
-                    err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
-                } else
-                {
-                    $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
+            var data = {
+                action: 'wdm_trigger_add_to_enq_cart',
+                'product_id': product_id,
+                'remark': remark,
+                'product_quant': quantity,
+                'variation': variation_id,
+                'variation_detail': variation_detail,
+                'author_email': jQuery(this).next('#author_email').val(),
+                'language': jQuery('#wdmLocale').val(),
+                'security': jQuery('#AddCartNonce').val(),
+            };
+
+            selector.addClass('loading');
+            if (jQuery(event.target).is('a')) {
+                selector.after('<img class=\'loading-image\' src="' + wdm_data.spinner_img_url + '"/>');
+                selector.prop('disabled', true);
+                event.preventDefault();
+            }
+            jQuery('[name^= attribute_]').change(function () {
+                selector.html(wdm_data.view_quote_cart_link_with_text).removeClass('added');
+                selector.text(wdm_data.buttonText);
+                selector.removeAttr("onclick");
+            });
+            jQuery.post(wdm_data.ajax_admin_url, data, function (response) {
+                selector.html(wdm_data.view_quote_cart_link_with_text).addClass('added').removeClass('loading');
+                //If loading image is manually added, remove it after adding is succesful
+                if (selector.next().hasClass('loading-image')) {
+                    selector.next().remove();
+                    selector.removeProp('disabled');
                 }
+                //Adding onclick link because browsers other than Chrome don't support redirecting to link on clicking the button
+                selector.attr('onclick', "location.href='" + wdm_data.view_quote_cart_link + "'");
+
+                jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
+                var intRegex = /^\d+$/;
+                if (!intRegex.test(response)) {
+                    return;
+                }
+                var count_val = parseInt(response);
+                var count_txt = '';
+                if (count_val > 1) {
+                    count_txt = response + ' ' + wdm_data.products_added_in_quote_cart;
+                } else {
+                    count_txt = response + ' ' + wdm_data.product_added_in_quote_cart;
+                }
+                jQuery('#wdm-cart-count').children('a').html('<span class="wdm-quoteupicon wdm-quoteupicon-list"></span><span class="wdm-quoteupicon-count">' + response + '</span>');
+                jQuery('#wdm-cart-count').children('a').attr('title', count_txt);
+                jQuery('#wdm-cart-count').css('display', 'block');
+            });
+        } else {
+            //THis is for variable product support
+            // var $variation_id_obj = selector.closest('.summary.entry-summary').children('form').children('input.variation_id');
+
+            var $variation_id_obj = '';
+            $variation_id_obj = jQuery(wdm_data.variation_id_selector);
+            // If variation Id element is not found.
+            if ($variation_id_obj.length == 0) {
+                $variation_id_obj = selector.closest('.summary.entry-summary').find('.variation_id:first-child');
+            }
+
+
+            if ($variation_id_obj.length > 0 && $variation_id_obj.val() == '' || $variation_id_obj.val() == 0) {
+                alert(wdm_data.select_variation);
+                return;
+            }
+            //ENd of code for variable product support
+
+            event.preventDefault();
+
+            id = jQuery(this).attr('id');
+            number = id.match("wdm-quoteup-trigger-(.*)");
+            product_id = number[1];
+            modal = jQuery('#wdm-quoteup-modal-' + product_id);
+            header = modal.find('.wdm-modal-header');
+            form = modal.find('.wdm-modal-body form');
+            msg = jQuery('.wdm-msg');
+            var number = id.match("wdm-quoteup-trigger-(.*)");
+            if (header.parent().is("a")) {
+                header.unwrap();
+            }
+            if (form.parent().is("a")) {
+                form.unwrap();
+            }
+            if (msg.parent().is("a")) {
+                msg.unwrap();
+            }
+            jQuery('.wdm-quoteup-form').css('display', 'block');
+            modal_id = "#wdm-quoteup-modal-" + number[1];
+            formId = jQuery(modal_id).find('form').attr('id');
+            if (formId == 'frm_enquiry') {
+                jQuery(modal_id).appendTo("#wdm-modal-clone");
+                var oldModalId = jQuery('#wdm-modal-clone').children().attr('id');
+                // jQuery('#wdm-modal-clone').children().attr('id', 'clone-'+oldModalId);
+                jQuery(modal_id).modal('show');
+            } else {
+                jQuery(modal_id).appendTo("#wdm-modal-clone");
+                jQuery('.wdm-quoteup-form').css('display', 'block');
+                modal_id = "#wdm-quoteup-modal-" + number[1];
+                jQuery(modal_id).modal('show');
+            }
+
+            jQuery('.wdm-modal-footer').css('display', 'block');
+            jQuery('#error').css('display', 'none');
+            jQuery('#nonce_error').css('display', 'none');
+            jQuery('.wdmquoteup-success-wrap').css('display', 'none');
+        }
+
+    });
+
+    jQuery('body').on('shown.bs.wdm-modal', '.wdm-modal', function (e) {
+        id = jQuery(this).attr('id');
+        number = id.match("wdm-quoteup-modal-(.*)");
+        product_id = number[1];
+        jQuery('#wdm-quoteup-trigger-' + product_id).removeClass('loading');
+        jQuery('#wdm-cart-count').addClass('animated infinite pulse');
+        jQuery(this).find("input[type!='hidden']").first().focus();
+    });
+
+    jQuery('body').on('hidden.bs.wdm-modal', '.wdm-modal', function (e) {
+        jQuery('#wdm-cart-count').removeClass('animated infinite pulse');
+        // formId = jQuery("#wdm-modal-clone").find('form').attr('id');
+        /*if(formId == 'frm_enquiry') {
+            jQuery('#wdm-modal-clone').empty();        
+        }*/
+    });
+
+    /**
+    *Function called on click of the Send button on the Enquiry form.
+    * Each field is validated on the client side and appropriate error message are displayed if required.
+    * The google recaptcha is verified.
+    * If all checks are passed there is an ajax call with all the parameters sent to the Server side.
+    * Ajax call is made to submit the enquiry.
+    * If the ajax call fails error is shown.
+    */
+
+    jQuery("body").on('click', ' [id^="btnSend_"]', function (e) {
+        e.preventDefault();
+        error_val = 0;
+        err_string = '';
+        var $this = jQuery(this);
+        var $form_data;
+        id_send = $this.attr('id');
+        var id_array = id_send.match("btnSend_(.*)");
+
+        p_name = jQuery('#product_name_' + id_array[1]).val();
+
+        var message = jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtmsg').val();
+        var phone = jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtphone').val();
+        var fields = wdm_data.fields;
+        var error_field;
+        //This is for variable product support
+        variation_id = '';
+        variation_detail = [];
+        var $variation_id_obj = '';
+        $variation_id_obj = jQuery(wdm_data.variation_id_selector);
+        // If variation Id element is not found.
+        if ($variation_id_obj.length == 0) {
+            $variation_id_obj = jQuery('#wdm-quoteup-trigger-' + id_array[1]).closest('.summary.entry-summary').find('.variation_id:first-child');
+        }
+
+        if ($variation_id_obj.length > 0) {
+            variation_id = $variation_id_obj.val();
+            jQuery('select[name^=attribute_]').each(function (ind, obj) {
+                name = jQuery(this).attr('name');
+                name = name.substring(10);
+                variation = name + " : " + jQuery(this).val();
+                variation_detail.push(variation);
+            });
+        }
+        //End of variable product code
+        nm_regex = /^[a-zA-Z ]+$/;
+        var enquiry_field;
+
+        if (fields.length > 0) {
+            error_field = jQuery(this).closest('.form_input').siblings('.form-errors-wrap');
+            error_field.css('display', 'none');
+            jQuery('.error-list-item').remove();
+            jQuery('.wdm-error').removeClass('wdm-error');
+            for (i = 0; i < fields.length; i++) {
+
+                if ('txtdate' == fields[i].id) {
+                    enquiry_field = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('input[id^=' + fields[i].id + ']');
+                }
+                else {
+                    enquiry_field = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id);
+                }
+
+                var temp = enquiry_field.val();
+
+                var required = fields[i].required;
+                if (fields[i].validation !== "") {
+                    var validation = new RegExp(fields[i].validation);
+                }
+
+                var message = fields[i].validation_message;
+                var flag = 0;
+                if (required == 'yes') {
+
+                    if (fields[i].type == "file") {
+
+                        var attachedFiles = enquiry_field.prop('files');
+
+                        if (attachedFiles.length < 1 || attachedFiles.length > 10) {
+                            enquiry_field.addClass('wdm-error');
+                            flag = 1;
+                            error_val = 1;
+                            err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
+                        } else {
+                            flag = 0;
+                            enquiry_field.removeClass('wdm-error');
+                        }
+                    } else if (fields[i].type == "text" || fields[i].type == "textarea") {
+
+                        if (temp == "") {
+                            enquiry_field.addClass('wdm-error');
+                            flag = 1;
+                            error_val = 1;
+                            err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
+
+
+                        } else {
+                            flag = 0;
+                            enquiry_field.removeClass('wdm-error');
+                        }
+                    }
+
+                    else if (fields[i].type == "radio") {
+                        $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name=" + fields[i].id + "]").each(function () {
+
+                            var temp1 = jQuery(this);
+                            if (temp1.is(":checked")) {
+                                flag = 1;
+                            }
+                        });
+
+                        if (flag == 0) {
+
+                            error_val = 1;
+                            $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:#FCC !important;");
+                            err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
+                        } else {
+                            $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
+                        }
 
                     }//radio
 
-                    else if (fields[i].type == "checkbox")
-                    {
+                    else if (fields[i].type == "checkbox") {
                         $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("input[name=" + fields[i].id + "\\[\\]]").each(function () {
 
                             var temp1 = jQuery(this);
@@ -619,39 +604,33 @@ if (fields.length > 0) {
                             error_val = 1;
                             $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:#FCC !important;");
                             err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
-                        } else
-                        {
+                        } else {
                             //$this.parent().siblings().find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
-			    $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
+                            $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
                         }
 
                     }//checkbox
-                    else if(fields[i].type == "select")
-                    {
+                    else if (fields[i].type == "select") {
                         $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name=" + fields[i].id + "]").each(function () {
-                           var temp1 = jQuery(this);
-                           if (temp1.val()!="#") {
-                            flag = 1;
+                            var temp1 = jQuery(this);
+                            if (temp1.val() != "#") {
+                                flag = 1;
 
-                        }
-                    });
-                        if (flag == 0)
-                        {
+                            }
+                        });
+                        if (flag == 0) {
                             error_val = 1;
                             $this.closest('.form_input').siblings('.wdm-pep-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:#FCC !important;");
                             err_string += '<li class="error-list-item">' + fields[i].required_message + '</li>';
-                        } else
-                        {
+                        } else {
                             $this.closest('.form_input').siblings('.wdm-pep-form-inner').find('#' + fields[i].id).parent().css("cssText", "background:white !important;");
                         }
                     }
                 }//required
 
                 if (flag == 0)
-                    if (fields[i].validation != "" && temp != "")
-                    {
-                        if (!validation.test(temp))
-                        {
+                    if (fields[i].validation != "" && temp != "") {
+                        if (!validation.test(temp)) {
 
                             enquiry_field.addClass('wdm-error');
                             err_string += '<li class="error-list-item">' + message + '</li>';
@@ -666,268 +645,249 @@ if (fields.length > 0) {
             }//for feilds loop
         }//if
 
-        if (error_val == 0)
-        {
+        if (error_val == 0) {
             jQuery('.wdmquoteup-loader').css('display', 'inline-block');
             jQuery('#submit_value').val(1);
 
             let $cookieConField = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("input[name='cookie-consent-cb[]']");
-            if($cookieConField.length > 0 && $cookieConField.is(":checked"))
-            {
+            if ($cookieConField.length > 0 && $cookieConField.is(":checked")) {
                 let cname = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#custname').val();
                 let cemail = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtemail').val();
                 fun_set_cookie(cname, cemail);
             }
-            else
-            {
+            else {
                 fun_remove_cookie();
             }
 
             var $contactCC = jQuery('#wdm-modal-clone').find("#" + id_send).closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#contact-cc");
-            if ($contactCC.length > 0 && $contactCC.is(":checked"))
-            {
+            if ($contactCC.length > 0 && $contactCC.is(":checked")) {
                 var wdm_checkbox_val = 'checked';
             }
-            else
-            {
-               var wdm_checkbox_val = 0;
+            else {
+                var wdm_checkbox_val = 0;
             }
 
-           quantity =1;
-           if(jQuery('input[name="txtQty"]').length>0)
-           {
-            quantity =jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtQty').val();
-        }
-        //Validates the enquiry nonce.
-        validate_enq = {
-            action: 'quoteupValidateNonce',
-            security: jQuery('#ajax_nonce').val(),
-        };
-        nonce_error = 0;
-        jQuery.post(wdm_data.ajax_admin_url, validate_enq, function (response)
-        {
-            if (response === '')
-            {
-
-                jQuery('.wdmquoteup-loader').css('display', 'none');
-                $this.closest('.form_input').siblings('#nonce_error').css('display', 'block');
-                nonce_error = 1;
-
+            quantity = 1;
+            if (jQuery('input[name="txtQty"]').length > 0) {
+                quantity = jQuery(this).closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtQty').val();
             }
-            else
-            {
-                jQuery('.wdmquoteup-loader').css('display', 'inline-block');
-                $form_data = new FormData();
-                $form_data.append( 'action', 'quoteupSubmitWooEnquiryForm' );
-                $form_data.append( 'security', jQuery('#ajax_nonce').val() );
-                $form_data.append( 'wdmLocale', $this.closest('#frm_enquiry').find('#wdmLocale').val());
-                $form_data.append( 'uemail', $this.closest('#frm_enquiry').find('#author_email').val() );
-                $form_data.append( 'product_name', jQuery('#product_name_' + id_array[1]).val() );
-                $form_data.append( 'product_price', jQuery('#product_price_' + id_array[1]).val() );
-                $form_data.append( 'variation_id', variation_id );
-                $form_data.append( 'variation_detail', variation_detail );
-                $form_data.append( 'product_img', jQuery('#product_img_' + id_array[1]).val() );
-                $form_data.append( 'product_id', jQuery('#product_id_' + id_array[1]).val() );
-                $form_data.append( 'product_quant', quantity );
-                $form_data.append( 'product_url', jQuery('#product_url_' + id_array[1]).val() );
-                $form_data.append( 'cc', wdm_checkbox_val );
+            //Validates the enquiry nonce.
+            validate_enq = {
+                action: 'quoteupValidateNonce',
+                security: jQuery('#ajax_nonce').val(),
+            };
+            nonce_error = 0;
+            jQuery.post(wdm_data.ajax_admin_url, validate_enq, function (response) {
+                if (response === '') {
 
-                jQuery(".quoteup_registered_parameter").each(function () {
-                    $form_data.append( jQuery(this).attr('id'), jQuery(this).val() );
-                    // $form_data[jQuery(this).attr('id')] = jQuery(this).val();
-                });
-                if (fields.length > 0) {
+                    jQuery('.wdmquoteup-loader').css('display', 'none');
+                    $this.closest('.form_input').siblings('#nonce_error').css('display', 'block');
+                    nonce_error = 1;
 
-                    for (i = 0; i < fields.length; i++) {
-
-                        if (fields[i].type == 'text' || fields[i].type == 'textarea' || fields[i].type == 'select') {
-                            // If field is txtdate.
-                            if ('txtdate' == fields[i].id) {
-                                $form_data.append( fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id + '-' + id_array[1]).val() );
-                            } else {
-                                $form_data.append( fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).val() );
-                            }
-                            // $form_data[fields[i].id] = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).val();
-                        }
-                        else if (fields[i].type == 'radio')
-                        {
-                            $form_data.append(fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "']:checked").val());
-                            // $form_data[fields[i].id] = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "']:checked").val();
-                        }
-                        else if (fields[i].type == 'checkbox')
-                        {
-                            var selected = "";
-                            $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "[]']:checked").each(function () {
-                                if (selected == "") {
-
-                                    selected = jQuery(this).val();
-                                } else
-                                selected += "," + jQuery(this).val();
-                            });
-                            $form_data.append(fields[i].id, selected);
-                            // $form_data[fields[i].id] = selected;
-                        }
-                        else if (fields[i].type == 'multiple')
-                        {
-                            var selected = "";
-                            selected = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).multipleSelect('getSelects').join(',');
-                            $form_data.append(fields[i].id, selected);
-                            // $form_data[fields[i].id] = selected;
-                        } else if(fields[i].type == 'file')
-                        {
-                            var attachedFiles = $this.closest('.wdm-quoteup-form').find('.upload-field').prop('files');
-                            if(attachedFiles && attachedFiles.length > 0) {
-                                jQuery(attachedFiles).each(function(index, value){
-                                    $file = value;
-                                    $file_size = $file.size;
-                                    // $form_data.append( index, $file );
-                                    $form_data.append( $file.name, $file );
-                        // $form_data.append( 'media_file_name', $file.name );
-                    });
-                            }
-                        }
-
-                    }
                 }
-                
-                if ('undefined' != typeof quoteup_captcha_data && 'v3' === quoteup_captcha_data.captcha_version) {
-                    // captcha v3
-                    let site_key = quoteup_captcha_data.site_key;
-                    grecaptcha.execute(site_key, {action: 'quoteup_captcha'}).then(function(token) {
-                        $form_data.append('captcha', token);
+                else {
+                    jQuery('.wdmquoteup-loader').css('display', 'inline-block');
+                    $form_data = new FormData();
+                    $form_data.append('action', 'quoteupSubmitWooEnquiryForm');
+                    $form_data.append('security', jQuery('#ajax_nonce').val());
+                    $form_data.append('wdmLocale', $this.closest('#frm_enquiry').find('#wdmLocale').val());
+                    $form_data.append('uemail', $this.closest('#frm_enquiry').find('#author_email').val());
+                    $form_data.append('product_name', jQuery('#product_name_' + id_array[1]).val());
+                    $form_data.append('product_price', jQuery('#product_price_' + id_array[1]).val());
+                    $form_data.append('variation_id', variation_id);
+                    $form_data.append('variation_detail', variation_detail);
+                    $form_data.append('product_img', jQuery('#product_img_' + id_array[1]).val());
+                    $form_data.append('product_id', jQuery('#product_id_' + id_array[1]).val());
+                    $form_data.append('product_quant', quantity);
+                    $form_data.append('product_url', jQuery('#product_url_' + id_array[1]).val());
+                    $form_data.append('cc', wdm_checkbox_val);
+
+                    jQuery(".quoteup_registered_parameter").each(function () {
+                        $form_data.append(jQuery(this).attr('id'), jQuery(this).val());
+                        // $form_data[jQuery(this).attr('id')] = jQuery(this).val();
+                    });
+                    if (fields.length > 0) {
+
+                        for (i = 0; i < fields.length; i++) {
+
+                            if (fields[i].type == 'text' || fields[i].type == 'textarea' || fields[i].type == 'select') {
+                                // If field is txtdate.
+                                if ('txtdate' == fields[i].id) {
+                                    $form_data.append(fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id + '-' + id_array[1]).val());
+                                } else {
+                                    $form_data.append(fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).val());
+                                }
+                                // $form_data[fields[i].id] = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).val();
+                            }
+                            else if (fields[i].type == 'radio') {
+                                $form_data.append(fields[i].id, $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "']:checked").val());
+                                // $form_data[fields[i].id] = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "']:checked").val();
+                            }
+                            else if (fields[i].type == 'checkbox') {
+                                var selected = "";
+                                $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("[name='" + fields[i].id + "[]']:checked").each(function () {
+                                    if (selected == "") {
+
+                                        selected = jQuery(this).val();
+                                    } else
+                                        selected += "," + jQuery(this).val();
+                                });
+                                $form_data.append(fields[i].id, selected);
+                                // $form_data[fields[i].id] = selected;
+                            }
+                            else if (fields[i].type == 'multiple') {
+                                var selected = "";
+                                selected = $this.closest('.form_input').siblings('.wdm-quoteup-form-inner').find("#" + fields[i].id).multipleSelect('getSelects').join(',');
+                                $form_data.append(fields[i].id, selected);
+                                // $form_data[fields[i].id] = selected;
+                            } else if (fields[i].type == 'file') {
+                                var attachedFiles = $this.closest('.wdm-quoteup-form').find('.upload-field').prop('files');
+                                if (attachedFiles && attachedFiles.length > 0) {
+                                    jQuery(attachedFiles).each(function (index, value) {
+                                        $file = value;
+                                        $file_size = $file.size;
+                                        // $form_data.append( index, $file );
+                                        $form_data.append($file.name, $file);
+                                        // $form_data.append( 'media_file_name', $file.name );
+                                    });
+                                }
+                            }
+
+                        }
+                    }
+
+                    if ('undefined' != typeof quoteup_captcha_data && 'v3' === quoteup_captcha_data.captcha_version) {
+                        // captcha v3
+                        let site_key = quoteup_captcha_data.site_key;
+                        grecaptcha.execute(site_key, { action: 'quoteup_captcha' }).then(function (token) {
+                            $form_data.append('captcha', token);
+                            submitEnquiryFormAjax($form_data, $this, id_array, error_field);
+                        });
+                    } else {
+                        if (jQuery('.g-recaptcha').length > 0) {
+                            // captcha v2
+                            widgetID = $this.closest('#frm_enquiry').find('.g-recaptcha').attr('data-widgetID')
+                            $captcha = grecaptcha.getResponse(widgetID);
+                            if ($captcha != '') {
+                                $form_data.append('captcha', $captcha);
+                            }
+                        }
                         submitEnquiryFormAjax($form_data, $this, id_array, error_field);
-                    });
-                } else {
-                    if (jQuery('.g-recaptcha').length > 0){
-                        // captcha v2
-                        widgetID = $this.closest('#frm_enquiry').find('.g-recaptcha').attr('data-widgetID')
-                        $captcha = grecaptcha.getResponse(widgetID);
-                        if ($captcha != '') {
-                            $form_data.append('captcha', $captcha);
-                        }
                     }
-                    submitEnquiryFormAjax($form_data, $this, id_array, error_field);
                 }
-            }
-        });
-}
-else
-{
-    error_field.css( 'display', 'block' );
-    error_field.find('ul.error-list').html(err_string);
-    return false;
-}
+            });
+        }
+        else {
+            error_field.css('display', 'block');
+            error_field.find('ul.error-list').html(err_string);
+            return false;
+        }
 
-return false;
-});
+        return false;
+    });
 
-function submitEnquiryFormAjax($form_data, $this, id_array, error_field)
-{
-    jQuery.ajax( {
-        type: 'POST',
-        url: wdm_data.ajax_admin_url,
-        data: $form_data,
-        contentType: false,
-        processData: false,
-        dataType: 'json',
-        // async: false,
-        cache: false,
-        success: function ( response ) {
-            jQuery('.wdmquoteup-loader').css('display', 'none');
-            if ( response.status == 'COMPLETED' ) {
-                if(window.ga && ga.create) {
-                    for (i=0; i < response.gaProducts.length; i++){
-                        ga( 'send', 'event', 'Product/Quote Enquiry Form', 'submit', response.gaProducts[i] );
-                    };
-                }
-                if(wdm_data.redirect != 'n'){
-                    window.location = wdm_data.redirect;                    
-                }
-                $this.closest('.wdm-quoteup-form').hide();
+    function submitEnquiryFormAjax($form_data, $this, id_array, error_field) {
+        jQuery.ajax({
+            type: 'POST',
+            url: wdm_data.ajax_admin_url,
+            data: $form_data,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            // async: false,
+            cache: false,
+            success: function (response) {
+                jQuery('.wdmquoteup-loader').css('display', 'none');
+                if (response.status == 'COMPLETED') {
+                    if (window.ga && ga.create) {
+                        for (i = 0; i < response.gaProducts.length; i++) {
+                            ga('send', 'event', 'Product/Quote Enquiry Form', 'submit', response.gaProducts[i]);
+                        };
+                    }
+                    if (wdm_data.redirect != 'n') {
+                        window.location = wdm_data.redirect;
+                    }
+                    $this.closest('.wdm-quoteup-form').hide();
 
-                $this.closest('.form_input').parent('form').siblings('#success_' + id_array[1]).show();
-
-                /**
-                 * Use this trigger event to perform the actions/ manipulations before
-                 * the enquiry form is hidden when enquiry is successful.
-                 *
-                 * @param object $this      The jQuery object of the button clicked to submit the form.
-                 * @param object $form_data Object of FormData containing the form values.
-                 */
-                jQuery(document).trigger('quoteupEnquirySuccessBeforeFormHidden', [ $this, $form_data ]);
-
-                setTimeout(function() {
-                    id = $this.attr('id');
-                    number = id.match("btnSend_(.*)");
-                    modal_id = "#wdm-quoteup-modal-" + number[1];
-                    jQuery(modal_id).modal('hide');
-                    jQuery('.wdm-quoteup-form').css('display', 'none');
-                    jQuery('.wdm-modal-footer').css('display', 'none');
-                    jQuery('#error').css('display', 'none');
-                    jQuery('#nonce_error').css('display', 'none');
-                    jQuery('#success_' + number[1]).css('display', 'none'); 
+                    $this.closest('.form_input').parent('form').siblings('#success_' + id_array[1]).show();
 
                     /**
-                     * Use this trigger event to perform the actions/ manipulations after
-                     * timeout when enquiry is successful.
+                     * Use this trigger event to perform the actions/ manipulations before
+                     * the enquiry form is hidden when enquiry is successful.
                      *
                      * @param object $this      The jQuery object of the button clicked to submit the form.
                      * @param object $form_data Object of FormData containing the form values.
                      */
-                    jQuery(document).trigger('quoteupEnquirySuccessAfterTimeout', [ $this, $form_data ]);
-                }, 2000)
-            } else {
-                if(response.status == 'failed')
-                {
-                    error_field.css( 'display', 'block' );
-                    error_field.find('ul.error-list').html(response.message);
-                    return false;
+                    jQuery(document).trigger('quoteupEnquirySuccessBeforeFormHidden', [$this, $form_data]);
+
+                    setTimeout(function () {
+                        id = $this.attr('id');
+                        number = id.match("btnSend_(.*)");
+                        modal_id = "#wdm-quoteup-modal-" + number[1];
+                        jQuery(modal_id).modal('hide');
+                        jQuery('.wdm-quoteup-form').css('display', 'none');
+                        jQuery('.wdm-modal-footer').css('display', 'none');
+                        jQuery('#error').css('display', 'none');
+                        jQuery('#nonce_error').css('display', 'none');
+                        jQuery('#success_' + number[1]).css('display', 'none');
+
+                        /**
+                         * Use this trigger event to perform the actions/ manipulations after
+                         * timeout when enquiry is successful.
+                         *
+                         * @param object $this      The jQuery object of the button clicked to submit the form.
+                         * @param object $form_data Object of FormData containing the form values.
+                         */
+                        jQuery(document).trigger('quoteupEnquirySuccessAfterTimeout', [$this, $form_data]);
+                    }, 2000)
+                } else {
+                    if (response.status == 'failed') {
+                        error_field.css('display', 'block');
+                        error_field.find('ul.error-list').html(response.message);
+                        return false;
+                    }
                 }
             }
-        }
-    });
-}
-
-/**
- * Attached to WooCommerce trigger 'woocommerce_variation_has_changed'.
- * This trigger handler performs two functionalities:
- *   1. Disable enquiry button when variation is not selected.
- *   2. Enable enquiry button when variation is selected.
- */
-function enableDisableEnquiryButton()
-{
-    let $this = jQuery(this),
-        productId = jQuery(this).data("product_id"), 
-        $enquiryButton = jQuery("button[id=wdm-quoteup-trigger-" + productId + "]"),
-        $variationIdObj = jQuery(wdm_data.variation_id_selector);
-
-    // If variation Id element is not found.
-    if ($variationIdObj.length == 0) {
-        $variationIdObj = $this.find('.variation_id:first-child');
+        });
     }
 
-    // If enquiry button and '.variation_id' element is present.
-    if ($enquiryButton.length > 0 && $variationIdObj.length > 0) {
-        if ($variationIdObj.val() == '' || $variationIdObj.val() == 0) {
-            // Disable enquiry button when variation is not selected.
-            $enquiryButton.attr('disabled','disabled');
-        } else {
-            // Enable enquiry button when variation is selected.
-            $enquiryButton.removeAttr('disabled');
+    /**
+     * Attached to WooCommerce trigger 'woocommerce_variation_has_changed'.
+     * This trigger handler performs two functionalities:
+     *   1. Disable enquiry button when variation is not selected.
+     *   2. Enable enquiry button when variation is selected.
+     */
+    function enableDisableEnquiryButton() {
+        let $this = jQuery(this),
+            productId = jQuery(this).data("product_id"),
+            $enquiryButton = jQuery("button[id=wdm-quoteup-trigger-" + productId + "]"),
+            $variationIdObj = jQuery(wdm_data.variation_id_selector);
+
+        // If variation Id element is not found.
+        if ($variationIdObj.length == 0) {
+            $variationIdObj = $this.find('.variation_id:first-child');
+        }
+
+        // If enquiry button and '.variation_id' element is present.
+        if ($enquiryButton.length > 0 && $variationIdObj.length > 0) {
+            if ($variationIdObj.val() == '' || $variationIdObj.val() == 0) {
+                // Disable enquiry button when variation is not selected.
+                $enquiryButton.attr('disabled', 'disabled');
+            } else {
+                // Enable enquiry button when variation is selected.
+                $enquiryButton.removeAttr('disabled');
+            }
         }
     }
-}
 });
 
 //create cookie when Cookie consent field is selected
 // Stores the customer name and Email.
-function fun_set_cookie(cname, cemail)
-{
+function fun_set_cookie(cname, cemail) {
     // var cname = $btnSend.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#custname').val();
     // var cemail = $btnSend.closest('.form_input').siblings('.wdm-quoteup-form-inner').find('#txtemail').val();
 
-    if (cname != '' && cemail != '')
-    {
+    if (cname != '' && cemail != '') {
         var d = new Date();
         d.setTime(d.getTime() + (90 * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toGMTString();
@@ -939,25 +899,23 @@ function fun_set_cookie(cname, cemail)
 
 // Remove cookie when cookie consent field is not present or not selected
 // Removed the customer name and email
-function fun_remove_cookie()
-{
+function fun_remove_cookie() {
     document.cookie = "wdmusername=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     document.cookie = "wdmuseremail=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
 }
 
 // Return the variation selector element or variation selector form element.
-function pepGetVariationSelectorElement()
-{
-    if (jQuery('#product-'+product_id).find(".variations_form").length > 0) {
-        return jQuery('#product-'+product_id).find(".variations_form");
+function pepGetVariationSelectorElement() {
+    if (jQuery('#product-' + product_id).find(".variations_form").length > 0) {
+        return jQuery('#product-' + product_id).find(".variations_form");
     }
 
-    if (jQuery('.post-'+product_id).find(".variations_form").length > 0) {
-        return jQuery('.post-'+product_id).find(".variations_form");
+    if (jQuery('.post-' + product_id).find(".variations_form").length > 0) {
+        return jQuery('.post-' + product_id).find(".variations_form");
     }
 
-    if (jQuery('.postid-'+product_id).find(".variations_form").length > 0) {
-        return jQuery('.postid-'+product_id).find(".variations_form");
+    if (jQuery('.postid-' + product_id).find(".variations_form").length > 0) {
+        return jQuery('.postid-' + product_id).find(".variations_form");
     }
 }
 
@@ -969,7 +927,7 @@ function pepGetVariationSelectorElement()
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
- if (typeof jQuery === 'undefined') {
+if (typeof jQuery === 'undefined') {
     throw new Error('Bootstrap\'s JavaScript requires jQuery')
 }
 
@@ -982,50 +940,50 @@ function pepGetVariationSelectorElement()
  * ======================================================================== */
 
 
- +function ($) {
-    'use strict';
+//  +function ($) {
+//     'use strict';
 
-    // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-    // ============================================================
+//     // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+//     // ============================================================
 
-    function transitionEnd() {
-        var el = document.createElement('bootstrap')
+//     function transitionEnd() {
+//         var el = document.createElement('bootstrap')
 
-        var transEndEventNames = {
-            'WebkitTransition': 'webkitTransitionEnd',
-            'MozTransition': 'transitionend',
-            'OTransition': 'oTransitionEnd otransitionend',
-            'transition': 'transitionend'
-        }
+//         var transEndEventNames = {
+//             'WebkitTransition': 'webkitTransitionEnd',
+//             'MozTransition': 'transitionend',
+//             'OTransition': 'oTransitionEnd otransitionend',
+//             'transition': 'transitionend'
+//         }
 
-        for (var name in transEndEventNames) {
-            if (el.style[name] !== undefined) {
-                return {end: transEndEventNames[name]}
-            }
-        }
+//         for (var name in transEndEventNames) {
+//             if (el.style[name] !== undefined) {
+//                 return {end: transEndEventNames[name]}
+//             }
+//         }
 
-        return false // explicit for ie8 (  ._.)
-    }
+//         return false // explicit for ie8 (  ._.)
+//     }
 
-    // http://blog.alexmaccaw.com/css-transitions
-    $.fn.emulateTransitionEnd = function (duration) {
-        var called = false, $el = this
-        $(this).one($.support.transition.end, function () {
-            called = true
-        })
-        var callback = function () {
-            if (!called)
-                $($el).trigger($.support.transition.end)
-        }
-        setTimeout(callback, duration)
-        return this
-    }
+//     // http://blog.alexmaccaw.com/css-transitions
+//     $.fn.emulateTransitionEnd = function (duration) {
+//         var called = false, $el = this
+//         $(this).one($.support.transition.end, function () {
+//             called = true
+//         })
+//         var callback = function () {
+//             if (!called)
+//                 $($el).trigger($.support.transition.end)
+//         }
+//         setTimeout(callback, duration)
+//         return this
+//     }
 
-    $(function () {
-        $.support.transition = transitionEnd()
-    })
+//     $(function () {
+//         $.support.transition = transitionEnd()
+//     })
 
-}(jQuery);
+// }(jQuery);
 
 
 
@@ -1038,7 +996,7 @@ function pepGetVariationSelectorElement()
  * ======================================================================== */
 
 
- +function ($) {
++function ($) {
     'use strict';
 
     // MODAL CLASS DEFINITION
@@ -1048,14 +1006,14 @@ function pepGetVariationSelectorElement()
         this.options = options
         this.$element = $(element)
         this.$backdrop =
-        this.isShown = null
+            this.isShown = null
 
         if (this.options.remote) {
             this.$element
-            .find('.wdm-modal-content')
-            .load(this.options.remote, $.proxy(function () {
-                this.$element.trigger('loaded.bs.wdm-modal')
-            }, this))
+                .find('.wdm-modal-content')
+                .load(this.options.remote, $.proxy(function () {
+                    this.$element.trigger('loaded.bs.wdm-modal')
+                }, this))
         }
     }
 
@@ -1071,7 +1029,7 @@ function pepGetVariationSelectorElement()
 
     Modal.prototype.show = function (_relatedTarget) {
         var that = this
-        var e = $.Event('show.bs.wdm-modal', {relatedTarget: _relatedTarget})
+        var e = $.Event('show.bs.wdm-modal', { relatedTarget: _relatedTarget })
 
         this.$element.trigger(e)
 
@@ -1092,29 +1050,29 @@ function pepGetVariationSelectorElement()
             }
 
             that.$element
-            .show()
-            .scrollTop(0)
+                .show()
+                .scrollTop(0)
 
             if (transition) {
                 that.$element[0].offsetWidth // force reflow
             }
 
             that.$element
-            .addClass('in')
-            .attr('aria-hidden', false)
+                .addClass('in')
+                .attr('aria-hidden', false)
 
             that.enforceFocus()
 
-            var e = $.Event('shown.bs.wdm-modal', {relatedTarget: _relatedTarget})
+            var e = $.Event('shown.bs.wdm-modal', { relatedTarget: _relatedTarget })
 
             transition ?
-                    that.$element.find('.wdm-modal-dialog') // wait for modal to slide in
+                that.$element.find('.wdm-modal-dialog') // wait for modal to slide in
                     .one($.support.transition.end, function () {
                         that.$element.focus().trigger(e)
                     })
                     .emulateTransitionEnd(300) :
-                    that.$element.focus().trigger(e)
-                })
+                that.$element.focus().trigger(e)
+        })
     }
 
     Modal.prototype.hide = function (e) {
@@ -1135,69 +1093,69 @@ function pepGetVariationSelectorElement()
         $(document).off('focusin.bs.wdm-modal')
 
         this.$element
-        .removeClass('in')
-        .attr('aria-hidden', true)
-        .off('click.dismiss.bs.wdm-modal')
+            .removeClass('in')
+            .attr('aria-hidden', true)
+            .off('click.dismiss.bs.wdm-modal')
 
         $.support.transition && this.$element.hasClass('wdm-fade') ?
-        this.$element
-        .one($.support.transition.end, $.proxy(this.hideModal, this))
-        .emulateTransitionEnd(300) :
-        this.hideModal()
+            this.$element
+                .one($.support.transition.end, $.proxy(this.hideModal, this))
+                .emulateTransitionEnd(300) :
+            this.hideModal()
     }
 
     Modal.prototype.enforceFocus = function () {
         $(document)
-                .off('focusin.bs.wdm-modal') // guard against infinite focus loop
-                .on('focusin.bs.wdm-modal', $.proxy(function (e) {
-                    if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
-                        this.$element.focus()
-                    }
-                }, this))
-            }
-
-            Modal.prototype.escape = function () {
-                if (this.isShown && this.options.keyboard) {
-                    this.$element.on('keyup.dismiss.bs.wdm-modal', $.proxy(function (e) {
-                        e.which == 27 && this.hide()
-                    }, this))
-                } else if (!this.isShown) {
-                    this.$element.off('keyup.dismiss.bs.wdm-modal')
+            .off('focusin.bs.wdm-modal') // guard against infinite focus loop
+            .on('focusin.bs.wdm-modal', $.proxy(function (e) {
+                if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+                    this.$element.focus()
                 }
-            }
+            }, this))
+    }
 
-            Modal.prototype.hideModal = function () {
-                var that = this
-                this.$element.hide()
-                this.backdrop(function () {
-                    that.removeBackdrop()
-                    that.$element.trigger('hidden.bs.wdm-modal')
-                })
-            }
+    Modal.prototype.escape = function () {
+        if (this.isShown && this.options.keyboard) {
+            this.$element.on('keyup.dismiss.bs.wdm-modal', $.proxy(function (e) {
+                e.which == 27 && this.hide()
+            }, this))
+        } else if (!this.isShown) {
+            this.$element.off('keyup.dismiss.bs.wdm-modal')
+        }
+    }
 
-            Modal.prototype.removeBackdrop = function () {
-                this.$backdrop && this.$backdrop.remove()
-                this.$backdrop = null
-            }
+    Modal.prototype.hideModal = function () {
+        var that = this
+        this.$element.hide()
+        this.backdrop(function () {
+            that.removeBackdrop()
+            that.$element.trigger('hidden.bs.wdm-modal')
+        })
+    }
 
-            Modal.prototype.backdrop = function (callback) {
-                var animate = this.$element.hasClass('fade') ? 'fade' : ''
+    Modal.prototype.removeBackdrop = function () {
+        this.$backdrop && this.$backdrop.remove()
+        this.$backdrop = null
+    }
 
-                if (this.isShown && this.options.backdrop) {
-                    var doAnimate = $.support.transition && animate
+    Modal.prototype.backdrop = function (callback) {
+        var animate = this.$element.hasClass('fade') ? 'fade' : ''
 
-                    this.$backdrop = $('<div class="wdm-modal-backdrop ' + animate + '" />')
-                    .appendTo(document.body)
+        if (this.isShown && this.options.backdrop) {
+            var doAnimate = $.support.transition && animate
 
-                    this.$element.on('click.dismiss.bs.wdm-modal', $.proxy(function (e) {
-                        if (e.target !== e.currentTarget)
-                            return
-                        this.options.backdrop == 'static'
-                        ? this.$element[0].focus.call(this.$element[0])
-                        : this.hide.call(this)
-                    }, this))
+            this.$backdrop = $('<div class="wdm-modal-backdrop ' + animate + '" />')
+                .appendTo(document.body)
 
-                    if (doAnimate)
+            this.$element.on('click.dismiss.bs.wdm-modal', $.proxy(function (e) {
+                if (e.target !== e.currentTarget)
+                    return
+                this.options.backdrop == 'static'
+                    ? this.$element[0].focus.call(this.$element[0])
+                    : this.hide.call(this)
+            }, this))
+
+            if (doAnimate)
                 this.$backdrop[0].offsetWidth // force reflow
 
             this.$backdrop.addClass('in')
@@ -1206,19 +1164,19 @@ function pepGetVariationSelectorElement()
                 return
 
             doAnimate ?
-            this.$backdrop
-            .one($.support.transition.end, callback)
-            .emulateTransitionEnd(150) :
-            callback()
+                this.$backdrop
+                    .one($.support.transition.end, callback)
+                    .emulateTransitionEnd(150) :
+                callback()
 
         } else if (!this.isShown && this.$backdrop) {
             this.$backdrop.removeClass('in')
 
             $.support.transition && this.$element.hasClass('wdm-fade') ?
-            this.$backdrop
-            .one($.support.transition.end, callback)
-            .emulateTransitionEnd(150) :
-            callback()
+                this.$backdrop
+                    .one($.support.transition.end, callback)
+                    .emulateTransitionEnd(150) :
+                callback()
 
         } else if (callback) {
             callback()
@@ -1265,30 +1223,30 @@ function pepGetVariationSelectorElement()
         var $this = $(this)
         var href = $this.attr('href')
         var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) //strip for ie7
-        var option = $target.data('bs.wdm-modal') ? 'toggle' : $.extend({remote: !/#/.test(href) && href}, $target.data(), $this.data())
+        var option = $target.data('bs.wdm-modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
 
         if ($this.is('a'))
             e.preventDefault()
 
         $target
-        .modal(option, this)
-        .one('hide', function () {
-            $this.is(':visible') && $this.focus()
-        })
+            .modal(option, this)
+            .one('hide', function () {
+                $this.is(':visible') && $this.focus()
+            })
     })
 
     $(document).on('show.bs.modal', '.wdm-modal', function () {
         $(document.body).addClass('wdm-modal-open');
 
     })
-    .on('hidden.bs.modal', '.wdm-modal', function () {
-        $(document.body).removeClass('wdm-modal-open');
-    });
+        .on('hidden.bs.modal', '.wdm-modal', function () {
+            $(document.body).removeClass('wdm-modal-open');
+        });
 
 }(jQuery);
 
 
- // When WooCommerce changes SKU, copy new SKU value in the SKU column of Product Details Table 
- jQuery('.sku').observe('childlist subtree', function(){
+// When WooCommerce changes SKU, copy new SKU value in the SKU column of Product Details Table 
+jQuery('.sku').observe('childlist subtree', function () {
     jQuery('#product_sku').val(jQuery(this).text());
 });

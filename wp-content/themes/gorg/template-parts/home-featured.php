@@ -3,6 +3,24 @@
 $gorg_settings = gorg_get_theme_options();
 $featured_title = $gorg_settings['featured_title'];
 $featured_limit = $gorg_settings['featured_limit'];
+    global $woocommerce;
+    // The tax query
+        $product_args = array(
+            'post_type'   =>  'product',
+            // 'stock'       =>  1,
+            'showposts'   =>  $featured_limit,
+            'orderby'     =>  'date',
+            'order'       =>  'DESC',
+            'tax_query' => array(
+              array(
+                  'taxonomy' => 'product_visibility',
+                  'field'    => 'name',
+                  'terms'    => 'featured',
+              ),
+          ),
+        );
+        $product_query = new WP_Query($product_args);
+        if($product_query->have_posts()):
 ?>
 <section class="small_pt small_pb gray_bg">
     <div class="container">
@@ -17,24 +35,7 @@ $featured_limit = $gorg_settings['featured_limit'];
             <div class="col-md-12">
                 <div class="carousel_slide4 owl-carousel owl-theme nav_top" data-margin="30" data-nav="true" data-dots="false">
                     <?php
-                    global $woocommerce;
-                    // The tax query
-                        $product_args = array(
-                            'post_type'   =>  'product',
-                            // 'stock'       =>  1,
-                            'showposts'   =>  $featured_limit,
-                            'orderby'     =>  'date',
-                            'order'       =>  'DESC',
-                            'tax_query' => array(
-                              array(
-                                  'taxonomy' => 'product_visibility',
-                                  'field'    => 'name',
-                                  'terms'    => 'featured',
-                              ),
-                          ),
-                        );
-                        $product_query = new WP_Query($product_args);
-                        if($product_query):
+                        
                             while($product_query->have_posts()):$product_query->the_post(); ?>
                         <div class="item">
                             <div class="shop-item">
@@ -63,11 +64,11 @@ $featured_limit = $gorg_settings['featured_limit'];
                         </div>
                        <?php
                         endwhile;
-                        endif; wp_reset_query();
                     ?>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<?php endif; wp_reset_query();?>
 <!-- END SECTION PRODUCT --> 

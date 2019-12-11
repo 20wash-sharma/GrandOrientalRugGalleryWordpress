@@ -388,3 +388,16 @@ function roshan_update_woo_flexslider_options( $options ) {
 
     return $options;
 }
+
+//default sorting remove from product page
+add_filter( 'woocommerce_catalog_orderby', 'roshan_remove_sorting_option_woocommerce_shop' );
+  
+function roshan_remove_sorting_option_woocommerce_shop( $options ) {
+   	unset( $options['rating'] );
+	unset($options["price"]);
+	unset($options["popularity"]);
+	unset($options["price-desc"]); 
+	$options['title'] = 'Sort by name (ASC)';
+   	$options['name'] = 'Sort by name (DESC)';  
+   	return $options;
+}

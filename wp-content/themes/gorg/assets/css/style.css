@@ -3114,6 +3114,10 @@ header.light_skin.nav-fixed .social_icons li a:hover {
 .about_video_img {
 	position: relative;
 }
+.about_video_img img{
+	width:100%;
+	height:auto;
+}
 
 .rounded_icon {
 	font-size: 40px;

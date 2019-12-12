@@ -18,6 +18,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
             'service_title' =>'',
             'service_count' =>6,
             'service_view_all' =>'',
+            //homepage featured catlogue
+            'catalogue_description_character' =>150,
             //member Section
             'members_title' => '',
             'show_member_section' => 1,
@@ -52,7 +54,8 @@ if(!function_exists('gorg_get_option_defaults_values')):
 			'gorg_contact_address' 		=> '',
 			'gorg_contact_phone' 			=> '',
 			'gorg_contact_skype' 			=> '',
-			'gorg_contact_email' 			=> '',
+            'gorg_contact_email' 			=> '',
+            
 			
 
             //footer options

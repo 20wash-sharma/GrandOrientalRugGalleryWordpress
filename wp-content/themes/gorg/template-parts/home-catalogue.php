@@ -2,6 +2,7 @@
 $gorg_settings = gorg_get_theme_options();
 $catalogue_title = $gorg_settings['catalogue_title'];
 $catalogue_limit = $gorg_settings['catalogue_count'];
+$catalogue_content_limit = $gorg_settings['catalogue_description_character'];
 ?>
 <section class="small_pb">
         <div class="container">
@@ -29,7 +30,14 @@ $catalogue_limit = $gorg_settings['catalogue_count'];
                     $shop_catalog_img = wp_get_attachment_image_src( $cat_thumb_id, 'shop_catalog' );
                     $term_link = get_term_link( $product_cat, 'product_cat' );
                     $term_name = $product_cat->name;
-                    $term_description = $product_cat->description;
+                    $term_description = wp_strip_all_tags($product_cat->description);
+                    $limited_descriptions = $term_description;
+                    if(strlen($term_description) > $catalogue_content_limit){
+                            $limited_descriptions = substr($term_description, 0,$catalogue_content_limit).'...';
+                    }
+                    else {
+                        $limited_descriptions;
+                    }
                     ?>
                     <div class="col-md-4 col-sm-6 mb-lg-5 mb-4 text-center">
                     <div class="icon_box icon_box_style_5">
@@ -45,7 +53,7 @@ $catalogue_limit = $gorg_settings['catalogue_count'];
                         </div>
                         <div class="icon_box_content">
                             <h5><?php if($term_name): echo __($term_name,'gorg'); endif;?></h5>
-                            <p><?php if($term_description): echo __($term_description,'gorg'); endif;?></p>
+                            <p><?php  echo __($limited_descriptions);?></p>
                             <a href="<?php echo esc_url($term_link); ?>" class="btn btn-sm btn-outline-black btn-radius"><?php echo __('Read more','gorg');?></a>
                         </div>
                     </div>

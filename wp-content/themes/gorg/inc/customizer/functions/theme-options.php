@@ -56,6 +56,23 @@ $wp_customize->add_control('gorg_theme_options[catalogue_count]',
         'settings' => 'gorg_theme_options[catalogue_count]',
     )
 );
+//number of content characters
+$wp_customize->add_setting('gorg_theme_options[catalogue_description_character]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['catalogue_description_character'],
+        'sanitize_callback' => 'esc_html',
+    )
+);
+$wp_customize->add_control('gorg_theme_options[catalogue_description_character]',
+    array(
+        'priority' => 2,
+        'label' => esc_html__('Limited Descriptions (In Characters)', 'gorg'),
+        'type' => 'number',
+        'section' => 'gorg_catalogue',
+        'settings' => 'gorg_theme_options[catalogue_description_character]',
+    )
+);
 
 $wp_customize->add_setting('gorg_theme_options[welcome_title]',
     array(

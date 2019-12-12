@@ -43,7 +43,7 @@ $featured_limit = $gorg_settings['featured_limit'];
                                     <div class="product_img">
                                     <?php 
                                         if(has_post_thumbnail()) {      
-                                        $product_image = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+                                        $product_image = wp_get_attachment_image_src(get_post_thumbnail_id(), 'shop_catalog');
                                         ?>
                                         <a href="<?php the_permalink(); ?>"><img class="home-featured-image" src="<?php echo $product_image[0];?>"></a>
                                         <?php }

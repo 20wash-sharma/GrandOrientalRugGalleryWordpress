@@ -392,11 +392,11 @@ add_filter( 'woocommerce_get_catalog_ordering_args', 'roshan_sort_by_name_woocom
   
 function roshan_sort_by_name_woocommerce_shop( $args ) { 
 	$orderby_value = isset( $_GET['orderby'] ) ? woocommerce_clean( $_GET['orderby'] ) : apply_filters( 'woocommerce_default_catalog_orderby', get_option( 'woocommerce_default_catalog_orderby' ) );
-   if ( 'desc' == $orderby_value ) {
+   if ( 'title_desc' == $orderby_value ) {
       $args['orderby'] = 'title';
       $args['order'] = 'desc';
    } 
-   if ( 'asc' == $orderby_value ) {
+   if ( 'title_asc' == $orderby_value ) {
 	$args['orderby'] = 'title';
 	$args['order'] = 'asc';
  } 
@@ -410,7 +410,7 @@ function roshan_remove_sorting_option_woocommerce_shop( $options ) {
 	unset($options["price"]);
 	unset($options["popularity"]);
 	unset($options["price-desc"]); 
-	$options['asc'] = 'Sort by name (ASC)';
-   	$options['desc'] = 'Sort by name (DESC)';  
+	$options['title_asc'] = 'Sort by name (ASC)';
+   	$options['title_desc'] = 'Sort by name (DESC)';  
    	return $options;
 }

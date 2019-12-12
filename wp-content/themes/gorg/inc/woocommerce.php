@@ -333,16 +333,16 @@ remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_ad
 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
 remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
-add_filter( 'woocommerce_variable_sale_price_html', 'roshan_remove_prices', 10, 2 );
-add_filter( 'woocommerce_variable_price_html', 'roshan_remove_prices', 10, 2 );
-add_filter( 'woocommerce_get_price_html', 'roshan_remove_prices', 10, 2 );
+add_filter( 'woocommerce_variable_sale_price_html', 'gorg_remove_prices', 10, 2 );
+add_filter( 'woocommerce_variable_price_html', 'gorg_remove_prices', 10, 2 );
+add_filter( 'woocommerce_get_price_html', 'gorg_remove_prices', 10, 2 );
 
 add_filter( 'woocommerce_is_sold_individually', 'wc_remove_all_quantity_fields', 10, 2 );
 function wc_remove_all_quantity_fields( $return, $product ) {
     return( true );
 }
  
-function roshan_remove_prices( $price, $product ) {
+function gorg_remove_prices( $price, $product ) {
 if ( ! is_admin() ) $price = '';
 return $price;
 }
@@ -364,8 +364,8 @@ function single_product_class($classes) {
 	return $classes;
 }
 
-add_filter( 'comment_form_default_fields', 'roshan_comment_form_hide_cookies_consent' );
-function roshan_comment_form_hide_cookies_consent( $fields ) {
+add_filter( 'comment_form_default_fields', 'gorg_comment_form_hide_cookies_consent' );
+function gorg_comment_form_hide_cookies_consent( $fields ) {
 	unset( $fields['cookies'] );
 	return $fields;
 }
@@ -373,24 +373,24 @@ function filter_clearfix(){
 	echo '<div class="clearfix"></div>';
 	}
 	add_action('woocommerce_before_shop_loop','filter_clearfix', 30);
-function roshan_note_filter(){
+function gorg_note_filter(){
 echo do_shortcode('[wcpf_filter_notes]');
 }
-add_action('woocommerce_before_shop_loop','roshan_note_filter', 35);
+add_action('woocommerce_before_shop_loop','gorg_note_filter', 35);
 
 // Update WooCommerce Flexslider options
 
-add_filter( 'woocommerce_single_product_carousel_options', 'roshan_update_woo_flexslider_options' );
+add_filter( 'woocommerce_single_product_carousel_options', 'gorg_update_woo_flexslider_options' );
 
-function roshan_update_woo_flexslider_options( $options ) {
+function gorg_update_woo_flexslider_options( $options ) {
 
     $options['directionNav'] = true;
 
     return $options;
 }
-add_filter( 'woocommerce_get_catalog_ordering_args', 'roshan_sort_by_name_woocommerce_shop' );
+add_filter( 'woocommerce_get_catalog_ordering_args', 'gorg_sort_by_name_woocommerce_shop' );
   
-function roshan_sort_by_name_woocommerce_shop( $args ) { 
+function gorg_sort_by_name_woocommerce_shop( $args ) { 
 	$orderby_value = isset( $_GET['orderby'] ) ? woocommerce_clean( $_GET['orderby'] ) : apply_filters( 'woocommerce_default_catalog_orderby', get_option( 'woocommerce_default_catalog_orderby' ) );
    if ( 'title_desc' == $orderby_value ) {
       $args['orderby'] = 'title';
@@ -403,9 +403,9 @@ function roshan_sort_by_name_woocommerce_shop( $args ) {
    return $args;
 }
 //default sorting remove from product page
-add_filter( 'woocommerce_catalog_orderby', 'roshan_remove_sorting_option_woocommerce_shop' );
+add_filter( 'woocommerce_catalog_orderby', 'gorg_remove_sorting_option_woocommerce_shop' );
   
-function roshan_remove_sorting_option_woocommerce_shop( $options ) {
+function gorg_remove_sorting_option_woocommerce_shop( $options ) {
    	unset( $options['rating'] );
 	unset($options["price"]);
 	unset($options["popularity"]);

@@ -9,52 +9,42 @@
 
 get_header();
 ?>
-
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
-
-			<section class="error-404 not-found">
-				<header class="page-header">
-					<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'gorg' ); ?></h1>
-				</header><!-- .page-header -->
-
-				<div class="page-content">
-					<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'gorg' ); ?></p>
-
-					<?php
-					get_search_form();
-
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
-
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'gorg' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories( array(
-								'orderby'    => 'count',
-								'order'      => 'DESC',
-								'show_count' => 1,
-								'title_li'   => '',
-								'number'     => 10,
-							) );
-							?>
-						</ul>
-					</div><!-- .widget -->
-
-					<?php
-					/* translators: %1$s: smiley */
-					$gorg_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'gorg' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$gorg_archive_content" );
-
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
-
-				</div><!-- .page-content -->
-			</section><!-- .error-404 -->
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
+<!-- START SECTION BANNER -->
+<section class="background_bg breadcrumb_section overlay_bg2 page-title-light" data-img-src="<?php echo get_template_directory_uri();?>/assets/images/service_bg.jpg">
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-12 text-center">
+            	<div class="page-title">
+            		<h1>404</h1>
+                </div>
+                <nav aria-label="breadcrumb">
+					<?php roshan_breadcrumbs(); ?>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END SECTION BANNER --> 
+<!-- START 404 SECTION -->
+<section>
+	<div class="container">
+    	<div class="row justify-content-center">
+        	<div class="col-md-6 text-center animation" data-animation="fadeInUp" data-animation-delay="0.2s">
+            	<div class="error_txt"><?php echo __('404', 'gorg');?></div>
+                <h5><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'gorg' ); ?></h5> 
+                <p><?php echo __('The page you are looking for was moved, removed,<br>renamed or might never existed.','gorg');?></p>
+                <div class="search_form pt-3 pb-4">
+				<form action="<?php echo home_url('/');?>" method="post" class="position-relative">
+                        <input name="s" id="text" data-email="required" type="text" placeholder="Search..." class="form-control">
+                        <button type="submit" class="btn search_icon"><i class="ion-ios-search-strong"></i></button>
+                    </form>
+                </div>
+                <a href="<?php echo home_url('/');?>" class="btn btn-outline-black"><span class="ti-arrow-left"></span><?php echo __('Back To Home', 'gorg');?></a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END 404 SECTION -->
 
 <?php
 get_footer();

@@ -39,14 +39,14 @@ if ( ! function_exists( 'gorg_get_sidebar' ) ) {
 			dynamic_sidebar( $sidebar_id );
 		} elseif ( current_user_can( 'edit_theme_options' ) ) {
 			?>
-			<div class="widget gorg-no-widget-row">
-				<p class='no-widget-text'>
-					<a href='<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>'>
-						<?php esc_html_e( 'Add Widget', 'gorg' ); ?>
-					</a>
-				</p>
-			</div>
-			<?php
+<div class="widget gorg-no-widget-row">
+    <p class='no-widget-text'>
+        <a href='<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>'>
+            <?php esc_html_e( 'Add Widget', 'gorg' ); ?>
+        </a>
+    </p>
+</div>
+<?php
 		}
 	}
 }
@@ -68,7 +68,7 @@ function gorg_body_classes( $classes ) {
 	$page_layout = 'gorg-' .$sidebar_name;
 	$classes[]   = esc_attr( $page_layout );
 	}
-	if ( is_shop() || is_product_taxonomy() ) {
+	if ( is_shop() || is_product_taxonomy()) {
 		$shop_grid = $gorg_settings['gorg_shop_column'];
 		$classes[] = 'columns-' . $shop_grid;
 		$classes[] = 'tablet-columns-' . $shop_grid;
@@ -132,7 +132,3 @@ if ( ! function_exists( 'gorg_page_layout' ) ) {
 		return apply_filters( 'gorg_page_layout', $layout );
 	}
 }
-
-
-
-

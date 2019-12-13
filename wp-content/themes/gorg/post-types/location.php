@@ -30,7 +30,7 @@ function location_init() {
 			'not_found'             => __( 'No Locations found', 'gorg' ),
 			'not_found_in_trash'    => __( 'No Locations found in trash', 'gorg' ),
 			'parent_item_colon'     => __( 'Parent Location:', 'gorg' ),
-			'menu_name'             => __( 'Locations', 'gorg' ),
+			'menu_name'             => __( 'Service Areas', 'gorg' ),
 		),
 		'public'                => true,
 		'hierarchical'          => false,

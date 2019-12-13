@@ -8,28 +8,16 @@
  */
 
 ?>
-
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
-
-		<?php if ( 'post' === get_post_type() ) : ?>
-		<div class="entry-meta">
-			<?php
-			gorg_posted_on();
-			gorg_posted_by();
-			?>
-		</div><!-- .entry-meta -->
-		<?php endif; ?>
-	</header><!-- .entry-header -->
-
-	<?php gorg_post_thumbnail(); ?>
-
-	<div class="entry-summary">
-		<?php the_excerpt(); ?>
-	</div><!-- .entry-summary -->
-
-	<footer class="entry-footer">
-		<?php gorg_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
-</article><!-- #post-<?php the_ID(); ?> -->
+<div class="col-md-4 col-sm-6 mb-lg-5 mb-4 text-center">
+    <div class="icon_box icon_box_style_5">
+        <div class="box_icon mb-3">
+            <?php gorg_post_thumbnail(); ?>
+        </div>
+        <div class="icon_box_content">
+            <?php the_title( sprintf( ' <h5><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h5>' ); ?>
+            <p><?php the_excerpt(); ?></p>
+            <a href="<?php  echo esc_url( get_permalink() );?>"
+                class="btn btn-sm btn-outline-black btn-radius text-center"><?php echo __('Read More', 'gorg');?></a>
+        </div>
+    </div>
+</div>

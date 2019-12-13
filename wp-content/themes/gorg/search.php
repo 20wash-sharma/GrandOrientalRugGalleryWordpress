@@ -9,22 +9,31 @@
 
 get_header();
 ?>
-
-	<section id="primary" class="content-area">
-		<main id="main" class="site-main">
-
-		<?php if ( have_posts() ) : ?>
-
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
+<!-- START SECTION BANNER -->
+<section class="background_bg breadcrumb_section overlay_bg2 page-title-light"
+    data-img-src="<?php echo get_template_directory_uri();?>/assets/images/service_bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="page-title">
+                    <h1> <?php
 					/* translators: %s: search query. */
 					printf( esc_html__( 'Search Results for: %s', 'gorg' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
-
-			<?php
+					?></h1>
+                </div>
+                <nav aria-label="breadcrumb">
+                    <?php roshan_breadcrumbs(); ?>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END SECTION BANNER -->
+<section class="small_pb overflow_hide">
+    <div class="container">
+        <div class="row">
+            <?php if ( have_posts() ) : ?>
+            <?php
 			/* Start the Loop */
 			while ( have_posts() ) :
 				the_post();
@@ -46,10 +55,8 @@ get_header();
 
 		endif;
 		?>
-
-		</main><!-- #main -->
-	</section><!-- #primary -->
-
+        </div>
+    </div>
+</section>
 <?php
-get_sidebar();
 get_footer();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Service Template
+ * Template Name: Carpet Cleaning Template
  */
 get_header();?>
 <?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>

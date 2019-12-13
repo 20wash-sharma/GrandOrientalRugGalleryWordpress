@@ -951,7 +951,9 @@ p.demo_store a,
 
 .woocommerce div.product .woocommerce-tabs {
   margin-bottom: 2em;
-  width: 100%;
+  width: 58%;
+  float: right;
+  clear: none;
 }
 
 .woocommerce div.product .woocommerce-tabs ul.tabs {
@@ -1301,9 +1303,11 @@ p.demo_store a,
 
 .woocommerce div.product .woocommerce-tabs,
 .woocommerce div.product .related.products {
-  display: block;
+  display: inline-block;
 }
-
+.woocommerce .related.products li.product:last-child, .woocommerce-page .related.products li.product:last-child {
+  margin-right: 0;
+}
 .woocommerce div.product .related.products ul.products {
   margin: 0;
 }

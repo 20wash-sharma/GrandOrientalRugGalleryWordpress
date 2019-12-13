@@ -34,7 +34,7 @@ get_header();
                 <h5><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'gorg' ); ?></h5> 
                 <p><?php echo __('The page you are looking for was moved, removed,<br>renamed or might never existed.','gorg');?></p>
                 <div class="search_form pt-3 pb-4">
-				<form action="<?php echo home_url('/');?>" method="post" class="position-relative">
+				<form action="<?php echo home_url('/');?>" class="position-relative">
                         <input name="s" id="text" data-email="required" type="text" placeholder="Search..." class="form-control">
                         <button type="submit" class="btn search_icon"><i class="ion-ios-search-strong"></i></button>
                     </form>

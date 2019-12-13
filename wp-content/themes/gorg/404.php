@@ -18,7 +18,7 @@ get_header();
             		<h1>404</h1>
                 </div>
                 <nav aria-label="breadcrumb">
-					<?php roshan_breadcrumbs(); ?>
+					<?php gorg_breadcrumbs(); ?>
                 </nav>
             </div>
         </div>

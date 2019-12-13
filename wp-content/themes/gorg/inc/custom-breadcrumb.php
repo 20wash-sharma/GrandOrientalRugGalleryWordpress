@@ -1,6 +1,6 @@
 <?php
 // Breadcrumbs
-function roshan_breadcrumbs() {
+function gorg_breadcrumbs() {
        
     // Settings
     $separator          = '/';

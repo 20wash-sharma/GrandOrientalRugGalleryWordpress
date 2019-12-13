@@ -117,7 +117,7 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <div class="search-overlay">
                             <span class="close-search"><i class="ion-ios-close-empty"></i></span>
                             <div class="search_wrap">
-                                <form>
+                                <form action="<?php echo home_url('/');?>">
                                     <input type="text" placeholder="Search" name="s" class="form-control" id="search_input">
                                     <button type="submit" class="search_icon"><i class="ion-ios-search-strong"></i></button>
                             	</form>

@@ -468,6 +468,23 @@
 		mainClass: 'mfp-zoom'
 	});
 
+	$('.catalog_img').each(function () { // the containers for all your galleries
+		$(this).magnificPopup({
+			delegate: 'a.catalog-zoom', // the selector for gallery item
+			type: 'image',
+			gallery: {
+				enabled: true
+			},
+			zoom: {
+				enabled: true,
+				duration: 300, // don't foget to change the duration also in CSS
+				opener: function (element) {
+					return element.find('img');
+				}
+			}
+		});
+	});
+
 	$('.image_gallery').each(function () { // the containers for all your galleries
 		$(this).magnificPopup({
 			delegate: 'a', // the selector for gallery item

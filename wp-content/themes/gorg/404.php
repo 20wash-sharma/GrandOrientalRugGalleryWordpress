@@ -44,7 +44,7 @@ get_header();
                         <button type="submit" class="btn search_icon"><i class="ion-ios-search-strong"></i></button>
                     </form>
                 </div>
-                <a href="<?php echo home_url('/');?>" class="btn btn-outline-black"><span class="ti-arrow-left"></span><?php echo __('Back To Home', 'gorg');?></a>
+                <a href="<?php echo home_url('/');?>" class="btn btn-outline-black"><span class="ti-arrow-left"></span> <?php echo __('Back To Home', 'gorg');?></a>
             </div>
         </div>
     </div>

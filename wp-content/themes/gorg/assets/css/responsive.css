@@ -244,8 +244,33 @@ section.small_pb,
 .header_wrap .navbar-collapse {
     position: absolute;
     left: 0;
-    right: 0;
-	z-index: 999;
+    right: 38px;
+    z-index: 999;
+    top: 13px;
+}
+.light_skin.nav-fixed .ubermenu-main .ubermenu-item-level-0 > .ubermenu-target{
+    color:white !important;
+}
+.ubermenu-skin-black-white-2.ubermenu-responsive-toggle{
+    background: #70461B !important;
+    border: 1px solid #70461B !important;
+}
+.ubermenu-responsive-default.ubermenu-responsive.ubermenu{
+    background:#70461B !important;
+}
+.ubermenu.ubermenu-main .ubermenu-item-level-0{
+    margin:0px !important;
+    padding: 0 15px;
+}
+.ubermenu-main .ubermenu-item-level-0 > .ubermenu-target, .ubermenu-main .ubermenu-item-level-0 > .ubermenu-custom-content.ubermenu-custom-content-padded {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+}
+.ubermenu-main .ubermenu-nav .ubermenu-item.ubermenu-item-level-0 > .ubermenu-target:before{
+    bottom:10px;
+}
+.ubermenu-skin-black-white-2 .ubermenu-submenu, .ubermenu-skin-black-white-2 .ubermenu-submenu .ubermenu-target {
+    color: #f4f4f4 !important;
 }
 .navbar-expand-lg .attr-nav li .nav-link {
     padding: 15px 10px !important;

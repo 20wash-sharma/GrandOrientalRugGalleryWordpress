@@ -1343,6 +1343,50 @@ select option {
 	color: #000000;
 }
 
+.ubermenu-main .ubermenu-item-level-0.ubermenu-current-menu-item > .ubermenu-target, .ubermenu-main .ubermenu-item-level-0.ubermenu-current-menu-parent > .ubermenu-target, .ubermenu-main .ubermenu-item-level-0.ubermenu-current-menu-ancestor > .ubermenu-target{
+	background-color:transparent !important;
+	background:none !important;
+	}
+	.ubermenu.ubermenu-main .ubermenu-item-level-0:hover > .ubermenu-target, .ubermenu-main .ubermenu-item-level-0.ubermenu-active > .ubermenu-target{
+	background-color:transparent !important;
+	background:none !important;
+	}
+	.light_skin.nav-fixed .ubermenu-main .ubermenu-item-level-0 > .ubermenu-target{
+	color:#333 !important;
+	line-height:1.5em !important;
+	}
+	
+	.light_skin.nav-fixed .ubermenu-main .ubermenu-item-level-0 > .ubermenu-target:before{
+	background-color: #333 !important;
+	}
+	.ubermenu-main .ubermenu-nav .ubermenu-item.ubermenu-item-level-0 > .ubermenu-target:before{
+		background-color: #fff;
+		bottom: 15px;
+		content: "";
+		height: 2px;
+		left: 50%;
+		position: absolute;
+		right: 50%;
+		transition: all 0.5s ease 0s;
+	}
+	.ubermenu-main .ubermenu-nav .ubermenu-item.ubermenu-item-level-0.ubermenu-current-menu-item a:before, .ubermenu-main .ubermenu-nav .ubermenu-item.ubermenu-item-level-0:hover>a:before {
+		left: 0;
+		right: 0;
+	color:white !important;
+	}
+	.ubermenu-main .ubermenu-item-level-0.ubermenu-current-menu-item > .ubermenu-target{
+	color:white !important;
+	}
+	.ubermenu-sub-indicators .ubermenu-item.ubermenu-item-level-0.ubermenu-has-submenu-drop>.ubermenu-target>.ubermenu-sub-indicator {
+		position: absolute;
+		right: 0px !important;
+		top: 50%;
+		margin-top: -6px;
+	}
+	.ubermenu-responsive-toggle{
+	padding:10px !important;
+	}
+
 .navbar {
 	padding: 0;
 }
@@ -2355,6 +2399,9 @@ header.light_skin.nav-fixed .social_icons li a:hover {
 
 .top-header.light_skin .list_menu li a:hover {
 	color: #7b4d1c;
+}
+.header_wrap .ubermenu-skin-black-white-2 .ubermenu-submenu,.header_wrap .ubermenu-skin-black-white-2 .ubermenu-submenu .ubermenu-target{
+	color:#ddd;
 }
 
 /*===================================*

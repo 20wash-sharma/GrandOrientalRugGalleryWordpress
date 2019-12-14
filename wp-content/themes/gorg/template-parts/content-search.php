@@ -8,7 +8,7 @@
  */
 
 ?>
-<div class="col-md-4 col-sm-6 mb-lg-5 mb-4 text-center">
+<div class="col-md-3 col-sm-4 mb-lg-5 mb-4 text-center">
     <div class="icon_box icon_box_style_5">
         <div class="box_icon mb-3">
             <?php gorg_post_thumbnail(); ?>

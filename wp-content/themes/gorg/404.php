@@ -26,13 +26,18 @@ get_header();
 </section>
 <!-- END SECTION BANNER --> 
 <!-- START 404 SECTION -->
+<?php
+    $gorg_settings = gorg_get_theme_options(); 
+    $title_404 = $gorg_settings['error_404_title'];
+    $description_404 = $gorg_settings['error_404_description'];
+?>
 <section>
 	<div class="container">
     	<div class="row justify-content-center">
         	<div class="col-md-6 text-center animation" data-animation="fadeInUp" data-animation-delay="0.2s">
             	<div class="error_txt"><?php echo __('404', 'gorg');?></div>
-                <h5><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'gorg' ); ?></h5> 
-                <p><?php echo __('The page you are looking for was moved, removed,<br>renamed or might never existed.','gorg');?></p>
+                <h5><?php echo __(($title_404) ? $title_404 : 'Oops! That page can&rsquo;t be found.','gorg');?></h5> 
+                <p><?php echo __(($description_404) ? $description_404 : 'The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place.','gorg');?></p>
                 <div class="search_form pt-3 pb-4">
 				<form action="<?php echo home_url('/');?>" class="position-relative">
                         <input name="s" id="text" data-email="required" type="text" placeholder="Search..." class="form-control">

@@ -302,4 +302,39 @@ $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'cta_bg
     )
 );
 
+//404 page 
+$wp_customize->add_setting('gorg_theme_options[error_404_title]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['error_404_title'],
+        'sanitize_callback' => 'wp_kses_post'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[error_404_title]',
+    array(
+        'label' => esc_html__('404 Page Title', 'gorg'),
+        'type' => 'text',
+        'section' => 'gorg_404_page',
+        'settings' => 'gorg_theme_options[error_404_title]',
+        'priority' => 1,
+    )
+);
+
+$wp_customize->add_setting('gorg_theme_options[error_404_description]',
+    array(
+        'type' => 'option',
+        'default' => $gorg_setting['error_404_description'],
+        'sanitize_callback' => 'wp_kses_post'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[error_404_description]',
+    array(
+        'label' => esc_html__('404 Page Title', 'gorg'),
+        'type' => 'textarea',
+        'section' => 'gorg_404_page',
+        'settings' => 'gorg_theme_options[error_404_description]',
+        'priority' => 2,
+    )
+);
+
 ?>

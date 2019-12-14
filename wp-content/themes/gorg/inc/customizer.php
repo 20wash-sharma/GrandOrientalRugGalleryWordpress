@@ -77,6 +77,12 @@ $wp_customize->add_section('gorg_testimonial',
 		'priority' => 9,
 		'panel' => 'gorg_options_panel'
 	));	
+$wp_customize->add_section('gorg_404_page',
+	array(
+		'title' => esc_html__('404 Error Page Options', 'gorg'),
+		'priority' => 9,
+		'panel' => 'gorg_options_panel'
+	));	
 
 $wp_customize->add_section('contact_section',
 		array(

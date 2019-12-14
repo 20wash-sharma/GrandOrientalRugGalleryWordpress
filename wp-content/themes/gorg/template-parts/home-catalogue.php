@@ -43,15 +43,8 @@ $catalogue_content_limit = $gorg_settings['catalogue_description_character'];
                     <div class="icon_box icon_box_style_5">
                         <div class="box_icon mb-3">	
                         <?php if($shop_catalog_img){ ?>
-                            <a href="<?php echo $shop_catalog_img;?>">
-                                <div class="gallery_img">
-                                    <img src="<?php echo $shop_catalog_img;?>" alt="image">
-                                </div>
-                                <div class="gallary_hover_box">
-                                    <i class="ti-zoom-in"></i>
-                                </div>
-                            </a>
-                            <!-- <img src="<?php echo $shop_catalog_img[0]; ?>" alt="<?php echo $product_cat->name; ?>" /> -->
+                           
+                            <img src="<?php echo $shop_catalog_img[0]; ?>" alt="<?php echo $product_cat->name; ?>" />
 
                       <?php  } 
                       else { ?>

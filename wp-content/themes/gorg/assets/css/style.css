@@ -4808,11 +4808,14 @@ footer .widget_title {
 }
 
 .bottom_footer {
-	padding: 30px 0;
+	padding: 10px 0;
 	position: relative;
 	background: #292929;
 }
 
+.bottom_footer .google-review img{
+	height:40px;
+}
 .footer_social li {
 	display: inline-block;
 	margin-right: 5px;

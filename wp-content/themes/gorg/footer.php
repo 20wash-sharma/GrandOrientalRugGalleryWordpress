@@ -26,6 +26,8 @@
     $facebook = $gorg_settings['gorg_social_facebook'];
     $footer_text = $gorg_settings['footer_text'];
     $footer_copyright = $gorg_settings['footer_copyright'];
+    $footer_google_review_img = $gorg_settings['footer_google_review_img'];
+    $footer_google_review_link = $gorg_settings['google_review_link'];
     ?>
 <!-- START FOOTER SECTION --> 
 <footer class="background_bg">
@@ -98,10 +100,15 @@
     <div class="bottom_footer text_white border_top_tran">
     	<div class="container">
         	<div class="row align-items-center">
-            	<div class="col-md-6">
+            	<div class="col-md-4">
                 	<p class="copyright m-md-0 text-center text-md-left"><?php if(!empty($footer_copyright)): echo $footer_copyright; endif;?></p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                <?php if($footer_google_review_img): ?>
+                	<p class="google-review m-md-0 text-center"><a target="_blank" href="<?php if($footer_google_review_link): echo esc_url($footer_google_review_link); endif;?>"><img src="<?php echo $footer_google_review_img;?>" alt="Google Review Image"/></a></p>
+                <?php endif;?>
+                </div>
+                <div class="col-md-4">
                 <?php if ( is_active_sidebar( 'footer-3' ) ) : ?>
 						<?php dynamic_sidebar( 'footer-3' ); ?>
 						<?php endif; ?>

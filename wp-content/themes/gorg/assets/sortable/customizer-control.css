@@ -177,6 +177,16 @@ li#accordion-section-woo_section>h3.accordion-section-title:before {
   content: "\f174";
 }
 
+li#accordion-section-gorg_404_page>h3.accordion-section-title:before {
+  content: "\f534";
+}
+
+li#accordion-panel-ubermenu_instance_main>h3.accordion-section-title:before {
+  content: "\f333";
+}
+li#accordion-panel-woocommerce>h3.accordion-section-title:before {
+  content: "\f174";
+}
 li#accordion-section-gorg_why_us>h3.accordion-section-title:before {
   content: "\f345";
 }

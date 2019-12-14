@@ -43,19 +43,19 @@
                     <h6>Follow Us</h6>
                     <ul class="list_none footer_social">
                         <?php if($facebook): ?>
-                    	<li><a href="<?php echo esc_url($facebook);?>"><i class="ion-social-facebook"></i></a></li>
+                    	<li><a target="_blank" href="<?php echo esc_url($facebook);?>"><i class="ion-social-facebook"></i></a></li>
                         <?php endif;?>
                         <?php if($twitter): ?>
-                        <li><a href="<?php echo esc_url($twitter);?>"><i class="ion-social-twitter"></i></a></li>
+                        <li><a target="_blank" href="<?php echo esc_url($twitter);?>"><i class="ion-social-twitter"></i></a></li>
                         <?php endif;?>
                         <?php if($google): ?>
-                        <li><a href="<?php echo esc_url($google);?>"><i class="ion-social-googleplus"></i></a></li>
+                        <li><a target="_blank" href="<?php echo esc_url($google);?>"><i class="ion-social-googleplus"></i></a></li>
                         <?php endif;?>
                         <?php if($youtube): ?>
-                        <li><a href="<?php echo esc_url($youtube);?>"><i class="ion-social-youtube-outline"></i></a></li>
+                        <li><a target="_blank" href="<?php echo esc_url($youtube);?>"><i class="ion-social-youtube-outline"></i></a></li>
                         <?php endif;?>
                         <?php if($instagram): ?>
-                        <li><a href="<?php echo esc_url($instagram);?>"><i class="ion-social-instagram-outline"></i></a></li>
+                        <li><a target="_blank" href="<?php echo esc_url($instagram);?>"><i class="ion-social-instagram-outline"></i></a></li>
                         <?php endif;?>
                     </ul>
                 </div>

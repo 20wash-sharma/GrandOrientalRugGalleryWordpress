@@ -407,6 +407,7 @@ add_filter( 'woocommerce_catalog_orderby', 'gorg_remove_sorting_option_woocommer
   
 function gorg_remove_sorting_option_woocommerce_shop( $options ) {
    	unset( $options['rating'] );
+   	unset( $options['menu_order'] );
 	unset($options["price"]);
 	unset($options["popularity"]);
 	unset($options["price-desc"]); 

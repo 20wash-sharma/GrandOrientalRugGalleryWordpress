@@ -30,6 +30,9 @@
         </a>
         <?php echo printVariations($product); ?>
     </td>
+    <td class='product-attributes'>
+           <?php $attributes = $product->get_attributes();?>
+        </td>
     <?php
     // If Price column is enabled, then show 'Price' table data.
     if (!quoteupIsPriceColumnDisabled($form_data)) :

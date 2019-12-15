@@ -1,7 +1,7 @@
 <?php 
 /**
  * Template Name:No Sidebar 
- * Template post type: service_area
+ * Template post type: service-areas
  */
 get_header();
 ?>

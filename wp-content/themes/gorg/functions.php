@@ -250,7 +250,7 @@ require get_template_directory() . '/bt4navwalker.php';
  */
 require get_template_directory() . '/post-types/home_slider.php';
 require get_template_directory() . '/post-types/gorg_testimonial.php';
-require get_template_directory() . '/post-types/service_area.php';
+require get_template_directory() . '/post-types/service-areas.php';
 require get_template_directory() . '/post-types/gorg_gallery.php';
 
 /**

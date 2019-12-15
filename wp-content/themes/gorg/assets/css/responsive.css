@@ -245,7 +245,7 @@ section.small_pb,
     position: absolute;
     left: 0;
     right: 38px;
-    z-index: 999;
+    z-index: -1;
     top: 13px;
 }
 .light_skin.nav-fixed .ubermenu-main .ubermenu-item-level-0 > .ubermenu-target{

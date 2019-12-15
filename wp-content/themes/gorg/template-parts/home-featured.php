@@ -33,7 +33,7 @@ $featured_limit = $gorg_settings['featured_limit'];
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="carousel_slide4 owl-carousel owl-theme nav_top" data-margin="30" data-nav="true" data-dots="false">
+                <div class="carousel_slide4 owl-carousel owl-theme nav_top" data-margin="30" data-loop="true" data-nav="true" data-dots="false" data-autoplay="true">
                     <?php
                         
                             while($product_query->have_posts()):$product_query->the_post(); ?>

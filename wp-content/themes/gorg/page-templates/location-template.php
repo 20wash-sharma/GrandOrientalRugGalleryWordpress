@@ -9,7 +9,7 @@ get_header();?>
     	<div class="row animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0.2s" style="animation-delay: 0.2s; opacity: 1;">
             <?php 
             $areas_args = array(
-                'post_type' => 'service_areas',
+                'post_type' => 'service_area',
                 'posts_per_page' =>-1
             );
             $areas_query = new WP_query($areas_args);

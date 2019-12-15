@@ -4234,12 +4234,12 @@ header.light_skin.nav-fixed .social_icons li a:hover {
 	text-align: center;
 }
 
-.owl-theme .owl-nav [class*="owl-"] {
+.carousel_slide4.owl-theme .owl-nav [class*="owl-"] {
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 	color: #000;
 	font-size: 18px;
 	margin: 0;
-	padding: 6px 16px;
+	padding: 6px 16px !important;
 	background: #fff;
 	border-radius: 0;
 	position: absolute;

@@ -200,6 +200,7 @@
 				center: $carousel.data("center"),
 				rewind: $carousel.data("rewind"),
 				autoplay: $carousel.data("autoplay"),
+				autoplayHoverPause: true,
 				nav: $carousel.data("nav"),
 				navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
 				autoplayTimeout: $carousel.data("autoplay-timeout"),

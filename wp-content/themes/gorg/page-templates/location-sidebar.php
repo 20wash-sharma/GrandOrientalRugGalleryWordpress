@@ -1,7 +1,7 @@
 <?php 
 /**
  * Template Name: With Sidebar 
- * Template post type: location
+ * Template post type: service_area
  */
 get_header();
 ?>
@@ -29,7 +29,7 @@ $cta_bg             = $gorg_settings['cta_bg_img'];
 		?>		</div>
 				<div class="col-lg-4 mt-lg-0 mt-4 pt-3 pt-lg-0">
 					<div class="location-sidebar-wrapper">
-						<?php get_sidebar('location');?>
+						<?php get_sidebar('service_area');?>
 					</div>
                     <div class="blue_overlay_bg mt-5 cta_section_mini radius_box_10 text_white position-relative background_bg"
                         data-img-src="<?php echo ($cta_bg) ? $cta_bg : get_template_directory_uri().'/assets/images/cta_img.jpg';?>"

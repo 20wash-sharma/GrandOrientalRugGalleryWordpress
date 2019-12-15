@@ -114,7 +114,7 @@ function gorg_widgets_init() {
 		'after_title'   => '</h6>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Location Sidebar', 'gorg' ),
+		'name'          => esc_html__( 'Service Areas Sidebar', 'gorg' ),
 		'id'            => 'sidebar-location',
 		'description'   => esc_html__( 'Add widgets here.', 'gorg' ),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
@@ -250,7 +250,7 @@ require get_template_directory() . '/bt4navwalker.php';
  */
 require get_template_directory() . '/post-types/home_slider.php';
 require get_template_directory() . '/post-types/gorg_testimonial.php';
-require get_template_directory() . '/post-types/location.php';
+require get_template_directory() . '/post-types/service_area.php';
 require get_template_directory() . '/post-types/gorg_gallery.php';
 
 /**

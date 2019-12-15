@@ -186,12 +186,12 @@
   width: 100%;
 }
 
-.woocommerce table.cart .product-thumbnail,
+/* .woocommerce table.cart .product-thumbnail,
 .woocommerce #content table.cart .product-thumbnail,
 .woocommerce-page table.cart .product-thumbnail,
 .woocommerce-page #content table.cart .product-thumbnail {
   display: none;
-}
+} */
 
 .woocommerce table.cart td.actions,
 .woocommerce #content table.cart td.actions,

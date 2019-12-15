@@ -486,6 +486,9 @@ header .attr-nav + .social_icons {
 .lng_dropdown {
 	margin: 13px 0;
 }
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce #respond input#submit{
+    font-size:13px !important;
+}
 }
 /* -------------------------------------------------
   min-width: 768px

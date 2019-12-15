@@ -73,19 +73,22 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                 <div class="col-md-4">
                     <ul class="list_none social_icons text-center border_social rounded_social social_white  text-md-right mt-2 mt-md-0">
                         <?php if($gorg_facebook):?>
-                        <li><a href="<?php echo $gorg_facebook;?>"><i class="ion-social-facebook"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_facebook;?>"><i class="ion-social-facebook"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_twitter):?>
-                        <li><a href="<?php echo $gorg_twitter;?>"><i class="ion-social-twitter"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_twitter;?>"><i class="ion-social-twitter"></i></a></li>
+                        <?php endif;?>
+                        <?php if($gorg_googleplus): ?>
+                        <li><a target="_blank" href="<?php echo esc_url($gorg_googleplus);?>"><i class="ion-social-googleplus"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_instagram):?>
-                        <li><a href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_linkedin):?>
-                        <li><a href="<?php echo $gorg_linkedin;?>"><i class="ion-social-linkedin"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_linkedin;?>"><i class="ion-social-linkedin"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_youtube):?>
-                        <li><a href="<?php echo $gorg_youtube;?>"><i class="ion-social-youtube"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_youtube;?>"><i class="ion-social-youtube"></i></a></li>
                         <?php endif;?>
                     </ul>
                 </div>

@@ -71,8 +71,8 @@ function gorg_body_classes( $classes ) {
 	if ( is_shop() || is_product_taxonomy()) {
 		$shop_grid = $gorg_settings['gorg_shop_column'];
 		$classes[] = 'columns-' . $shop_grid;
-		$classes[] = 'tablet-columns-' . $shop_grid;
-		$classes[] = 'mobile-columns-' . $shop_grid;
+		$classes[] = 'tablet-columns-3';
+		$classes[] = 'mobile-columns-2';
 
 		$classes[] = 'gorg-woo-shop-archive';
 	}

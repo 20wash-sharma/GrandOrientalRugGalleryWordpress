@@ -7734,7 +7734,7 @@ table tbody tr:nth-child(odd) {
 }
 table th,
 table.wp-block-table th {
-	font-size: 1.1rem;
+	font-size: 1rem;
 	text-transform: uppercase;
 	margin: 0px;
 	padding: 12px;

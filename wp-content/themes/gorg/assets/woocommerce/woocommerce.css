@@ -1535,9 +1535,9 @@ p.demo_store a,
   font-weight: 700;
   border-radius: 40px;
   left: auto;
-  color: #333;
-  background-color: transparent;
-  border: 2px solid #333;
+  color: white;
+  background-color: #7b4d1c;
+  border: 2px solid #7b4d1c;
   display: inline-block;
   background-image: none;
   box-shadow: none;
@@ -1586,8 +1586,8 @@ p.demo_store a,
 .woocommerce #respond input#submit:hover {
   text-decoration: none;
   background-image: none;
-  background-color: #333;
-    color: #fff;
+  background-color: transparent;
+    color: #7b4d1c;
 }
 
 .woocommerce a.button.alt,

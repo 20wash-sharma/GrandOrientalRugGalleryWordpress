@@ -6748,6 +6748,9 @@ select[multiple] option {
 .product-thumbnail {
 	width: 1%;
 }
+.product_title h5 a{
+	color:#7b4d1c;
+}
 
 .shop_cart_table input {
 	height: 45px;
@@ -7493,9 +7496,9 @@ margin:0;
 /*enquiry  button*/
 .quote-form button.wdm_enquiry{
 	position: relative;
-	background-color: transparent;
-    border: 2px solid #333 !important;
-    color: #333;
+	background-color: #7b4d1c;
+    border: 2px solid #7b4d1c !important;
+    color: white;
 	padding: 7px 15px !important;
 	cursor: pointer;
 	margin:0px !important;
@@ -7508,6 +7511,15 @@ margin:0;
 	text-align: center;
 	border-radius: 40px;
     vertical-align: middle;
+}
+.quote-form button.wdm_enquiry:before{
+	font-family:'Font Awesome 5 free';
+    content: "\f0e0";
+    margin-right: .1em;
+	vertical-align: bottom;
+}
+#wdm-quoteup-trigger, .quote-form button.wdm_enquiry a {
+    margin-left: .2em !important;
 }
 .quote-form button.wdm_enquiry.added::after {
     font-family: WooCommerce;
@@ -7531,8 +7543,8 @@ margin:0;
     padding-right: 2.618em !important;
 }
 .quote-form button.wdm_enquiry:hover{
-	background-color: #333;
-	color: #fff !important;
+	background-color: transparent;
+	color:  #7b4d1c !important;
 	text-decoration: none;
 	box-shadow: none;
     outline: medium none;

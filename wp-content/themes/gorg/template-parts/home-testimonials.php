@@ -20,7 +20,7 @@ $testimonial_limit = $gorg_settings['testimonial_limit'];
         </div>
         <div class="row">
         	<div class="col-md-12 animation" data-animation="fadeInUp" data-animation-delay="0.1s">
-            	<div class="testimonial_slider testimonial_style2 carousel_slide3 owl-carousel owl-theme" data-center="true" data-margin="30" data-loop="true" data-autoplay="true">
+            	<div class="testimonial_slider testimonial_style2 carousel_slide3 owl-carousel owl-theme" data-center="true" data-margin="30" data-loop="true">
                     <?php 
                     $testimonial_args = array(
                         'post_type' =>'gorg_testimonial',

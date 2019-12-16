@@ -195,11 +195,11 @@
 			$carousel.owlCarousel({
 				loop: $carousel.data("loop"),
 				margin: $carousel.data("margin"),
-				dots: $carousel.data("dots"),
+				// dots: $carousel.data("dots"),
 				autoHeight: true,
 				center: $carousel.data("center"),
 				rewind: $carousel.data("rewind"),
-				autoplay: $carousel.data("autoplay"),
+				autoplay: true,
 				autoplayHoverPause: true,
 				nav: $carousel.data("nav"),
 				navText: ['<i class="ion-ios-arrow-back"></i>', '<i class="ion-ios-arrow-forward"></i>'],
@@ -207,12 +207,19 @@
 				responsive: {
 					0: {
 						items: 1,
+						touchDrag: true,
+						autoplay: false,
 					},
 					380: {
 						items: 1,
+						touchDrag: true,
+						autoplay: false,
+						dots: false,
 					},
 					576: {
 						items: 2,
+						touchDrag: true,
+						autoplay: false,
 					},
 					1000: {
 						items: 3,
@@ -231,6 +238,7 @@
 				loop: $carousel.data("loop"),
 				margin: $carousel.data("margin"),
 				autoHeight: true,
+				responsiveClass: true,
 				center: $carousel.data("center"),
 				rewind: $carousel.data("rewind"),
 				autoplay: $carousel.data("autoplay"),
@@ -240,12 +248,19 @@
 				responsive: {
 					0: {
 						items: 1,
+						touchDrag: true,
+						autoplay: false,
 					},
 					380: {
 						items: 1,
+						touchDrag: true,
+						autoplay: false,
+						nav: false,
 					},
 					576: {
 						items: 2,
+						touchDrag: true,
+						autoplay: false,
 					},
 					1000: {
 						items: 3,

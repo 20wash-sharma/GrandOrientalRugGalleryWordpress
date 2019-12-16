@@ -249,18 +249,14 @@
 					0: {
 						items: 1,
 						touchDrag: true,
-						autoplay: false,
 					},
 					380: {
 						items: 1,
 						touchDrag: true,
-						autoplay: false,
-						nav: false,
 					},
 					576: {
 						items: 2,
 						touchDrag: true,
-						autoplay: false,
 					},
 					1000: {
 						items: 3,

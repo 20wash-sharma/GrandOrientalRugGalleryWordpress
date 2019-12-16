@@ -1594,8 +1594,8 @@ p.demo_store a,
 .woocommerce button.button.alt,
 .woocommerce input.button.alt,
 .woocommerce #respond input#submit.alt {
-  background-color: transparent;
-  color: #333;
+  background-color: #7b4d1c;
+  color: white;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -1603,8 +1603,8 @@ p.demo_store a,
 .woocommerce button.button.alt:hover,
 .woocommerce input.button.alt:hover,
 .woocommerce #respond input#submit.alt:hover {
-  background-color: #333;
-  color: white;
+  background-color: transparent;
+  color: #7b4d1c;
 }
 
 .woocommerce a.button.alt.disabled, .woocommerce a.button.alt:disabled, .woocommerce a.button.alt:disabled[disabled], .woocommerce a.button.alt.disabled:hover, .woocommerce a.button.alt:disabled:hover, .woocommerce a.button.alt:disabled[disabled]:hover,

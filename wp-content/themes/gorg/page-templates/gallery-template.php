@@ -41,7 +41,7 @@ get_header();?>
                         <?php
 					$counter = 0;
 					$gallery_args = array(
-						'post_type' => 'gorg_gallery',
+						'post_type' => 'gorg-gallery',
 						'posts_per_page'=> -1
 					);
 					$gallery_query = new WP_query($gallery_args);

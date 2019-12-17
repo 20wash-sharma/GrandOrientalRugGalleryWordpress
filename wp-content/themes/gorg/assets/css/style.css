@@ -65,6 +65,10 @@ input:focus, textarea:focus {
 	box-shadow: none !important;
 }
 
+.entry-content ol{
+padding-left:20px;
+}
+
 input[type=email], input[type=number], input[type=password], input[type=reset], input[type=search], input[type=tel], input[type=text], input[type=url], select, textarea {
     color: #666;
     padding: .4em;

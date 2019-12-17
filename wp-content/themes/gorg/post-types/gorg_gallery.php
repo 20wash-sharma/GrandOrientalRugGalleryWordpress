@@ -4,7 +4,7 @@
  * Registers the `gorg_gallery` post type.
  */
 function gorg_gallery_init() {
-	register_post_type( 'gorg_gallery', array(
+	register_post_type( 'gorg-gallery', array(
 		'labels'                => array(
 			'name'                  => __( 'Galleries', 'gorg' ),
 			'singular_name'         => __( 'Gallery', 'gorg' ),

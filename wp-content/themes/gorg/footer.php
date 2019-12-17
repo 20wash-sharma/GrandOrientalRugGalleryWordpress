@@ -22,6 +22,7 @@
     $linkedin = $gorg_settings['gorg_social_linkedin'];
     $google = $gorg_settings['gorg_social_googleplus'];
     $instagram = $gorg_settings['gorg_social_instagram'];
+    $yelp = $gorg_settings['gorg_social_yelp'];
     $youtube = $gorg_settings['gorg_social_youtube'];
     $facebook = $gorg_settings['gorg_social_facebook'];
     $footer_text = $gorg_settings['footer_text'];
@@ -52,6 +53,9 @@
                         <?php endif;?>
                         <?php if($google): ?>
                         <li><a target="_blank" href="<?php echo esc_url($google);?>"><i class="ion-social-googleplus"></i></a></li>
+                        <?php endif;?>
+                        <?php if($yelp): ?>
+                        <li><a target="_blank" href="<?php echo esc_url($yelp);?>"><i class="fab fa-yelp"></i></a></li>
                         <?php endif;?>
                         <?php if($youtube): ?>
                         <li><a target="_blank" href="<?php echo esc_url($youtube);?>"><i class="ion-social-youtube-outline"></i></a></li>

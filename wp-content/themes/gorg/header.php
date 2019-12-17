@@ -53,6 +53,7 @@ $gorg_twitter = $gorg_settings['gorg_social_twitter'];
 $gorg_googleplus = $gorg_settings['gorg_social_googleplus'];
 $gorg_linkedin = $gorg_settings['gorg_social_linkedin'];
 $gorg_instagram = $gorg_settings['gorg_social_instagram'];
+$gorg_yelp = $gorg_settings['gorg_social_yelp'];
 $gorg_youtube = $gorg_settings['gorg_social_youtube'];
 ?>
 <!-- START HEADER -->
@@ -86,6 +87,9 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <?php endif;?>
                         <?php if($gorg_linkedin):?>
                         <li><a target="_blank" href="<?php echo $gorg_linkedin;?>"><i class="ion-social-linkedin"></i></a></li>
+                        <?php endif;?>
+                        <?php if($gorg_yelp): ?>
+                        <li><a target="_blank" href="<?php echo esc_url($gorg_yelp);?>"><i class="fab fa-yelp"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_youtube):?>
                         <li><a target="_blank" href="<?php echo $gorg_youtube;?>"><i class="ion-social-youtube"></i></a></li>

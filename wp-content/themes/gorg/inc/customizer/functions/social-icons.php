@@ -109,6 +109,23 @@ $wp_customize->add_control('gorg_theme_options[gorg_social_instagram]',
         'type' => 'text',
     )
 );
+//yeld
+$wp_customize->add_setting('gorg_theme_options[gorg_social_yelp]',
+    array(
+        'default' => $gorg_setting['gorg_social_yeld'],
+        'sanitize_callback' => 'esc_url_raw',
+        'type' => 'option',
+        'capability' => 'manage_options'
+    )
+);
+$wp_customize->add_control('gorg_theme_options[gorg_social_yelp]',
+    array(
+        'priority' => 480,
+        'label' => esc_html__('Yelp Link', 'gorg'),
+        'section' => 'gorg_social_icons',
+        'type' => 'text',
+    )
+);
 $wp_customize->add_setting('gorg_theme_options[gorg_social_youtube]',
     array(
         'default' => $gorg_setting['gorg_social_youtube'],

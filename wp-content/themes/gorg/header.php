@@ -82,9 +82,6 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <?php if($gorg_googleplus): ?>
                         <li><a target="_blank" href="<?php echo esc_url($gorg_googleplus);?>"><i class="ion-social-googleplus"></i></a></li>
                         <?php endif;?>
-                        <?php if($gorg_instagram):?>
-                        <li><a target="_blank" href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
-                        <?php endif;?>
                         <?php if($gorg_linkedin):?>
                         <li><a target="_blank" href="<?php echo $gorg_linkedin;?>"><i class="ion-social-linkedin"></i></a></li>
                         <?php endif;?>
@@ -92,7 +89,10 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <li><a target="_blank" href="<?php echo esc_url($gorg_yelp);?>"><i class="fab fa-yelp"></i></a></li>
                         <?php endif;?>
                         <?php if($gorg_youtube):?>
-                        <li><a target="_blank" href="<?php echo $gorg_youtube;?>"><i class="ion-social-youtube"></i></a></li>
+                        <li><a target="_blank" href="<?php echo $gorg_youtube;?>"><i class="ion-social-youtube-outline"></i></a></li>
+                        <?php endif;?>
+                        <?php if($gorg_instagram):?>
+                        <li><a target="_blank" href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
                         <?php endif;?>
                     </ul>
                 </div>

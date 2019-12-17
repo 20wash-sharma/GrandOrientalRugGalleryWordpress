@@ -40,7 +40,7 @@ $catalogue_content_limit = $gorg_settings['catalogue_description_character'];
                         $limited_descriptions;
                     }
                     ?>
-                    <div class="col-md-4 col-sm-6 mb-lg-5 mb-4 text-center">
+                    <div class="col-md-3 col-sm-4 mb-lg-5 mb-3 text-center">
                     <div class="icon_box icon_box_style_5">
                         <div class="box_icon mb-3 image_gallery_item">	
                         <?php if($shop_catalog_full_img){ ?>

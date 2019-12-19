@@ -30,7 +30,16 @@
         </a>
         <?php echo printVariations($product); ?>
     </td>
-    
+    <!--edited-->
+    <td class="custom-attributes">
+    Custom Attributes Here
+    <?php 
+    //     global $product;
+    //     $attributes = $product->get_attributes();
+    //     foreach ( $attributes as $attribute ) :
+    //     var_dump($attributes);
+    //  endforeach; ?>
+    </td>
     <?php
     // If Price column is enabled, then show 'Price' table data.
     if (!quoteupIsPriceColumnDisabled($form_data)) :

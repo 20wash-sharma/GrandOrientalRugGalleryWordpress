@@ -21,7 +21,9 @@
         <th class='product-name cart-name'>
             <?php _e('Product', QUOTEUP_TEXT_DOMAIN); ?>
         </th>
-        
+        <th class='product-name cart-name'>
+            <?php _e('Attributes', QUOTEUP_TEXT_DOMAIN); ?>
+        </th>
         <?php
         // If Price column is enabled, then show 'Price' table head.
         if (!quoteupIsPriceColumnDisabled($form_data)) :

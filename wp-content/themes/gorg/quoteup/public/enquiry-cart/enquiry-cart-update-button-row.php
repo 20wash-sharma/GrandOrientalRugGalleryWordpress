@@ -17,7 +17,7 @@
 $updateButtonColSpan = quoteupReturnColSpanEnqCartUpdateButton($form_data);
 ?>
 <tr>
-    <td colspan="<?php echo $updateButtonColSpan;?>" class='td-btn-update'>
+    <td colspan="6" class='td-btn-update'>
         <?php
         if (isset($form_data['enable_disable_quote']) && $form_data['enable_disable_quote'] == 1) {
             ?>
@@ -25,7 +25,7 @@ $updateButtonColSpan = quoteupReturnColSpanEnqCartUpdateButton($form_data);
             <?php
         } else {
             ?>
-            <input type='button' class='update wdm-update' value=' <?php _e('Update Enquiry & Quote Cart', QUOTEUP_TEXT_DOMAIN); ?>'>
+            <input type='button' class='update wdm-update' value=' <?php _e('Update Cart', QUOTEUP_TEXT_DOMAIN); ?>'>
             <?php
         }
         ?>

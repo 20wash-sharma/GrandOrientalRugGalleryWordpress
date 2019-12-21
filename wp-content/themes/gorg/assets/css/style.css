@@ -6456,6 +6456,45 @@ select[multiple] option {
 	background-color: #7b4d1c;
 	color: #fff;
 }
+/*search pagination*/
+
+.gorg-pagination {
+    display: inline-block;
+    width: 100%;
+    padding-top: 2em;
+}
+.gorg-pagination .nav-links {
+    display: inline-block;
+    width: 100%;
+}
+.gorg-pagination .next.page-numbers, .gorg-pagination .prev.page-numbers, .post-navigation a {
+    padding: 0 1.5em;
+    height: 2.33333em;
+    line-height: -webkit-calc(2.33333em - 3px);
+    line-height: calc(2.33333em - 3px);
+}
+.gorg-pagination .next.page-numbers, .gorg-pagination .next.page-numbers:focus, .gorg-pagination .next.page-numbers:visited, .gorg-pagination .prev.page-numbers, .gorg-pagination .prev.page-numbers:focus, .gorg-pagination .prev.page-numbers:visited {
+    display: inline-block;
+    width: auto;
+}
+.gorg-pagination .next.page-numbers {
+    float: right;
+    text-align: right;
+}
+.gorg-pagination .page-numbers {
+    display: inline-block;
+    width: 2.33333em;
+    height: 2.33333em;
+    font-size: 16px;
+    font-size: 1.06666rem;
+    line-height: -webkit-calc(2.33333em - 3px);
+    line-height: calc(2.33333em - 3px);
+    text-align: center;
+}
+.gorg-pagination span.current {
+	color: #7b4d1c;
+	font-weight: bold;
+}
 
 /*===================================*
   22. END PAGINATION DESIGN

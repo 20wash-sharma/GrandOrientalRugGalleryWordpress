@@ -46,9 +46,22 @@ get_header();
 				get_template_part( 'template-parts/content', 'search' );
 
 			endwhile;
-
-			the_posts_navigation();
-
+            global $numpages;
+            if ( isset( $numpages ) ):
+                ob_start();
+                echo "<div class='gorg-pagination'>";
+                the_posts_pagination(
+                    array(
+                        'prev_text' => __('<i class="fas fa-long-arrow-alt-left"></i> Previous Page', 'gorg'),
+                        'next_text' => __('Next Page <i class="fas fa-long-arrow-alt-right"></i>', 'gorg'),
+                        'taxonomy'     => 'category',
+                        'in_same_term' => true,
+                    )
+                );
+                echo '</div>';
+                $output = ob_get_clean();
+                echo $output;
+            endif;
 		else :
 
 			get_template_part( 'template-parts/content', 'none' );

@@ -132,3 +132,18 @@ if ( ! function_exists( 'gorg_page_layout' ) ) {
 		return apply_filters( 'gorg_page_layout', $layout );
 	}
 }
+
+function gorg_polylang_langswitcher() {
+	$output = '';
+	if ( function_exists( 'pll_the_languages' ) ) {
+		$args   = [
+			'show_flags' => 1,
+			'show_names' => 1,
+			'display_names_as' =>'slug',
+			'echo'       => 0,
+		];
+		$output = '<ul class="polylang_langswitcher">'.pll_the_languages( $args ). '</ul>';
+	}
+	return $output;
+}
+add_shortcode( 'polylang_langswitcher', 'gorg_polylang_langswitcher' );

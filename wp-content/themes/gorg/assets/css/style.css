@@ -1920,6 +1920,41 @@ select option {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.header-top-right{
+	float: right;
+}
+.header-top-right .social_icons{
+	display: inline-block;
+}
+.header-top-right ul.polylang_langswitcher{
+float:right;
+margin-left: 15px;
+}
+.header-top-right ul.polylang_langswitcher li {
+    display: inline-block;
+    line-height: 34px;
+}
+.header-top-right ul.polylang_langswitcher li:first-child{
+	border-right: 1px solid #ddd;
+	line-height: 20px;
+	padding-right: 10px;
+    margin-right: 8px;
+}
+.header-top-right ul.polylang_langswitcher li a{
+	color:#ddd;
+	text-transform: uppercase;
+    font-size: 14px;
+	line-height: 20px;
+	vertical-align: middle;
+	transition: all ease-in-out .2s;
+}
+.header-top-right ul.polylang_langswitcher li.current-lang a{
+	font-weight: bold;
+	color:white;
+}
+.header-top-right ul.polylang_langswitcher li a:hover{
+color:white;
+}
 .social_icons, .contact_detail {
 	font-size: 0;
 }

@@ -72,6 +72,7 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                     </ul>
                 </div>
                 <div class="col-md-4">
+                    <div class="header-top-right">
                     <ul class="list_none social_icons text-center border_social rounded_social social_white  text-md-right mt-2 mt-md-0">
                         <?php if($gorg_facebook):?>
                         <li><a target="_blank" href="<?php echo $gorg_facebook;?>"><i class="ion-social-facebook"></i></a></li>
@@ -95,6 +96,8 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <li><a target="_blank" href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
                         <?php endif;?>
                     </ul>
+                    <?php echo do_shortcode('[polylang_langswitcher]');?>
+                        </div>
                 </div>
             </div>
         </div>

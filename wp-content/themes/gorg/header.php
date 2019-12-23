@@ -96,7 +96,6 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                         <li><a target="_blank" href="<?php echo $gorg_instagram;?>"><i class="ion-social-instagram-outline"></i></a></li>
                         <?php endif;?>
                     </ul>
-                    <?php echo do_shortcode('[polylang_langswitcher]');?>
                         </div>
                 </div>
             </div>

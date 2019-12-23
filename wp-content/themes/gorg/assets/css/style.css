@@ -3662,6 +3662,11 @@ ABOUT SECTION
 	padding: 0px 15px 30px 15px;
 }
 
+.work_col4>li {
+	width: 25%;
+	float: left;
+}
+
 
 .single_post .owl-carousel.owl-theme .owl-dots {
 	margin: 0 !important;
@@ -3679,7 +3684,9 @@ ABOUT SECTION
 	display: none;
 }
 
-
+.portfolio_container, .portfolio_gallery {
+    list-style: none;
+}
 #load-more {
 	transition: none;
 }
@@ -5136,6 +5143,7 @@ ERROR 404 SECTION
 
 .image_gallery_item {
 	position: relative;
+	overflow:hidden;
 }
 
 .gallary_hover_box {

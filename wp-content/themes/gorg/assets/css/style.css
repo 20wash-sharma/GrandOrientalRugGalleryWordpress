@@ -1929,6 +1929,21 @@ select option {
 	padding: 2px 3px;
 }
 
+.social_white .social_icons li a, .social_white.social_icons li a {
+	color: #fff;
+	border-color: #fff;
+}
+
+.social_white .border_social li a:hover, .social_white.border_social li a:hover {
+	background-color: #fff;
+	color: #7b4d1c;
+	border-color: #fff;
+}
+.border_social li a {
+	border: 1px solid #333;
+	border-radius: 100%;
+}
+
 .social_icons li a {
 	font-size: 18px;
 	height: 35px;

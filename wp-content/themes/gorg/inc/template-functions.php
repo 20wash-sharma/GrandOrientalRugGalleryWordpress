@@ -147,3 +147,8 @@ function gorg_polylang_langswitcher() {
 	return $output;
 }
 add_shortcode( 'polylang_langswitcher', 'gorg_polylang_langswitcher' );
+
+/*Custom String Translation */
+add_action('init', function() {
+	pll_register_string('service-areas', 'Service Areas');
+  });

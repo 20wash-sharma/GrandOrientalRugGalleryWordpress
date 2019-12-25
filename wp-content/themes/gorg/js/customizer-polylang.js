@@ -3,7 +3,7 @@
  */
 /* global wp, jQuery */
 /* exported PluginCustomizer */
-var PSPolyLang = (function( api, $ ) {
+var PSPolyLang = (function (api, $) {
 	'use strict';
 
 	var component = {
@@ -21,14 +21,14 @@ var PSPolyLang = (function( api, $ ) {
 	 * @param {string} args.url  Preview URL.
 	 * @returns {void}
 	 */
-	component.init = function init( pll ) {
-		_.extend(component.data, pll );
-		if (!pll || !pll.url || !pll.languages || !pll.current_language ) {
-			throw new Error( 'Missing args' );
+	component.init = function init(pll) {
+		_.extend(component.data, pll);
+		if (!pll || !pll.url || !pll.languages || !pll.current_language) {
+			throw new Error('Missing args');
 		}
 
-		api.bind( 'ready', function(){
-			api.previewer.previewUrl.set( pll.url );
+		api.bind('ready', function () {
+			api.previewer.previewUrl.set(pll.url);
 
 			var languages = pll.languages;
 			var current_language = pll.current_language;
@@ -39,8 +39,8 @@ var PSPolyLang = (function( api, $ ) {
 			for (var i = 0; i < languages.length; i++) {
 				var language = languages[i];
 				var selected = (language.slug === current_language) ? 'selected=""' : '';
-				current_language_name = (language.slug === current_language) ? language.name.substr(0, 3) : 'Eng';
-				html += '<option ' + selected + ' value="' + language.slug + '">' + language.name.substr(0, 3) + '</option>';
+				current_language_name = (language.slug === current_language) ? language.name : 'English';
+				html += '<option ' + selected + ' value="' + language.slug + '">' + language.name + '</option>';
 			}
 			html += '</select>';
 			$(html).prependTo('#customize-header-actions');
@@ -65,4 +65,4 @@ var PSPolyLang = (function( api, $ ) {
 	};
 
 	return component;
-} ( wp.customize, jQuery ) );
+}(wp.customize, jQuery));

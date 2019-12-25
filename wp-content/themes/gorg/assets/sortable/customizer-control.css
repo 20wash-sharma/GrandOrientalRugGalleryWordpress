@@ -446,3 +446,10 @@ li#accordion-section-introduction_options_second>h3.accordion-section-title:befo
 /*padding-right: 5px;*/
 
 /*}*/
+
+#pll-language-select{
+  width: 70px !important;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 0 10px !important;
+}

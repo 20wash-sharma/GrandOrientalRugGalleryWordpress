@@ -6,7 +6,7 @@
 function service_areas_init() {
 	register_post_type( 'service-areas', array(
 		'labels'                => array(
-			'name'                  => __( 'Service Areas', 'gorg' ),
+			'name'                  => pll__( 'Service Areas', 'gorg' ),
 			'singular_name'         => __( 'Service Area', 'gorg' ),
 			'all_items'             => __( 'All Service Areas', 'gorg' ),
 			'archives'              => __( 'Service Area Archives', 'gorg' ),

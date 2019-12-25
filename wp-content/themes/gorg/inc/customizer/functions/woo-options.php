@@ -2,7 +2,7 @@
 $gorg_setting = gorg_get_theme_options();
 //shop page sidebar
 $wp_customize->add_setting( 'gorg_theme_options[gorg_shop_page_sidebar]', array(
-    'type' => 'option',
+    'type' => 'theme_mod',
     'capability' => 'edit_theme_options',
     'default' => 'default',
   ) );
@@ -22,7 +22,7 @@ $wp_customize->add_setting( 'gorg_theme_options[gorg_shop_page_sidebar]', array(
   ) );
   $wp_customize->add_setting('gorg_theme_options[products_per_page]',
   array(
-      'type' => 'option',
+      'type' => 'theme_mod',
       'default' => $gorg_setting['products_per_page'],
       'sanitize_callback' => 'esc_html',
   )
@@ -37,7 +37,7 @@ $wp_customize->add_control('gorg_theme_options[products_per_page]',
   )
 );
 $wp_customize->add_setting( 'gorg_theme_options[gorg_shop_column]', array(
-  'type' => 'option',
+  'type' => 'theme_mod',
   'capability' => 'edit_theme_options',
   'default' => 4,
 ) );
@@ -56,7 +56,7 @@ $wp_customize->add_control( new Customizer_Range_Value_Control( $wp_customize, '
 ) ) );
 //single product page sidebar
 $wp_customize->add_setting( 'gorg_theme_options[gorg_single_product_page_sidebar]', array(
-  'type' => 'option',
+  'type' => 'theme_mod',
   'capability' => 'edit_theme_options',
   'default' => 'default',
 ) );

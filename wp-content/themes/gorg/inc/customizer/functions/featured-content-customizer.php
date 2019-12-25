@@ -20,7 +20,7 @@ for ($i = 1; $i <= $gorg_setting['gorg_slider_no']; $i++) {
         array(
             'default' => '',
             'sanitize_callback' => 'gorg_sanitize_page',
-            'type' => 'option',
+            'type' => 'theme_mod',
             'capability' => 'manage_options'
         ));
     $wp_customize->add_control('gorg_theme_options[gorg_featured_page_slider_' . $i . ']',

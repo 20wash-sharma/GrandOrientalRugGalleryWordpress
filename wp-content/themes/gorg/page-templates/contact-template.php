@@ -27,7 +27,7 @@ get_header();?>
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2">Address</h5>
+                        <h5 class="text-uppercase py-md-2"><?php echo pll__('Address', 'gorg');?></h5>
                         <p><?php echo $contact_address;?></p>
 					</div>
 				<?php endif;?>
@@ -40,7 +40,7 @@ get_header();?>
                         <i class="far fa-clock"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2">BUSINESS HOURS</h5>
+                        <h5 class="text-uppercase py-md-2"><?php echo __('BUSINESS HOURS', 'gorg');?></h5>
                         <p><?php echo $contact_work;?></p>
 					</div>
 					<?php endif;?>
@@ -52,8 +52,8 @@ get_header();?>
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="icon_box_content">
-						<h5 class="text-uppercase py-md-2">Contact</h5>
-						<?php if($contact_phone):?> <p><strong>Phone:</strong> <?php echo $contact_phone; endif;?>,</p><?php if($contact_phone1): ?><p><strong>Cell:</strong> <?php echo $contact_phone1; endif;?>,</p><?php if($contact_fax):?><p><strong>Fax:</strong>  <?php echo $contact_fax; endif;?></p>
+						<h5 class="text-uppercase py-md-2"><?php echo __('Contact', 'gorg');?></h5>
+						<?php if($contact_phone):?> <p><strong><?php echo __('Phone:', 'gorg');?></strong> <?php echo $contact_phone; endif;?>,</p><?php if($contact_phone1): ?><p><strong>Cell:</strong> <?php echo $contact_phone1; endif;?>,</p><?php if($contact_fax):?><p><strong>Fax:</strong>  <?php echo $contact_fax; endif;?></p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@ get_header();?>
                         <i class="fa fa-envelope"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2">Email</h5>
+                        <h5 class="text-uppercase py-md-2"><?php echo __('Email', 'gorg');?></h5>
                         <p><a href="mailto:<?php echo $contact_email;?>"><?php echo $contact_email;?></a></p>
 					</div>
 				<?php endif;?>

@@ -253,6 +253,9 @@ require get_template_directory() . '/post-types/gorg_testimonial.php';
 require get_template_directory() . '/post-types/service-areas.php';
 require get_template_directory() . '/post-types/gorg_gallery.php';
 
+/*polylang for customizer*/
+require_once get_template_directory() . '/customizer-polylang.php';
+
 /**
  * Load Jetpack compatibility file.
  */
@@ -272,7 +275,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
 
 if(!function_exists('gorg_get_theme_options')):
     function gorg_get_theme_options() {
-        return wp_parse_args(  get_option( 'gorg_theme_options', array() ), gorg_get_option_defaults_values() );
+        return wp_parse_args(  get_theme_mod( 'gorg_theme_options', array() ), gorg_get_option_defaults_values() );
     }
 endif;
 

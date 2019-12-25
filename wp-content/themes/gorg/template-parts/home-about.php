@@ -27,7 +27,7 @@
             <div class="col-md-6 col-sm-12 animation" data-animation="fadeInRight" data-animation-delay="0.2s">
                 <div class="heading_s3 mb-md-3"> 
                   <span class="sub_title"><?php echo get_the_title($welcome_page_id);?></span>
-                  <h2><?php if($welcome_title): echo $welcome_title; endif;?></h2>
+                  <h2><?php if($welcome_title): echo __($welcome_title,'gorg'); endif;?></h2>
                 </div>
                 <?php $content_length = strlen($get_about_content); 
                 if($welcome_text_limit ==''){
@@ -40,7 +40,7 @@
                      echo '<p>'.$get_about_content.'</p>';
                  }
                 ?>
-                <a href="<?php echo get_the_permalink($welcome_page_id);?>" class="btn btn-outline-black btn-radius">Read More</a>
+                <a href="<?php echo get_the_permalink($welcome_page_id);?>" class="btn btn-outline-black btn-radius"><?php echo Pll__('Read More', 'gorg');?></a>
             </div>
         </div>
     </div>

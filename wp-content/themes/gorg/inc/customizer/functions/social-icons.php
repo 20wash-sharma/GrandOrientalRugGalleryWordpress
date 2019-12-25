@@ -13,7 +13,7 @@ $gorg_setting = gorg_get_theme_options();
 //     'gorg_theme_options[gorg_social_show]',
 //     array(
 //         'default' => $gorg_setting['gorg_social_show'],
-//         'type' => 'option',
+//         'type' => 'theme_mod',
 //         'capability' => 'edit_theme_options',
 //         'sanitize_callback' => 'gorg_sanitize_checkbox',
 //     )
@@ -33,7 +33,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_facebook]',
     array(
         'default' => $gorg_setting['gorg_social_facebook'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -49,7 +49,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_twitter]',
     array(
         'default' => $gorg_setting['gorg_social_twitter'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -65,7 +65,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_linkedin]',
     array(
         'default' => $gorg_setting['gorg_social_linkedin'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -81,7 +81,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_googleplus]',
     array(
         'default' => $gorg_setting['gorg_social_googleplus'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -97,7 +97,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_instagram]',
     array(
         'default' => $gorg_setting['gorg_social_instagram'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -114,7 +114,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_yelp]',
     array(
         'default' => $gorg_setting['gorg_social_yeld'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -130,7 +130,7 @@ $wp_customize->add_setting('gorg_theme_options[gorg_social_youtube]',
     array(
         'default' => $gorg_setting['gorg_social_youtube'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );

@@ -25,7 +25,7 @@ $wp_customize->add_control('gorg_theme_options[gorg_reset_all]',
     ));
 $wp_customize->add_setting('gorg_theme_options[catalogue_title]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['catalogue_title'],
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -42,7 +42,7 @@ $wp_customize->add_control('gorg_theme_options[catalogue_title]',
 
 $wp_customize->add_setting('gorg_theme_options[catalogue_count]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['catalogue_count'],
         'sanitize_callback' => 'esc_html',
     )
@@ -59,7 +59,7 @@ $wp_customize->add_control('gorg_theme_options[catalogue_count]',
 //number of content characters
 $wp_customize->add_setting('gorg_theme_options[catalogue_description_character]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['catalogue_description_character'],
         'sanitize_callback' => 'esc_html',
     )
@@ -76,7 +76,7 @@ $wp_customize->add_control('gorg_theme_options[catalogue_description_character]'
 
 $wp_customize->add_setting('gorg_theme_options[welcome_title]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['welcome_title'],
         'sanitize_callback' => 'wp_kses_post'
     )
@@ -94,7 +94,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[select_about_page]',
     array(
         'default' => $gorg_setting['select_about_page'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'sanitize_callback' => 'absint',
         'capability' => 'edit_theme_options'
     )
@@ -109,7 +109,7 @@ $wp_customize->add_control('select_about_page', array(
 
 $wp_customize->add_setting('gorg_theme_options[welcome_text_limit]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['welcome_text_limit'],
         'sanitize_callback' => 'esc_html',
     )
@@ -128,7 +128,7 @@ $wp_customize->add_control('gorg_theme_options[welcome_text_limit]',
 $wp_customize->add_setting(
     'gorg_theme_options[white_logo]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['white_logo'],
         'sanitize_callback' => 'esc_url_raw',
         'capability' => 'edit_theme_options',
@@ -149,7 +149,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[testimonial_title]',
     array(
         'default' => $gorg_setting['testimonial_title'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -167,7 +167,7 @@ $wp_customize->add_control('gorg_theme_options[testimonial_title]',
 
 $wp_customize->add_setting('gorg_theme_options[testimonial_limit]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['testimonial_limit'],
         'sanitize_callback' => 'esc_html',
     )
@@ -185,7 +185,7 @@ $wp_customize->add_control('gorg_theme_options[testimonial_limit]',
 //homepage featured product
 $wp_customize->add_setting('gorg_theme_options[featured_title]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['featured_title'],
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -202,7 +202,7 @@ $wp_customize->add_control('gorg_theme_options[featured_title]',
 
 $wp_customize->add_setting('gorg_theme_options[featured_limit]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['featured_limit'],
         'sanitize_callback' => 'esc_html',
     )
@@ -219,7 +219,7 @@ $wp_customize->add_control('gorg_theme_options[featured_limit]',
 //CTa options
 $wp_customize->add_setting('gorg_theme_options[cta_title]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['cta_title'],
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -236,7 +236,7 @@ $wp_customize->add_control('gorg_theme_options[cta_title]',
 //cta content
 $wp_customize->add_setting('gorg_theme_options[cta_content]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['cta_content'],
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -253,7 +253,7 @@ $wp_customize->add_control('gorg_theme_options[cta_content]',
 //btn text
 $wp_customize->add_setting('gorg_theme_options[cta_btn_text]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['cta_btn_text'],
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -271,7 +271,7 @@ $wp_customize->add_setting('gorg_theme_options[cta_btn_link]',
     array(
         'default' => $gorg_setting['cta_btn_link'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -286,7 +286,7 @@ $wp_customize->add_control('gorg_theme_options[cta_btn_link]',
 $wp_customize->add_setting(
     'gorg_theme_options[cta_bg_img]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['cta_bg_img'],
         'sanitize_callback' => 'esc_url_raw',
         'capability' => 'edit_theme_options',
@@ -305,7 +305,7 @@ $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'cta_bg
 //404 page 
 $wp_customize->add_setting('gorg_theme_options[error_404_title]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['error_404_title'],
         'sanitize_callback' => 'wp_kses_post'
     )
@@ -322,7 +322,7 @@ $wp_customize->add_control('gorg_theme_options[error_404_title]',
 
 $wp_customize->add_setting('gorg_theme_options[error_404_description]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['error_404_description'],
         'sanitize_callback' => 'wp_kses_post'
     )

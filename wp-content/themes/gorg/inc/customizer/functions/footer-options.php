@@ -5,7 +5,7 @@ $gorg_setting = gorg_get_theme_options();
 //     'gorg_theme_options[show_developer_footer]',
 //     array(
 //         'default' => $gorg_setting['show_developer_footer'],
-//         'type' => 'option',
+//         'type' => 'theme_mod',
 //         'capability' => 'edit_theme_options',
 //         'sanitize_callback' => 'gorg_checkbox_integer',
 //     )
@@ -24,7 +24,7 @@ $gorg_setting = gorg_get_theme_options();
 $wp_customize->add_setting(
     'gorg_theme_options[footer_logo]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['footer_logo'],
         'sanitize_callback' => 'esc_url_raw',
         'capability' => 'edit_theme_options',
@@ -42,7 +42,7 @@ $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'footer
 $wp_customize->add_setting('gorg_theme_options[footer_text]',
     array(
         'default' => $gorg_setting['footer_text'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'sanitize_callback' => 'sanitize_text_field'
     )
 );
@@ -57,7 +57,7 @@ $wp_customize->add_control('footer_text',
 $wp_customize->add_setting('gorg_theme_options[footer_copyright]',
     array(
         'default' => $gorg_setting['footer_copyright'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'sanitize_callback' => 'sanitize_text_field'
     )
 );
@@ -65,7 +65,7 @@ $wp_customize->add_setting('gorg_theme_options[footer_copyright]',
 $wp_customize->add_setting(
     'gorg_theme_options[footer_google_review_img]',
     array(
-        'type' => 'option',
+        'type' => 'theme_mod',
         'default' => $gorg_setting['footer_google_review_img'],
         'sanitize_callback' => 'esc_url_raw',
         'capability' => 'edit_theme_options',
@@ -84,7 +84,7 @@ $wp_customize->add_setting('gorg_theme_options[google_review_link]',
     array(
         'default' => $gorg_setting['google_review_link'],
         'sanitize_callback' => 'esc_url_raw',
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'manage_options'
     )
 );
@@ -106,7 +106,7 @@ $wp_customize->add_control('footer_copyright',
 // $wp_customize->add_setting('gorg_theme_options[developed_by_text]',
 //     array(
 //         'default' => $gorg_setting['developed_by_text'],
-//         'type' => 'option',
+//         'type' => 'theme_mod',
 //         'sanitize_callback' => 'sanitize_text_field'
 //     )
 // );
@@ -122,7 +122,7 @@ $wp_customize->add_control('footer_copyright',
 // $wp_customize->add_setting('gorg_theme_options[developed_by_link]',
 //     array(
 //         'default' => $gorg_setting['developed_by_link'],
-//         'type' => 'option',
+//         'type' => 'theme_mod',
 //         'sanitize_callback' => 'esc_url_raw'
 //     )
 // );

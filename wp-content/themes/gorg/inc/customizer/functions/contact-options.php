@@ -5,7 +5,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_title]',
     array(
         'default' => $gorg_setting['contact_title'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -23,7 +23,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_address]',
     array(
         'default' => $gorg_setting['contact_address'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -42,7 +42,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_fphone]',
     array(
         'default' => $gorg_setting['contact_fphone'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'esc_html',
     )
@@ -60,7 +60,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_sphone]',
     array(
         'default' => $gorg_setting['contact_sphone'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'esc_html',
     )
@@ -80,7 +80,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_fax]',
     array(
         'default' => $gorg_setting['contact_fax'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'esc_html',
     )
@@ -98,7 +98,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_work]',
     array(
         'default' => $gorg_setting['contact_work'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -116,7 +116,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_email]',
     array(
         'default' => $gorg_setting['contact_email'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'esc_html',
     )
@@ -136,7 +136,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_form]',
     array(
         'default' => $gorg_setting['contact_form'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'wp_kses_post',
     )
@@ -157,7 +157,7 @@ $wp_customize->add_setting(
     'gorg_theme_options[contact_map_iframe]',
     array(
         'default' => $gorg_setting['contact_map_iframe'],
-        'type' => 'option',
+        'type' => 'theme_mod',
         'capability' => 'edit_theme_options',
     )
 );

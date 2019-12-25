@@ -17,6 +17,7 @@ $res_section_title 	= get_field('section_title');
 $res_section_content 	= get_field('section_content');
 $vid_bg_img 		= get_field('video_background_image');
 $youtube_link		= get_field('youtube_video_link');
+
 ?>
 <section class="small_pb">
         <div class="container">

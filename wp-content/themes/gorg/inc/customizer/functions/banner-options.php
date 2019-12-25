@@ -4,7 +4,7 @@ $gorg_setting = gorg_get_theme_options();
 
     $wp_customize->add_setting('gorg_theme_options[slider_posts]',
         array(
-            'type' => 'option',
+            'type' => 'theme_mod',
             'default' => $gorg_setting['slider_posts'],
             'sanitize_callback' => 'esc_html',
         )
@@ -23,7 +23,7 @@ $gorg_setting = gorg_get_theme_options();
     // Add settings for output description
     $wp_customize->add_setting( 'gorg_theme_options[show_static_content]', array(
         'default'    => $gorg_setting['show_static_content'],
-        'type'       => 'option',
+        'type'       => 'theme_mod',
         'capability' => 'edit_theme_options'
     ) );
 
@@ -40,7 +40,7 @@ $gorg_setting = gorg_get_theme_options();
         'gorg_theme_options[slider_static_title]',
         array(
             'default' => $gorg_setting['slider_static_title'],
-            'type' => 'option',
+            'type' => 'theme_mod',
             'capability' => 'edit_theme_options',
             'sanitize_callback' => 'wp_kses_post',
         )
@@ -60,7 +60,7 @@ $gorg_setting = gorg_get_theme_options();
         'gorg_theme_options[slider_static_content]',
         array(
             'default' => $gorg_setting['slider_static_content'],
-            'type' => 'option',
+            'type' => 'theme_mod',
             'capability' => 'edit_theme_options',
             'sanitize_callback' => 'wp_kses_post',
         )
@@ -80,7 +80,7 @@ $gorg_setting = gorg_get_theme_options();
         'gorg_theme_options[show_slider_arrow]',
         array(
             'default' => $gorg_setting['show_slider_arrow'],
-            'type' => 'option',
+            'type' => 'theme_mod',
             'capability' => 'edit_theme_options',
             'sanitize_callback' => 'gorg_checkbox_integer',
         )

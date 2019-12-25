@@ -5453,7 +5453,7 @@ ERROR 404 SECTION
 	font-weight: bold;
 }
 span.wpcf7-list-item {
-    display: block;
+    display: block !important;
     margin: 0 0 0 1em;
 }
 /*loation page sidebar*/

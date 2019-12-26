@@ -6,7 +6,7 @@ function gorg_breadcrumbs() {
     $separator          = '/';
     $breadcrums_id      = 'breadcrumbs';
     $breadcrums_class   = 'breadcrumb justify-content-center';
-    $home_title         = 'Home';
+    $home_title         = pll__('Home');
       
     // If you have any custom post types with custom taxonomies, put the taxonomy name below (e.g. product_cat)
     $custom_taxonomy    = 'product_cat';

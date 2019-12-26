@@ -1,0 +1,69 @@
+.cf7-settings input[type=text],
+.cf7-settings input[type=search],
+.cf7-settings input[type=tel],
+.cf7-settings input[type=time],
+.cf7-settings input[type=url],
+.cf7-settings input[type=week],
+.cf7-settings input[type=password],
+.cf7-settings input[type=color],
+.cf7-settings input[type=date],
+.cf7-settings input[type=datetime],
+.cf7-settings input[type=datetime-local],
+.cf7-settings input[type=email],
+.cf7-settings input[type=month],
+.cf7-settings input[type=number],
+.cf7-settings select{
+	border: 1px solid #ced4da;
+	-webkit-border-radius: 0.25rem;
+	-moz-border-radius: 0.25rem;
+	border-radius: 0.25rem;
+	box-shadow: none;
+	padding: 0 15px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	color: #222222;
+	height: 45px;
+}
+
+.cf7-settings input[type=text]:focus,
+.cf7-settings input[type=search]:focus,
+.cf7-settings input[type=tel]:focus,
+.cf7-settings input[type=time]:focus,
+.cf7-settings input[type=url]:focus,
+.cf7-settings input[type=week]:focus,
+.cf7-settings input[type=password]:focus,
+.cf7-settings input[type=color]:focus,
+.cf7-settings input[type=date]:focus,
+.cf7-settings input[type=datetime]:focus,
+.cf7-settings input[type=datetime-local]:focus,
+.cf7-settings input[type=email]:focus,
+.cf7-settings input[type=month]:focus,
+.cf7-settings input[type=number]:focus,
+.cf7-settings select:focus{
+	border: 1px solid rgba(22,146,148,0.5);
+	-webkit-box-shadow: 0px 0px 0px 2px rgba(22,146,148,0.5);
+	-moz-box-shadow: 0px 0px 0px 2px rgba(22,146,148,0.5);
+	box-shadow: 0px 0px 0px 2px rgba(22,146,148,0.5);
+}
+
+.cf7-settings .button.button-primary {
+	border: 1px solid #169294;
+	font-family: 'Roboto', sans-serif;
+	background: #169294;
+	color: #ffffff;
+	-webkit-border-radius: 0.25rem;
+	-moz-border-radius: 0.25rem;
+	border-radius: 0.25rem;
+	font-weight: 500;
+	box-shadow: none;
+	font-size: 15px;
+	padding: 6px 20px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	height: auto;
+	text-shadow: none;
+}

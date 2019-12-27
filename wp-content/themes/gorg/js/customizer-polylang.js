@@ -39,8 +39,8 @@ var PSPolyLang = (function (api, $) {
 			for (var i = 0; i < languages.length; i++) {
 				var language = languages[i];
 				var selected = (language.slug === current_language) ? 'selected=""' : '';
-				current_language_name = (language.slug === current_language) ? language.name : 'English';
-				html += '<option ' + selected + ' value="' + language.slug + '">' + language.name + '</option>';
+				current_language_name = (language.slug === current_language) ? language.slug.toUpperCase() : 'English';
+				html += '<option ' + selected + ' value="' + language.slug + '">' + language.slug.toUpperCase() + '</option>';
 			}
 			html += '</select>';
 			$(html).prependTo('#customize-header-actions');

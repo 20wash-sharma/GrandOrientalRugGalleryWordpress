@@ -71,7 +71,7 @@
 						<?php endif; ?>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="widget_title"><?php echo __('Contact Us','gorg');?></h6>
+                    <h6 class="widget_title"><?php echo pll__('Contact Us','gorg');?></h6>
                     <ul class="contact_info contact_info_light list_none">
                     <?php if($footer_address): ?>
                         <li>
@@ -87,7 +87,7 @@
                     <?php endif;?>
                         <li>
                             <span class="ti-mobile"></span>
-                            <address><?php if($footer_phone):?> Phone: <?php echo $footer_phone; endif;?><?php if($footer_phone1): ?>,<br/> Cell: <?php echo $footer_phone1; endif;?><?php if($footer_fax):?>,<br/> Fax: <?php echo $footer_fax; endif;?></address>
+                            <address><?php if($footer_phone):?><?php echo pll__('Phone:', 'gorg');?> <?php echo $footer_phone; endif;?><?php if($footer_phone1): ?>,<br/><?php echo pll__('Cell:', 'gorg');?><?php echo $footer_phone1; endif;?><?php if($footer_fax):?>,<br/> <?php echo pll__('Fax:', 'gorg');?> <?php echo $footer_fax; endif;?></address>
                         </li>
                     </ul>
                 </div>

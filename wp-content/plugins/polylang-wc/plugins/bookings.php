@@ -62,18 +62,19 @@ class PLLWC_Bookings {
 		add_filter( 'pllwc_translate_cart_item', array( $this, 'translate_cart_item' ), 10, 2 );
 		add_filter( 'pllwc_add_cart_item_data', array( $this, 'add_cart_item_data' ), 10, 2 );
 
-		// Emails
-		// FIXME booking notification?
+		// Emails.
 		$actions = array(
-			// Cancelled booking
+			// Cancelled booking.
 			'woocommerce_booking_pending-confirmation_to_cancelled_notification',
 			'woocommerce_booking_confirmed_to_cancelled_notification',
 			'woocommerce_booking_paid_to_cancelled_notification',
-			// Booking confirmed
+			// Booking confirmed.
 			'woocommerce_booking_confirmed_notification',
+			// Pending confirmation.
+			'woocommerce_booking_pending-confirmation_notification',
 			// Reminder
 			'wc-booking-reminder',
-			// New booking
+			// New booking.
 			'woocommerce_new_booking_notification',
 			'woocommerce_admin_new_booking_notification',
 		);
@@ -673,7 +674,7 @@ class PLLWC_Bookings {
 
 			// Translate Duration
 			if ( ! empty( $booking['duration'] ) && ! empty( $booking['_duration'] ) && $product = wc_get_product( $item['product_id'] ) ) {
-				$total_duration = $booking['_duration'] * $product->wc_booking_duration;
+				$total_duration = $booking['_duration'] * $product->get_duration();
 
 				switch ( $booking['_duration_unit'] ) {
 					case 'month':

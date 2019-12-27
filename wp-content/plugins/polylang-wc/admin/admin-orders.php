@@ -19,6 +19,7 @@ class PLLWC_Admin_Orders {
 		add_action( 'wp_loaded', array( $this, 'custom_columns' ), 20 );
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 20 );
 		add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions' ) );
+		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'admin_order_actions' ) );
 	}
 
 	/**
@@ -144,6 +145,10 @@ class PLLWC_Admin_Orders {
 	 * @return array
 	 */
 	public function admin_order_actions( $actions ) {
+		if ( isset( $actions['status']['actions'] ) ) {
+			$actions = $actions['status']['actions'];
+		}
+
 		foreach ( $actions as $key => $arr ) {
 			if ( false !== strpos( $arr['url'], 'admin-ajax.php' ) ) {
 				$actions[ $key ]['url'] = add_query_arg( 'pll_ajax_backend', 1, $arr['url'] );

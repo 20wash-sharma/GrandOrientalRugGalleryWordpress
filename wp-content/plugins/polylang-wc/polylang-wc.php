@@ -3,7 +3,7 @@
 /**
 Plugin name: Polylang for WooCommerce
 Plugin URI: https://polylang.pro
-Version: 1.2.4
+Version: 1.2.5
 Author: Frédéric Demarle
 Author uri: https://polylang.pro
 Description: Adds multilingual capability to WooCommerce
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly
 }
 
-define( 'PLLWC_VERSION', '1.2.4' );
+define( 'PLLWC_VERSION', '1.2.5' );
 define( 'PLLWC_MIN_PLL_VERSION', '2.5.1' );
 
 define( 'PLLWC_FILE', __FILE__ ); // This file

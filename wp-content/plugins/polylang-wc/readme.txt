@@ -3,7 +3,7 @@ Contributors: Chouby
 Tags: multilingual, woocommerce
 Requires at least: 4.7
 Tested up to: 5.3
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv3 or later
 
 == Description ==
@@ -15,6 +15,12 @@ Some popular extensions such as WooCommerce Subscriptions, Dynamic Pricing, Tabl
 This extension can be used either with the free version of Polylang or in combination with Polylang Pro.
 
 == Changelog ==
+
+= 1.2.5 (2019-12-26) =
+
+* WC Bookings: Translate pending confirmation email
+* WC Bookings: Fix notice when adding a bookable product to the cart
+* Fix order emails not sent in the order language when processed from the order preview.
 
 = 1.2.4 (2019-11-14) =
 

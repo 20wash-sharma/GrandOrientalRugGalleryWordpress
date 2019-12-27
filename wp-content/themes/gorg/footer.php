@@ -107,12 +107,12 @@
             	<div class="col-md-4">
                 	<p class="copyright m-md-0 text-center text-md-left"><?php if(!empty($footer_copyright)): echo $footer_copyright; endif;?></p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                 <?php if($footer_google_review_img): ?>
                 	<p class="google-review m-md-0 text-center"><a target="_blank" href="<?php if($footer_google_review_link): echo esc_url($footer_google_review_link); endif;?>"><img src="<?php echo $footer_google_review_img;?>" alt="Google Review Image"/></a></p>
                 <?php endif;?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                 <?php if ( is_active_sidebar( 'footer-3' ) ) : ?>
 						<?php dynamic_sidebar( 'footer-3' ); ?>
 						<?php endif; ?>

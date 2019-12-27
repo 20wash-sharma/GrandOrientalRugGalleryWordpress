@@ -448,8 +448,16 @@ li#accordion-section-introduction_options_second>h3.accordion-section-title:befo
 /*}*/
 
 #pll-language-select{
-  width: 70px !important;
+  width: 50px !important;
   font-size: 12px;
   line-height: 18px;
   padding: 0 10px !important;
+}
+.in-sub-panel .wp-full-overlay-sidebar .wp-full-overlay-header{
+  padding-left:15px !important;
+}
+@media only screen and (max-width: 640px) {
+  #customize-header-actions .customize-controls-preview-toggle{
+    display:none;
+  }
 }

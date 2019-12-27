@@ -13,7 +13,12 @@ get_header();?>
 	$contact_work = $gorg_settings['contact_work']; 
 	$contact_titles = $gorg_settings['contact_title'];
 	$contact_form = $gorg_settings['contact_form'];
-	$map_iframe = $gorg_settings['contact_map_iframe'];
+    $map_iframe = $gorg_settings['contact_map_iframe'];
+    //titles
+    $contact_phone_title = $gorg_settings['contact_phone_title'];
+    $address_title = $gorg_settings['address_title'];
+    $business_hour_title = $gorg_settings['business_hour_title'];
+    $email_title = $gorg_settings['email_title'];
 	?>
 <?php get_template_part( 'template-parts/breadcrumb', 'header' ); ?>
 <!-- START SECTION CONTACT -->
@@ -27,7 +32,7 @@ get_header();?>
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2"><?php echo pll__('Address', 'gorg');?></h5>
+                        <h5 class="text-uppercase py-md-2"><?php if($address_title): echo __($address_title, 'gorg'); endif;?></h5>
                         <p><?php echo $contact_address;?></p>
 					</div>
 				<?php endif;?>
@@ -40,7 +45,7 @@ get_header();?>
                         <i class="far fa-clock"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2"><?php echo __('BUSINESS HOURS', 'gorg');?></h5>
+                        <h5 class="text-uppercase py-md-2"><?php if($business_hour_title): echo __($business_hour_title, 'gorg'); endif;?></h5>
                         <p><?php echo $contact_work;?></p>
 					</div>
 					<?php endif;?>
@@ -52,8 +57,8 @@ get_header();?>
                         <i class="fa fa-phone"></i>
                     </div>
                     <div class="icon_box_content">
-						<h5 class="text-uppercase py-md-2"><?php echo __('Contact', 'gorg');?></h5>
-						<?php if($contact_phone):?> <p><strong><?php echo __('Phone:', 'gorg');?></strong> <?php echo $contact_phone; endif;?>,</p><?php if($contact_phone1): ?><p><strong>Cell:</strong> <?php echo $contact_phone1; endif;?>,</p><?php if($contact_fax):?><p><strong>Fax:</strong>  <?php echo $contact_fax; endif;?></p>
+						<h5 class="text-uppercase py-md-2"><?php if($contact_phone_title): echo __($contact_phone_title, 'gorg'); endif;?></h5>
+						<?php if($contact_phone):?> <p><strong><?php echo pll__('Phone:', 'gorg');?></strong> <?php echo $contact_phone; endif;?>,</p><?php if($contact_phone1): ?><p><strong><?php echo pll__('Cell:', 'gorg');?></strong> <?php echo $contact_phone1; endif;?>,</p><?php if($contact_fax):?><p><strong><?php echo pll__('Fax:', 'gorg');?></strong>  <?php echo $contact_fax; endif;?></p>
                     </div>
                 </div>
             </div>
@@ -64,7 +69,7 @@ get_header();?>
                         <i class="fa fa-envelope"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase py-md-2"><?php echo __('Email', 'gorg');?></h5>
+                        <h5 class="text-uppercase py-md-2"><?php if($email_title): echo __($email_title, 'gorg'); endif;?></h5>
                         <p><a href="mailto:<?php echo $contact_email;?>"><?php echo $contact_email;?></a></p>
 					</div>
 				<?php endif;?>

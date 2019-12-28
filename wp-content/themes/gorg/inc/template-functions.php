@@ -153,4 +153,7 @@ add_action('init', function() {
 	pll_register_string('service-areas', 'Service Areas');
 	pll_register_string('breadcrumb-home', 'Home');
 	pll_register_string('read-more', 'Read More');
+	pll_register_string('contact-us', 'Contact Us');
+	pll_register_string('products-breadcrumb', 'Products');
+	pll_register_string('Galleries-breadcrumb', 'Galleries');
   });

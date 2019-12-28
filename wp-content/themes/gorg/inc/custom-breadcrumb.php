@@ -26,7 +26,7 @@ function gorg_breadcrumbs() {
            
         if ( is_archive() && !is_tax() && !is_category() && !is_tag() ) {
               
-            echo '<li class="item-current item-archive breadcrumb-item"><strong class="bread-current bread-archive">' . post_type_archive_title($prefix, false) . '</strong></li>';
+            echo '<li class="item-current item-archive breadcrumb-item"><strong class="bread-current bread-archive">' . pll__(post_type_archive_title($prefix, false)) . '</strong></li>';
               
         } else if ( is_archive() && is_tax() && !is_category() && !is_tag() ) {
               
@@ -39,13 +39,13 @@ function gorg_breadcrumbs() {
                 $post_type_object = get_post_type_object($post_type);
                 $post_type_archive = get_post_type_archive_link($post_type);
               
-                echo '<li class="item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
+                echo '<li class="item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . pll__($post_type_object->labels->name) . '</a></li>';
                 echo '<li class="separator"> ' . $separator . ' </li>';
               
             }
               
             $custom_tax_name = get_queried_object()->name;
-            echo '<li class="item-current item-archive breadcrumb-item"><strong class="bread-current bread-archive">' . $custom_tax_name . '</strong></li>';
+            echo '<li class="item-current item-archive breadcrumb-item"><strong class="bread-current bread-archive">' . pll__($custom_tax_name) . '</strong></li>';
               
         } else if ( is_single() ) {
               
@@ -58,7 +58,7 @@ function gorg_breadcrumbs() {
                 $post_type_object = get_post_type_object($post_type);
                 $post_type_archive = get_post_type_archive_link($post_type);
               
-                echo '<li class="item-cat item-custom-post-type-' . $post_type . ' breadcrumb-item"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
+                echo '<li class="item-cat item-custom-post-type-' . $post_type . ' breadcrumb-item"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . pll__($post_type_object->labels->name) . '</a></li>';
                 echo '<li class="separator"> ' . $separator . ' </li>';
               
             }

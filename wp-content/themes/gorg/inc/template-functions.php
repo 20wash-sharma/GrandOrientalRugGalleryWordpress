@@ -152,4 +152,5 @@ add_shortcode( 'polylang_langswitcher', 'gorg_polylang_langswitcher' );
 add_action('init', function() {
 	pll_register_string('service-areas', 'Service Areas');
 	pll_register_string('breadcrumb-home', 'Home');
+	pll_register_string('read-more', 'Read More');
   });

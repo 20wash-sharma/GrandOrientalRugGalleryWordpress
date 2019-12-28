@@ -61,7 +61,7 @@ $catalogue_content_limit = $gorg_settings['catalogue_description_character'];
                         <div class="icon_box_content">
                             <h5><a href="<?php echo esc_url($term_link); ?>"><?php if($term_name): echo __($term_name,'gorg'); endif;?></a></h5>
                             <p><?php  echo __($limited_descriptions);?></p>
-                            <a href="<?php echo esc_url($term_link); ?>" class="btn btn-sm btn-outline-black btn-radius"><?php echo __('Read more','gorg');?></a>
+                            <a href="<?php echo esc_url($term_link); ?>" class="btn btn-sm btn-outline-black btn-radius"><?php echo pll__('Read More','gorg');?></a>
                         </div>
                     </div>
                 </div>

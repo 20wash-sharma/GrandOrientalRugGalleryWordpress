@@ -43,7 +43,7 @@
                     <div class="icon_box_content">
                         <h5><a href="<?php echo get_the_permalink();?>"><?php echo get_the_title();?></a></h5>
                         <p><?php echo $limit_areas_desc;?></p>
-                        <a href="<?php echo get_the_permalink();?>" class="btn btn-sm btn-outline-black btn-radius"><?php echo __('Read more','gorg');?></a>
+                        <a href="<?php echo get_the_permalink();?>" class="btn btn-sm btn-outline-black btn-radius"><?php echo pll__('Read More','gorg');?></a>
                     </div>
                 </div>
             </div>

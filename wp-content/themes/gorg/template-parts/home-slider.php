@@ -32,7 +32,7 @@
                                 <h2 class="animation text-uppercase" data-animation="fadeInDown" data-animation-delay="1s"><?php echo get_the_title();?></h2>
                                 <p class="animation my-4" data-animation="fadeInUp" data-animation-delay="1.5s"><?php if(!empty($slider_text)): echo $slider_text; endif;?></p>
                                 <?php if(!empty($slider_readmore_link)):?>
-                                <a class="btn btn-outline-white animation btn-radius" target="_blank" href="<?php echo $slider_readmore_link;?>" data-animation="fadeInUp" data-animation-delay="1.8s">Read More</a>
+                                <a class="btn btn-outline-white animation btn-radius" target="_blank" href="<?php echo $slider_readmore_link;?>" data-animation="fadeInUp" data-animation-delay="1.8s"><?php echo pll__('Read More','gorg');?></a>
                                 <?php endif;?>
                             </div>
                         </div>

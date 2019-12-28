@@ -40,7 +40,7 @@
                      echo '<p>'.$get_about_content.'</p>';
                  }
                 ?>
-                <a href="<?php echo get_the_permalink($welcome_page_id);?>" class="btn btn-outline-black btn-radius"><?php echo Pll__('Read More', 'gorg');?></a>
+                <a href="<?php echo get_the_permalink($welcome_page_id);?>" class="btn btn-outline-black btn-radius"><?php echo pll__('Read More','gorg');?></a>
             </div>
         </div>
     </div>

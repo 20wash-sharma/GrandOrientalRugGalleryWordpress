@@ -147,6 +147,19 @@ function gorg_polylang_langswitcher() {
 	return $output;
 }
 add_shortcode( 'polylang_langswitcher', 'gorg_polylang_langswitcher' );
+//review tab edit
+add_filter( 'woocommerce_product_tabs', 'wp_woo_rename_reviews_tab', 98);
+function wp_woo_rename_reviews_tab($tabs) {
+    global $product;
+    $check_product_review_count = $product->get_review_count();
+    if ( $check_product_review_count == 0 ) {
+        $tabs['reviews']['title'] = pll__('Reviews');
+    } else {
+		$tabs['reviews']['title'] = sprintf(pll__('Reviews(%1$s)'),$check_product_review_count);
+		
+    }
+    return $tabs;
+}
 
 /*Custom String Translation */
 add_action('init', function() {
@@ -156,4 +169,33 @@ add_action('init', function() {
 	pll_register_string('contact-us', 'Contact Us');
 	pll_register_string('products-breadcrumb', 'Products');
 	pll_register_string('Galleries-breadcrumb', 'Galleries');
+	pll_register_string('follow-us', 'Follow Us');
+	pll_register_string('phone', 'Phone:');
+	pll_register_string('cell', 'Cell:');
+	pll_register_string('fax', 'Fax:');
+	pll_register_string('sort-by-name-asc', 'Sort by name (ASC)');
+	pll_register_string('sort-by-name-desc', 'Sort by name (DESC)');
+	pll_register_string('sort-by-latest', 'Sort by Latest');
+	pll_register_string('showing-result', 'Showing all %d result');
+	pll_register_string('showing-single-result', 'Showing the single result');
+	pll_register_string('showing-multi-result', 'Showing %1$d&ndash;%2$d of %3$d result');
+	pll_register_string('showing-multi-results', 'Showing %1$d&ndash;%2$d of %3$d results');
+	pll_register_string('related-products', 'Related products');
+	pll_register_string('additional-information', 'Additional information');
+	pll_register_string('reviews-tab', 'Reviews');
+	pll_register_string('description-tab', 'Description');
+	pll_register_string('no-reviews', 'There are no reviews yet.');
+	pll_register_string('be-the-first-to-review', 'Be the first to review &ldquo;%s&rdquo;');
+	pll_register_string('your-rating', 'Your rating');
+	pll_register_string('your-review', 'Your review');
+	pll_register_string('add-review', 'Add a review');
+	pll_register_string('submit', 'Submit');
+	pll_register_string('reviews-with-count', 'Reviews(%1$s)');
+	pll_register_string('leave-reply', 'Leave a Reply to %s');
+	pll_register_string('only-logged-in-customers', 'Only logged in customers who have purchased this product may leave a review.');
+	pll_register_string('must-be-logged-in', 'You must be %1$slogged in%2$s to post a review.');
+	pll_register_string('review-for', '%1$s review for %2$s');
+	pll_register_string('reviews-for', '%1$s reviews for %2$s');
+	pll_register_string('customer-review', '%s customer review');
+	pll_register_string('customer-reviews', '%s customer reviews');
   });

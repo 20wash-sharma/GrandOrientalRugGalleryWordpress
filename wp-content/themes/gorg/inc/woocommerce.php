@@ -411,7 +411,8 @@ function gorg_remove_sorting_option_woocommerce_shop( $options ) {
 	unset($options["price"]);
 	unset($options["popularity"]);
 	unset($options["price-desc"]); 
-	$options['title_asc'] = 'Sort by name (ASC)';
-   	$options['title_desc'] = 'Sort by name (DESC)';  
+	$options['date'] = pll__('Sort by Latest');
+	$options['title_asc'] = pll__('Sort by name (ASC)');
+   	$options['title_desc'] = pll__('Sort by name (DESC)');  
    	return $options;
 }

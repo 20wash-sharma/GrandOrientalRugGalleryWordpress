@@ -198,4 +198,14 @@ add_action('init', function() {
 	pll_register_string('reviews-for', '%1$s reviews for %2$s');
 	pll_register_string('customer-review', '%s customer review');
 	pll_register_string('customer-reviews', '%s customer reviews');
+	pll_register_string('search-placeholder', 'Search');
+	pll_register_string('nothing-found', 'Nothing Found');
+	pll_register_string('sorry-please-try-again', 'Sorry, but nothing matched your search terms. Please try again with some different keywords.');
+	pll_register_string('it-seems-we-can', 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.');
+	pll_register_string('search-result-for', 'Search Results for: %s');
+	pll_register_string('previous-page', '<i class="fas fa-long-arrow-alt-left"></i> Previous Page');
+	pll_register_string('next-page', 'Next Page <i class="fas fa-long-arrow-alt-right"></i>');
+	pll_register_string('back-to-home', 'Back To Home');
+	pll_register_string('that-page-can-not-be-found', 'Oops! That page can&rsquo;t be found.');
+	pll_register_string('page-could-not-found', 'The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place.');
   });

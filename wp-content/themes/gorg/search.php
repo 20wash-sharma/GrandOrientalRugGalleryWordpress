@@ -18,7 +18,7 @@ get_header();
                 <div class="page-title">
                     <h1> <?php
 					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'gorg' ), '<span>' . get_search_query() . '</span>' );
+					printf( esc_html__( pll__('Search Results for: %s'), 'gorg' ), '<span>' . get_search_query() . '</span>' );
 					?></h1>
                 </div>
                 <nav aria-label="breadcrumb">
@@ -52,8 +52,8 @@ get_header();
                 echo "<div class='gorg-pagination'>";
                 the_posts_pagination(
                     array(
-                        'prev_text' => __('<i class="fas fa-long-arrow-alt-left"></i> Previous Page', 'gorg'),
-                        'next_text' => __('Next Page <i class="fas fa-long-arrow-alt-right"></i>', 'gorg'),
+                        'prev_text' => __(pll__('<i class="fas fa-long-arrow-alt-left"></i> Previous Page'), 'gorg'),
+                        'next_text' => __(pll__('Next Page <i class="fas fa-long-arrow-alt-right"></i>'), 'gorg'),
                         'taxonomy'     => 'category',
                         'in_same_term' => true,
                     )

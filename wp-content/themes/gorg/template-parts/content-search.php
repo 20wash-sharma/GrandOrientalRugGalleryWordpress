@@ -17,7 +17,7 @@
             <?php the_title( sprintf( ' <h5><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h5>' ); ?>
             <p><?php the_excerpt(); ?></p>
             <a href="<?php  echo esc_url( get_permalink() );?>"
-                class="btn btn-sm btn-outline-black btn-radius text-center"><?php echo __('Read More', 'gorg');?></a>
+                class="btn btn-sm btn-outline-black btn-radius text-center"><?php echo __(pll__('Read More'), 'gorg');?></a>
         </div>
     </div>
 </div>

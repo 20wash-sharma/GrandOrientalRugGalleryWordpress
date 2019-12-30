@@ -877,33 +877,11 @@
 
 		});
 	}
-
-	/*Demo js*/
-	// $( window ).on( "load", function() {
-	// 	document.onkeydown = function(e) {
-	// 		if(e.keyCode == 123) {
-	// 		 return false;
-	// 		}
-	// 		if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-	// 		 return false;
-	// 		}
-	// 		if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-	// 		 return false;
-	// 		}
-	// 		if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-	// 		 return false;
-	// 		}
-
-	// 		if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
-	// 		 return false;
-	// 		}      
-	// 	 }
-
-	// 	$("html").on("contextmenu",function(){
-	// 		return false;
-	// 	});
-	// });
-
-
+	var shortString = jQuery('.latest-products').next().find('.ubermenu-target-text');
+	jQuery.each(shortString, function () {
+		var txt = jQuery(this).text();
+		if (txt.length > 5)
+			jQuery(this).text(txt.substring(0, 10) + '..');
+	});
 
 })(jQuery);

@@ -1,0 +1,93 @@
+# Translation of Plugins - Widget for Facebook Page Feeds - Development (trunk) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Widget for Facebook Page Feeds - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-02-15 18:40:36+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: es\n"
+"Project-Id-Version: Plugins - Widget for Facebook Page Feeds - Development (trunk)\n"
+
+#: fb_class.php:132
+msgid "Show Friend's Faces"
+msgstr "Mostrar las caras de los amigos"
+
+#: fb_class.php:128
+msgid "Hide Cover Photo"
+msgstr "Ocultar foto de portada"
+
+#. Author of the plugin
+msgid "Milap Patel"
+msgstr "Milap Patel"
+
+#. Description of the plugin
+msgid "This widget adds a Simple Facebook Page Like Widget into your WordPress website sidebar within few minutes."
+msgstr "Este widget añade una página sencilla de Facebook como widget en la barra lateral del sitio web de WordPress en pocos minutos."
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://patelmilap.wordpress.com/"
+msgstr "https://patelmilap.wordpress.com/"
+
+#. Plugin Name of the plugin
+msgid "Facebook Widget"
+msgstr "Widget de Facebook"
+
+#: fb_class.php:181
+msgid "Custom Css:"
+msgstr "CSS personalizado:"
+
+#: fb_class.php:158
+msgid "Language:"
+msgstr "Idioma:"
+
+#: fb_class.php:147
+msgid "Set Height:"
+msgstr "Ajustar altura:"
+
+#: fb_class.php:143
+msgid "Set Width:"
+msgstr "Ajustar ancho:"
+
+#: fb_class.php:140
+msgid "Adapt To Plugin Container Width"
+msgstr "Adaptar a la anchura del contenedor del plugin"
+
+#: fb_class.php:136
+msgid "Show Small Header"
+msgstr "Mostrar encabezado pequeño"
+
+#: fb_class.php:124
+msgid "Show posts from the Page timeline"
+msgstr "Mostrar mensajes desde la línea de tiempo de página"
+
+#: fb_class.php:97
+msgid "Valid Facebook Pages"
+msgstr "Páginas de Facebook válidas"
+
+#: fb_class.php:95
+msgid "Works with only"
+msgstr "Funciona con sólo"
+
+#: fb_class.php:92
+msgid "Facebook Page Url:"
+msgstr "Dirección URL de Facebook:"
+
+#: fb_class.php:88
+msgid "Facebook Application Id:"
+msgstr "ID de aplicación de Facebook:"
+
+#: fb_class.php:84
+msgid "Title:"
+msgstr "Titulo:"
+
+#: fb_class.php:9
+msgid "Facebook Page Like Widget"
+msgstr "Página de Facebook como widget"
+
+#: facebook_widget.php:43
+msgid "Please configure awesome widget <a href=\"widgets.php\">here</a> | <a href=\"%1$s\">Hide Notice</a>"
+msgstr "Por favor configura el widget awesome <a href=\"widgets.php\">aquí </a> | <a href=\"%1$s\">Ocultar aviso</a>"

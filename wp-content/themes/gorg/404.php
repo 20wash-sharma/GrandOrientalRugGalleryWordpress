@@ -18,9 +18,6 @@ get_header();
                 <div class="page-title">
                     <h1>404</h1>
                 </div>
-                <nav aria-label="breadcrumb">
-                    <?php gorg_breadcrumbs(); ?>
-                </nav>
             </div>
         </div>
     </div>

@@ -173,6 +173,7 @@ add_action('init', function() {
 	pll_register_string('phone', 'Phone:');
 	pll_register_string('cell', 'Cell:');
 	pll_register_string('fax', 'Fax:');
+	pll_register_string('page-breadcrumb', 'Page');
 	pll_register_string('sort-by-name-asc', 'Sort by name (ASC)');
 	pll_register_string('sort-by-name-desc', 'Sort by name (DESC)');
 	pll_register_string('sort-by-latest', 'Sort by Latest');

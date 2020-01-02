@@ -21,9 +21,6 @@ get_header();
 					printf( esc_html__( pll__('Search Results for: %s'), 'gorg' ), '<span>' . get_search_query() . '</span>' );
 					?></h1>
                 </div>
-                <nav aria-label="breadcrumb">
-                    <?php gorg_breadcrumbs(); ?>
-                </nav>
             </div>
         </div>
     </div>

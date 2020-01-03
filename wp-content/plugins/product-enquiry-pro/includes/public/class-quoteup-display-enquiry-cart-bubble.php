@@ -51,7 +51,8 @@ class QuoteupDisplayEnquiryCartBubble
     public function getCartUrl($form_data)
     {
         if (isset($form_data[ 'mpe_cart_page' ])) {
-            $url = get_permalink($form_data[ 'mpe_cart_page' ]);
+            $id = $form_data[ 'mpe_cart_page' ];
+            $url = get_permalink(pll_get_post($id));
         } else {
             $url = '';
         }

@@ -239,15 +239,16 @@ button:focus {
 }
 
 .btn-outline-black {
-	background-color: transparent;
-	border: 2px solid #333;
-	color: #333;
+	background-color: #7b4d1c;
+	border: 2px solid #7b4d1c;
+	color: #fff;
 	padding: 10px 30px;
 }
 
 .btn-outline-black:hover {
-	background-color: #333;
-	color: #fff;
+	background-color: transparent;
+	color: #7b4d1c;
+	
 }
 
 .btn-outline-default {
@@ -4034,6 +4035,7 @@ footer .widget_title {
 	-moz-transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
+	height:100%;
 }
 
 .widget_links li a, .widget_links_style3 li a {
@@ -4041,6 +4043,7 @@ footer .widget_title {
 	font-size: 14px;
 	position: relative;
 	padding-left: 15px;
+	display:inline-block;
 }
 
 .widget_links_style1 li a, .widget_links_style2 li a {
@@ -6003,8 +6006,8 @@ margin:0;
 .woocommerce-active .wdm-quoteup-woo > .shop_table.cart input[type='button'].wdm-update,.woocommerce-active .wdm-enquiryform-btn-wrap > .mpe-right > input[type=submit] {
 	position: relative;
 	background-color: transparent;
-    border: 1px solid #333 !important;
-    color: #333;
+    border: 1px solid #7b4d1c !important;
+    color: #7b4d1c;
 	padding: 7px 15px !important;
 	cursor: pointer;
 	margin:0px !important;
@@ -6019,7 +6022,7 @@ margin:0;
     vertical-align: middle;
 }
 .woocommerce-active .wdm-quoteup-woo > .shop_table.cart input[type='button'].wdm-update:hover, .woocommerce-active .wdm-enquiryform-btn-wrap > .mpe-right > input[type=submit]:hover{
-	background-color: #333;
+	background-color: #7b4d1c;
 	color: #fff !important;
 	text-decoration: none;
 	box-shadow: none;
@@ -6085,6 +6088,22 @@ margin:0;
 	text-decoration: none;
 	box-shadow: none;
     outline: medium none;
+}
+#formarea textarea{
+	min-height: 200px;
+}
+#formarea #mpeSendCustom{
+	border: 2px solid #7b4d1c;
+    border-radius: 30px;
+	padding: 10px 30px;
+	background:#7b4d1c;
+	font-weight: 500;
+	color: white;
+	transition: all ease-in-out .2s;
+}
+#formarea #mpeSendCustom:hover{
+	background:transparent;
+	color: #7b4d1c;
 }
 /*service areas page*/
 .single-service-areas .entry-content ul li{

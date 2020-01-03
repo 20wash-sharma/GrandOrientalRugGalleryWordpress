@@ -880,8 +880,8 @@
 	var shortString = jQuery('.latest-products').next().find('.ubermenu-target-text');
 	jQuery.each(shortString, function () {
 		var txt = jQuery(this).text();
-		if (txt.length > 5)
-			jQuery(this).text(txt.substring(0, 10) + '..');
+		if (txt.length >= 11)
+			jQuery(this).text(txt.substring(0, 11) + '..');
 	});
 
 })(jQuery);

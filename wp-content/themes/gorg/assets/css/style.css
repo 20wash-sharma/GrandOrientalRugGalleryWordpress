@@ -231,6 +231,7 @@ button:focus {
 	border: 2px solid #ffffff;
 	color: #ffffff;
 	padding: 10px 30px;
+	border-radius: 30px;
 }
 
 .btn-outline-white:hover {

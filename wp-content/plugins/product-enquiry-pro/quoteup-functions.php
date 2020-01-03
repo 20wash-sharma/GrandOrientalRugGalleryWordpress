@@ -108,7 +108,8 @@ function getLocalizationDataForJs($redirect_url)
     }
     if (isset($form_data[ 'mpe_cart_page' ])) {
         $quoteCart = $form_data[ 'mpe_cart_page' ];
-        $quoteCartLink = get_permalink($quoteCart);
+        // $quoteCartLink = get_permalink($quoteCart);
+        $quoteCartLink = get_permalink(pll_get_post($quoteCart));
     }
 
     if (isset($form_data[ 'cart_custom_label' ]) && !empty($form_data[ 'cart_custom_label' ])) {

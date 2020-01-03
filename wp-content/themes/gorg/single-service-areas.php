@@ -32,7 +32,7 @@ $cta_bg             = $gorg_settings['cta_bg_img'];
 		endwhile; // End of the loop.
 		?>		</div>
 				<div class="col-lg-4 mt-lg-0 mt-4 pt-3 pt-lg-0">
-					<div class="location-sidebar-wrapper">
+					<div class="location-sidebar-wrapper sticky-top">
 						<?php get_sidebar('service_area');?>
 					</div>
                     <div class="blue_overlay_bg mt-5 cta_section_mini radius_box_10 text_white position-relative background_bg"

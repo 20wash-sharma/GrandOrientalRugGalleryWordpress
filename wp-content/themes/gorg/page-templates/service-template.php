@@ -30,8 +30,9 @@ $youtube_link		= get_field('youtube_video_link');
 					</div>
 					<?php endwhile;?>
                 </div>
-                <div class="col-md-5 animation" id="sticky-sidebar" data-animation="fadeInUp" data-animation-delay="0.1s"
+                <div class="col-md-5 animation" data-animation="fadeInUp" data-animation-delay="0.1s"
                     style="animation-delay: 0.1s; opacity: 1;">
+                    <div class="sticky-top">
                     <div class="light_gray_bg small_padding pt-4 pt-md-4 radius_box_10">
 						<?php if($cleaning_process): echo __($cleaning_process); endif;?>
                     </div>
@@ -45,6 +46,7 @@ $youtube_link		= get_field('youtube_video_link');
                             <p><?php if($cta_content): echo __($cta_content); endif;?></p>
                             <a href="<?php echo $cta_button_link;?>" class="btn btn-outline-white btn-radius"><?php if($cta_button_text): echo __($cta_button_text); endif;?></a>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

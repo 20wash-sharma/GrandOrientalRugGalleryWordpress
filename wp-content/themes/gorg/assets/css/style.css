@@ -231,6 +231,7 @@ button:focus {
 	border: 2px solid #ffffff;
 	color: #ffffff;
 	padding: 10px 30px;
+	border-radius: 30px;
 }
 
 .btn-outline-white:hover {
@@ -1735,7 +1736,7 @@ select option {
 	right: 0;
 	left: 0;
 	top: 0;
-	z-index: 999;
+	z-index: 9999;
 }
 
 .header_wrap.nav-fixed:not([class*="bg_"]):not([class*="bg-"]) {
@@ -5043,7 +5044,9 @@ ERROR 404 SECTION
 /*===================================*
   23. SIDEBAR DESIGN
 *===================================*/
-
+.sticky-top{
+	top:5em !important;
+}
 .sidebar .widget {
 	border-bottom: 1px solid #ddd;
 	margin-bottom: 30px;

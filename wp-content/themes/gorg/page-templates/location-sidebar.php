@@ -28,6 +28,7 @@ $cta_bg             = $gorg_settings['cta_bg_img'];
 		endwhile; // End of the loop.
 		?>		</div>
 				<div class="col-lg-4 mt-lg-0 mt-4 pt-3 pt-lg-0">
+				<div class="sticky-top">
 					<div class="location-sidebar-wrapper">
 						<?php get_sidebar('service-areas');?>
 					</div>
@@ -42,6 +43,7 @@ $cta_bg             = $gorg_settings['cta_bg_img'];
                             <a href="<?php echo $cta_button_link;?>" class="btn btn-outline-white btn-radius"><?php if($cta_button_text): echo __($cta_button_text); endif;?></a>
                         </div>
                     </div>
+					</div>
 				</div>
 			</div>
 		</div><!-- container -->

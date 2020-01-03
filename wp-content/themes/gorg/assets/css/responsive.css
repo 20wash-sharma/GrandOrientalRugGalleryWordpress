@@ -517,6 +517,9 @@ header .attr-nav + .social_icons {
 .woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce #respond input#submit{
     font-size:13px !important;
 }
+.footer_link li{
+    display:block;
+}
 }
 /* -------------------------------------------------
   min-width: 768px
@@ -789,6 +792,13 @@ section.small_pb,
 }
 .icon_box_style_15 {
 	margin-top: 15px;
+}
+.woocommerce ul.products li.product a {
+    text-decoration: none;
+    font-size: 12px;
+}
+.quote-form button.wdm_enquiry{
+    padding: 7px 10px !important;
 }
 }
 /* -------------------------------------------------

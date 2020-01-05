@@ -58,7 +58,7 @@ get_header();?>
                     </div>
                     <div class="icon_box_content">
 						<h5 class="text-uppercase py-md-2"><?php if($contact_phone_title): echo __($contact_phone_title, 'gorg'); endif;?></h5>
-						<?php if($contact_phone):?> <p><strong><?php echo pll__('Phone:', 'gorg');?></strong> <?php echo $contact_phone; endif;?>,</p><?php if($contact_phone1): ?><p><strong><?php echo pll__('Cell:', 'gorg');?></strong> <?php echo $contact_phone1; endif;?>,</p><?php if($contact_fax):?><p><strong><?php echo pll__('Fax:', 'gorg');?></strong>  <?php echo $contact_fax; endif;?></p>
+						<?php if($contact_phone):?> <p><strong><?php echo pll__('Phone:', 'gorg');?></strong> <?php echo $contact_phone; endif;?></p><?php if($contact_phone1): ?><p><strong><?php echo pll__('Cell:', 'gorg');?></strong> <?php echo $contact_phone1; endif;?></p><?php if($contact_fax):?><p><strong><?php echo pll__('Fax:', 'gorg');?></strong>  <?php echo $contact_fax; endif;?></p>
                     </div>
                 </div>
             </div>

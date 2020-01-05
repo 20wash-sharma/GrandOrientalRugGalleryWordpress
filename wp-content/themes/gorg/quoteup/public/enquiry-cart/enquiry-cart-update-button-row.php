@@ -21,11 +21,11 @@ $updateButtonColSpan = quoteupReturnColSpanEnqCartUpdateButton($form_data);
         <?php
         if (isset($form_data['enable_disable_quote']) && $form_data['enable_disable_quote'] == 1) {
             ?>
-            <input type='button' class='update wdm-update' value=' <?php _e('Update Enquiry Cart', QUOTEUP_TEXT_DOMAIN); ?>'>
+            <input type='button' class='update wdm-update' value=' <?php _e(pll__('Update Enquiry Cart'), QUOTEUP_TEXT_DOMAIN); ?>'>
             <?php
         } else {
             ?>
-            <input type='button' class='update wdm-update' value=' <?php _e('Update Cart', QUOTEUP_TEXT_DOMAIN); ?>'>
+            <input type='button' class='update wdm-update' value=' <?php _e(pll__('Update Cart'), QUOTEUP_TEXT_DOMAIN); ?>'>
             <?php
         }
         ?>

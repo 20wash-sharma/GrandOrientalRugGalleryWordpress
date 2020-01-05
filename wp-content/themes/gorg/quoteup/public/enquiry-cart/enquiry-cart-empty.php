@@ -20,7 +20,7 @@
     </p>
     <p class='return-to-shop'>
         <a class='button wc-backward' href='<?php echo $shopPageUrl; ?>'>
-            <?php echo __('Return to Products','gorg'); ?>
+            <?php echo __(pll__('Return to Products'),'gorg'); ?>
         </a>
     </p>
 </div>

@@ -209,4 +209,7 @@ add_action('init', function() {
 	pll_register_string('back-to-home', 'Back To Home');
 	pll_register_string('that-page-can-not-be-found', 'Oops! That page can&rsquo;t be found.');
 	pll_register_string('page-could-not-found', 'The page you were looking for could not be found. It might have been removed, renamed, or did not exist in the first place.');
+	pll_register_string('return-to-products', 'Return to Products');
+	pll_register_string('update-enquiry-cart', 'Update Enquiry Cart');
+	pll_register_string('update-cart', 'Update Cart');
   });

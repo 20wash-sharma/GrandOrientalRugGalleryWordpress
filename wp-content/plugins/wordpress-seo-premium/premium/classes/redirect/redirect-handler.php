@@ -291,8 +291,6 @@ class WPSEO_Redirect_Handler {
 			return;
 		}
 
-		$this->add_redirect_by_header();
-
 		$this->redirect( $redirect_url, $redirect_type );
 	}
 
@@ -635,23 +633,6 @@ class WPSEO_Redirect_Handler {
 
 		if ( 451 === $redirect_type ) {
 			add_action( 'wp', array( $this, 'do_451' ) );
-		}
-	}
-
-	/**
-	 * Adds a X-Redirect-By hook if needed.
-	 *
-	 * @return void
-	 */
-	protected function add_redirect_by_header() {
-		/**
-		 * Filter: 'wpseo_add_x_redirect' - can be used to remove the X-Redirect-By header Yoast SEO creates
-		 * (only available in Yoast SEO Premium, defaults to true, which is adding it)
-		 *
-		 * @api bool
-		 */
-		if ( apply_filters( 'wpseo_add_x_redirect', true ) === true ) {
-			header( 'X-Redirect-By: Yoast SEO Premium' );
 		}
 	}
 

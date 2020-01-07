@@ -112,6 +112,10 @@ class WPSEO_Post_Watcher extends WPSEO_Watcher implements WPSEO_WordPress_Integr
 	 * @return bool
 	 */
 	public function detect_slug_change( $post_id, $post, $post_before ) {
+		// Bail if this is a multisite installation and the site has been switched.
+		if ( is_multisite() && ms_is_switched() ) {
+			return false;
+		}
 
 		if ( ! $this->is_redirect_relevant( $post, $post_before ) ) {
 			return false;

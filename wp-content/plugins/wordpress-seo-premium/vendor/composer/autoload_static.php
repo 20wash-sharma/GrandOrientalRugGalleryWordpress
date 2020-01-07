@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
+class ComposerStaticInit2585954794c60e45fe38b9ca08ffb47b
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -17,16 +17,6 @@ class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'x' => 
-        array (
-            'xrstf\\Composer52' => 
-            array (
-                0 => __DIR__ . '/..' . '/xrstf/composer-php52/lib',
-            ),
         ),
     );
 
@@ -300,6 +290,7 @@ class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
         'WPSEO_Gutenberg_Compatibility' => __DIR__ . '/../..' . '/admin/class-gutenberg-compatibility.php',
         'WPSEO_Handle_404' => __DIR__ . '/../..' . '/frontend/class-handle-404.php',
         'WPSEO_Health_Check' => __DIR__ . '/../..' . '/inc/health-check.php',
+        'WPSEO_Health_Check_Page_Comments' => __DIR__ . '/../..' . '/inc/health-check-page-comments.php',
         'WPSEO_HelpScout' => __DIR__ . '/../..' . '/admin/class-helpscout.php',
         'WPSEO_Image_Utils' => __DIR__ . '/../..' . '/inc/class-wpseo-image-utils.php',
         'WPSEO_Import_AIOSEO' => __DIR__ . '/../..' . '/admin/import/plugins/class-import-aioseo.php',
@@ -572,7 +563,7 @@ class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
         'WPSEO_Sitemap_Cache_Data_Interface' => __DIR__ . '/../..' . '/inc/sitemaps/interface-sitemap-cache-data.php',
         'WPSEO_Sitemap_Image_Parser' => __DIR__ . '/../..' . '/inc/sitemaps/class-sitemap-image-parser.php',
         'WPSEO_Sitemap_Provider' => __DIR__ . '/../..' . '/inc/sitemaps/interface-sitemap-provider.php',
-        'WPSEO_Sitemap_Timezone' => __DIR__ . '/../..' . '/inc/sitemaps/class-sitemap-timezone.php',
+        'WPSEO_Sitemap_Timezone' => __DIR__ . '/../..' . '/deprecated/inc/sitemaps/class-sitemap-timezone.php',
         'WPSEO_Sitemaps' => __DIR__ . '/../..' . '/inc/sitemaps/class-sitemaps.php',
         'WPSEO_Sitemaps_Admin' => __DIR__ . '/../..' . '/inc/sitemaps/class-sitemaps-admin.php',
         'WPSEO_Sitemaps_Cache' => __DIR__ . '/../..' . '/inc/sitemaps/class-sitemaps-cache.php',
@@ -798,6 +789,8 @@ class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
         'Yoast\\WP\\Free\\Database\\Ruckusing_Framework' => __DIR__ . '/../..' . '/src/database/ruckusing-framework.php',
         'Yoast\\WP\\Free\\Exceptions\\Missing_Method' => __DIR__ . '/../..' . '/src/exceptions/missing-method.php',
         'Yoast\\WP\\Free\\Generated\\Cached_Container' => __DIR__ . '/../..' . '/src/generated/container.php',
+        'Yoast\\WP\\Free\\Helpers\\Author_Archive_Helper' => __DIR__ . '/../..' . '/src/helpers/author-archive-helper.php',
+        'Yoast\\WP\\Free\\Helpers\\Home_Url_Helper' => __DIR__ . '/../..' . '/src/helpers/home-url-helper.php',
         'Yoast\\WP\\Free\\Loader' => __DIR__ . '/../..' . '/src/loader.php',
         'Yoast\\WP\\Free\\Loggers\\Logger' => __DIR__ . '/../..' . '/src/loggers/logger.php',
         'Yoast\\WP\\Free\\Loggers\\Migration_Logger' => __DIR__ . '/../..' . '/src/loggers/migration-logger.php',
@@ -851,17 +844,14 @@ class ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164
         'Yoast_Update_Manager' => __DIR__ . '/..' . '/yoast/license-manager/class-update-manager.php',
         'Yoast_View_Utils' => __DIR__ . '/../..' . '/admin/views/class-view-utils.php',
         'iYoast_License_Manager' => __DIR__ . '/..' . '/yoast/license-manager/class-license-manager.php',
-        'xrstf\\Composer52\\AutoloadGenerator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
-        'xrstf\\Composer52\\Generator' => __DIR__ . '/..' . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit8eff9861c9d8e50e5f8894d30c5fd164::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2585954794c60e45fe38b9ca08ffb47b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2585954794c60e45fe38b9ca08ffb47b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2585954794c60e45fe38b9ca08ffb47b::$classMap;
 
         }, null, ClassLoader::class);
     }

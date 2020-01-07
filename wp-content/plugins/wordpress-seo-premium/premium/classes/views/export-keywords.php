@@ -25,23 +25,22 @@ $wpseo_csv_export_explain = sprintf(
 	<form action="" method="post" accept-charset="<?php echo esc_attr( get_bloginfo( 'charset' ) ); ?>">
 		<?php
 		wp_nonce_field( 'wpseo-export', '_wpnonce', true );
-		$yform->set_options_value( 'export-keywords-score', true );
-		$yform->checkbox( 'export-keywords-score', __( 'Export keyphrase scores', 'wordpress-seo-premium' ) );
 
-		$yform->set_options_value( 'export-url', true );
-		$yform->checkbox( 'export-url', __( 'Export URL', 'wordpress-seo-premium' ) );
+		$yoast_seo_export_fields = array(
+			'export-keywords-score'    => __( 'Export keyphrase scores', 'wordpress-seo-premium' ),
+			'export-url'               => __( 'Export URL', 'wordpress-seo-premium' ),
+			'export-title'             => __( 'Export title', 'wordpress-seo-premium' ),
+			'export-seo-title'         => __( 'Export SEO title', 'wordpress-seo-premium' ),
+			'export-meta-description'  => __( 'Export meta description', 'wordpress-seo-premium' ),
+			'export-readability-score' => __( 'Export readability score', 'wordpress-seo-premium' ),
+		);
 
-		$yform->set_options_value( 'export-title', true );
-		$yform->checkbox( 'export-title', __( 'Export title', 'wordpress-seo-premium' ) );
+		foreach ( $yoast_seo_export_fields as $yoast_seo_export_field_name => $yoast_seo_export_field_label ) {
+			echo '<input class="checkbox double" type="checkbox" id="' . esc_attr( $yoast_seo_export_field_name ) . '" name="wpseo[' . esc_attr( $yoast_seo_export_field_name ) . ']" value="on" checked="checked" />';
+			$yform->label( esc_html( $yoast_seo_export_field_label ), array( 'for' => $yoast_seo_export_field_name ) );
+			echo '<br class="clear" />';
+		}
 
-		$yform->set_options_value( 'export-seo-title', false );
-		$yform->checkbox( 'export-seo-title', __( 'Export SEO title', 'wordpress-seo-premium' ) );
-
-		$yform->set_options_value( 'export-meta-description', false );
-		$yform->checkbox( 'export-meta-description', __( 'Export meta description', 'wordpress-seo-premium' ) );
-
-		$yform->set_options_value( 'export-readability-score', false );
-		$yform->checkbox( 'export-readability-score', __( 'Export readability score', 'wordpress-seo-premium' ) );
 		?>
 		<br class="clear">
 		<input type="submit" class="button button-primary" name="export-posts" value="<?php echo esc_attr( $button_label ); ?>"/>

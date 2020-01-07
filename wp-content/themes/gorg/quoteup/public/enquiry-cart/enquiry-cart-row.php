@@ -24,7 +24,7 @@
         <img width="180" height="180" src="<?php echo $img_content; ?>" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image"  sizes="(max-width: 180px) 100vw, 180px" />
     </td>
     <td class="product-name">
-		<?php $url = get_permalink(pll_get_post($product[ 'id' ])); // wdm code added?>
+		<?php $url = get_permalink(pll_get_post($product[ 'id' ])); // wdm code added ?>
         <a href="<?php echo $url; ?>">
             <?php
             // echo get_the_title($product[ 'id' ]); // wdm code commented

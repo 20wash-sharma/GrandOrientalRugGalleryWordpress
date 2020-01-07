@@ -26,9 +26,12 @@
     <td class="product-name">
         <a href="<?php echo $url; ?>">
             <?php
-            echo get_the_title($product[ 'id' ]); ?>
+            echo get_the_title($product[ 'id' ]);
+			?>
         </a>
-        <?php echo printVariations($product); ?>
+        <?php 
+		echo printVariations($product);
+		?>
     </td>
     <?php
     // If Price column is enabled, then show 'Price' table data.

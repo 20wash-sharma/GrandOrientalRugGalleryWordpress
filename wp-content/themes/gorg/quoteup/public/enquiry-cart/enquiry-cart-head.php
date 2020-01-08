@@ -39,7 +39,7 @@
             $remarksTableHeadName = quoteupGetRemarksThNameEnqCart($form_data);
             ?>
             <th class='product-subtotal cart-subtotal'>
-                <?php echo esc_html($remarksTableHeadName); ?>
+                <?php echo esc_html(pll__($remarksTableHeadName)); ?>
             </th>
             <?php
         endif;

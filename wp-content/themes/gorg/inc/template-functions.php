@@ -212,4 +212,5 @@ add_action('init', function() {
 	pll_register_string('return-to-products', 'Return to Products');
 	pll_register_string('update-enquiry-cart', 'Update Enquiry Cart');
 	pll_register_string('update-cart', 'Update Cart');
+	pll_register_string('remarks', 'Remarks');
   });

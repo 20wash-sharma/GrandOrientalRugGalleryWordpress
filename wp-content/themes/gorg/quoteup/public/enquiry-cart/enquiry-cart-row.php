@@ -52,7 +52,7 @@
     if (!quoteupIsRemarksColumnDisabled($form_data)) :
         ?>
         <td class='product-subtotal'>
-            <textarea placeholder='<?php echo $placeholder; ?>' rows='2' cols='5' class='wdm-remark' data-product_id='<?php echo $product[ 'id' ]; ?>'><?php echo $product[ 'remark' ]; ?></textarea>
+            <textarea placeholder='<?php echo pll__($placeholder); ?>' rows='2' cols='5' class='wdm-remark' data-product_id='<?php echo $product[ 'id' ]; ?>'><?php echo $product[ 'remark' ]; ?></textarea>
         </td>
         <?php
     endif;

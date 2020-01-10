@@ -6211,11 +6211,11 @@ code, pre, .wp-block-code {
   Gallery Blocks
 ************************************************/
 
-.wp-block-gallery .blocks-gallery-item {
+/* .wp-block-gallery .blocks-gallery-item {
 	margin-left: 0px;
 	margin-right: 0px;
 	padding: 0px;
-}
+} */
 .wp-block-gallery .blocks-gallery-image {
 	margin-left: 0px;
 	margin-right: 0px;

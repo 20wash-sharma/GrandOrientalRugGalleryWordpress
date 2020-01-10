@@ -27,9 +27,9 @@
         }
         ?>
     </td>
-    <td class='sku'>
-        <?php echo $sku; ?>
-    </td>
+    <!-- <td class='sku'>
+        <?php //echo $sku; ?>
+    </td> -->
     <td class='qty'>
         <?php echo $element['quant']; ?>
     </td>

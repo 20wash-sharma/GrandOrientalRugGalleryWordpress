@@ -19,9 +19,9 @@
     <th class='product-name-head'>
         <?php _e('Product Name', QUOTEUP_TEXT_DOMAIN); ?>
     </th>
-    <th class='sku-head'>
-        <?php _e('SKU', QUOTEUP_TEXT_DOMAIN); ?>
-    </th>
+    <!-- <th class='sku-head'>
+        <?php //_e('SKU', QUOTEUP_TEXT_DOMAIN); ?>
+    </th> -->
     <th class='qty-head'>
         <?php _e('Quantity', QUOTEUP_TEXT_DOMAIN); ?>
     </th>

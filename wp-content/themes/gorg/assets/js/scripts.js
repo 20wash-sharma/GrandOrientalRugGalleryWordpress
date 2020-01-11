@@ -396,11 +396,10 @@
 
 	var updateMasonrysingle = function () {
 		$('.single-gallery').masonry({
-			itemSelector: '.portfolio-item',
+			itemSelector: '.portfolio-item'
 		})
 	}
-	$(window).on('resize load', updateMasonrysingle);
-
+	$(window).on('resize load scroll', updateMasonrysingle);
 	$(window).on("load", function () {
 		var $blog_selectors = $('.blog_container');
 		$blog_selectors.ready(function () {

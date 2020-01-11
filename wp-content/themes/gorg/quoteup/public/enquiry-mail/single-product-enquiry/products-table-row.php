@@ -31,8 +31,8 @@
         }
         ?>
     </td>
-    <td class='sku'>
-        <?php echo $sku; ?>
+    --> <!-- <td class='sku'>
+        <?php //echo $sku; ?>
     </td>
     <td class='qty'>
         <?php echo $productQuantity; ?>

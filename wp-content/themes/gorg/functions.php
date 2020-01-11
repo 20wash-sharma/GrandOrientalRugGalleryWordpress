@@ -42,6 +42,11 @@ if ( ! function_exists( 'gorg_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
+		/*
+		Enable responsive embed files
+		*/
+		add_theme_support( 'responsive-embeds' );
+
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
 			'menu-1' => esc_html__( 'Primary', 'gorg' ),

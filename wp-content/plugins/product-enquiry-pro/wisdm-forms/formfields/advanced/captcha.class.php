@@ -108,7 +108,8 @@ class Captcha {
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
             <label style="display: block; clear: both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
             <?php 
-            echo '<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>';
+            $wdm_lang = pll_current_language();
+            echo '<script src="https://www.google.com/recaptcha/api.js?hl=' . $wdm_lang . '&render=explicit" async defer></script>';
             self::loadCaptchaJs($params, $siteKey);
             ?>
             <div class='form-group' >

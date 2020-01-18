@@ -213,4 +213,7 @@ add_action('init', function() {
 	pll_register_string('update-enquiry-cart', 'Update Enquiry Cart');
 	pll_register_string('update-cart', 'Update Cart');
 	pll_register_string('remarks', 'Remarks');
+	pll_register_string('customer-name', 'Customer Name*');
+	pll_register_string('form-message', 'Message*');
+	pll_register_string('please-enter-message', 'Please Enter Message');
   });

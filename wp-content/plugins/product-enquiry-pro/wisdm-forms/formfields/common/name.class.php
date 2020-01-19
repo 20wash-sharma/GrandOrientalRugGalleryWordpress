@@ -121,7 +121,7 @@ class Name {
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
             <!-- <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label> -->
-            <input type='text' name='submitform[<?php echo $name ?>]' id='<?php echo $id; ?>' value='<?php echo $value;?>' <?php echo required($params); ?> class='form-control wdm-name' data-primary='<?php echo $primary; ?>' pattern='^([^0-9@#$%^&amp;*()+{}:;\//&quot;&lt;&gt;,.?*~`]*)$' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>' />
+            <input type='text' name='submitform[<?php echo $name ?>]' id='<?php echo $id; ?>' value='<?php echo $value;?>' <?php echo required($params); ?> class='form-control wdm-name' data-primary='<?php echo $primary; ?>' pattern='^([^0-9@#$%^&amp;*()+{}:;\//&quot;&lt;&gt;,.?*~`]*)$' placeholder='<?php echo pll__(quoteupReturnCustomFormFieldPlaceholder($params['label'])); ?>' />
             <div>
                 <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>
             </div>

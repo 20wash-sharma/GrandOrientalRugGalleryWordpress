@@ -221,4 +221,5 @@ add_action('init', function() {
 	pll_register_string('please-enter-email-enquiry', 'Please enter Email');
 	pll_register_string('please-enter-customer-name', 'Please enter Customer Name*');
 	pll_register_string('please-enter-valid-email', 'Please enter a valid email address.'); 
+	pll_register_string('thank-you', 'Thank You!'); 
   });

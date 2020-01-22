@@ -18,7 +18,7 @@
     <div class='wdm-enquiry-success'>
         <span class='wdm-quoteupicon wdm-quoteupicon-done wdm-enquiry-success-icon'>
         </span>
-        <?php echo $thankyou; ?>
+        <?php echo pll__($thankyou); ?>
     </div>
     <div class='woocommerce'>
         <p class='return-to-shop'>

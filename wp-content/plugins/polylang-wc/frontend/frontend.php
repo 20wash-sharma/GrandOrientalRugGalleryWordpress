@@ -84,6 +84,8 @@ class PLLWC_Frontend {
 
 		// Ajax endpoint
 		add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'ajax_get_endpoint' ), 10, 2 );
+
+		add_action( 'wp_footer', array( $this, 'filter_dynamic_blocks' ), 0 );
 	}
 
 	/**
@@ -301,5 +303,38 @@ class PLLWC_Frontend {
 		$url = remove_query_arg( 'wc-ajax', $url );
 		$url = PLL()->links_model->switch_language_in_link( $url, PLL()->curlang );
 		return add_query_arg( 'wc-ajax', $request, $url );
+	}
+
+	/**
+	 * Add a script to allow filtering blocks relying on the WC REST API
+	 *
+	 * @since 1.3
+	 */
+	public function filter_dynamic_blocks() {
+		$lang = pll_current_language();
+
+		// Block "All Reviews", Since WC 3.8.
+		$script = "wp.apiFetch.use(
+			function( options, next ) {
+				if ( 'undefined' !== options.path && options.path.indexOf( '/wc/blocks/products/reviews' ) >= 0 ) {
+					options.path += '&lang={$lang}';
+				}
+				return next( options );
+			}
+		);";
+
+		wp_add_inline_script( 'wc-reviews-frontend', $script, 'before' );
+
+		// Block "All Products", Since WC 3.9.
+		$script = "wp.apiFetch.use(
+			function( options, next ) {
+				if ( 'undefined' !== options.path && options.path.indexOf( '/wc/store/products' ) >= 0 ) {
+					options.path += '&lang={$lang}';
+				}
+				return next( options );
+			}
+		);";
+
+		wp_add_inline_script( 'wc-all-products-frontend', $script, 'before' );
 	}
 }

@@ -45,23 +45,23 @@ class PLLWC_Admin_WC_Install {
 	 */
 	public function display_post_states( $post_states, $post ) {
 		if ( in_array( $post->ID, pll_get_post_translations( wc_get_page_id( 'shop' ) ) ) ) {
-			$post_states['wc_page_for_shop'] = __( 'Shop Page', 'woocommerce' );
+			$post_states['wc_page_for_shop'] = __( 'Shop Page', 'polylang-wc' );
 		}
 
 		if ( in_array( $post->ID, pll_get_post_translations( wc_get_page_id( 'cart' ) ) ) ) {
-			$post_states['wc_page_for_cart'] = __( 'Cart Page', 'woocommerce' );
+			$post_states['wc_page_for_cart'] = __( 'Cart Page', 'polylang-wc' );
 		}
 
 		if ( in_array( $post->ID, pll_get_post_translations( wc_get_page_id( 'checkout' ) ) ) ) {
-			$post_states['wc_page_for_checkout'] = __( 'Checkout Page', 'woocommerce' );
+			$post_states['wc_page_for_checkout'] = __( 'Checkout Page', 'polylang-wc' );
 		}
 
 		if ( in_array( $post->ID, pll_get_post_translations( wc_get_page_id( 'myaccount' ) ) ) ) {
-			$post_states['wc_page_for_myaccount'] = __( 'My Account Page', 'woocommerce' );
+			$post_states['wc_page_for_myaccount'] = __( 'My Account Page', 'polylang-wc' );
 		}
 
 		if ( in_array( $post->ID, pll_get_post_translations( wc_get_page_id( 'terms' ) ) ) ) {
-			$post_states['wc_page_for_terms'] = __( 'Terms and Conditions Page', 'woocommerce' );
+			$post_states['wc_page_for_terms'] = __( 'Terms and Conditions Page', 'polylang-wc' );
 		}
 
 		return $post_states;
@@ -81,12 +81,12 @@ class PLLWC_Admin_WC_Install {
 		$tools = array_slice( $tools, 0, $n );
 
 		$tools['pll_install_pages'] = array(
-			'name'     => __( 'Install WooCommerce pages', 'woocommerce' ),
-			'button'   => __( 'Install pages', 'woocommerce' ),
+			'name'     => __( 'Install WooCommerce pages', 'polylang-wc' ),
+			'button'   => __( 'Install pages', 'polylang-wc' ),
 			'desc'     => sprintf(
 				'<strong class="red">%1$s</strong> %2$s',
-				__( 'Note:', 'woocommerce' ),
-				__( 'This tool will install all the missing WooCommerce pages. Pages already defined and set up will not be replaced.', 'woocommerce' )
+				__( 'Note:', 'polylang-wc' ),
+				__( 'This tool will install all the missing WooCommerce pages. Pages already defined and set up will not be replaced.', 'polylang-wc' )
 			),
 			'callback' => array( $this, 'install_pages' ),
 		);
@@ -103,7 +103,7 @@ class PLLWC_Admin_WC_Install {
 	 * @param string $domain Text domain.
 	 */
 	public function plugin_locale( $locale, $domain ) {
-		return 'woocommerce' === $domain ? $this->locale : $locale;
+		return 'polylang-wc' === $domain ? $this->locale : $locale;
 	}
 
 	/**
@@ -118,7 +118,8 @@ class PLLWC_Admin_WC_Install {
 		foreach ( pll_languages_list( array( 'fields' => '' ) ) as $language ) {
 			// Load WooCommerce text domain in new language
 			$this->locale = $language->locale;
-			WC()->load_plugin_textdomain();
+			unload_textdomain( 'polylang-wc' );
+			load_plugin_textdomain( 'polylang-wc', false, basename( PLLWC_DIR ) . '/languages' );
 
 			// Partly copy paste of WC_Install::create_pages
 			// Can't use it directly as Woocommerce checks for the unicity of each page
@@ -127,23 +128,23 @@ class PLLWC_Admin_WC_Install {
 				'woocommerce_create_pages',
 				array(
 					'shop'      => array(
-						'name'    => _x( 'shop', 'Page slug', 'woocommerce' ),
-						'title'   => _x( 'Shop', 'Page title', 'woocommerce' ),
+						'name'    => _x( 'shop', 'Page slug', 'polylang-wc' ),
+						'title'   => _x( 'Shop', 'Page title', 'polylang-wc' ),
 						'content' => '',
 					),
 					'cart'      => array(
-						'name'    => _x( 'cart', 'Page slug', 'woocommerce' ),
-						'title'   => _x( 'Cart', 'Page title', 'woocommerce' ),
+						'name'    => _x( 'cart', 'Page slug', 'polylang-wc' ),
+						'title'   => _x( 'Cart', 'Page title', 'polylang-wc' ),
 						'content' => '[' . apply_filters( 'woocommerce_cart_shortcode_tag', 'woocommerce_cart' ) . ']',
 					),
 					'checkout'  => array(
-						'name'    => _x( 'checkout', 'Page slug', 'woocommerce' ),
-						'title'   => _x( 'Checkout', 'Page title', 'woocommerce' ),
+						'name'    => _x( 'checkout', 'Page slug', 'polylang-wc' ),
+						'title'   => _x( 'Checkout', 'Page title', 'polylang-wc' ),
 						'content' => '[' . apply_filters( 'woocommerce_checkout_shortcode_tag', 'woocommerce_checkout' ) . ']',
 					),
 					'myaccount' => array(
-						'name'    => _x( 'my-account', 'Page slug', 'woocommerce' ),
-						'title'   => _x( 'My account', 'Page title', 'woocommerce' ),
+						'name'    => _x( 'my-account', 'Page slug', 'polylang-wc' ),
+						'title'   => _x( 'My account', 'Page title', 'polylang-wc' ),
 						'content' => '[' . apply_filters( 'woocommerce_my_account_shortcode_tag', 'woocommerce_my_account' ) . ']',
 					),
 				)
@@ -152,7 +153,8 @@ class PLLWC_Admin_WC_Install {
 
 		// Reload current text domain
 		remove_filter( 'plugin_locale', array( $this, 'plugin_locale' ), 10, 2 );
-		WC()->load_plugin_textdomain();
+		unload_textdomain( 'polylang-wc' );
+		load_plugin_textdomain( 'polylang-wc', false, basename( PLLWC_DIR ) . '/languages' );
 	}
 
 	/**
@@ -191,14 +193,7 @@ class PLLWC_Admin_WC_Install {
 			}
 		}
 
-		$message = __( 'All missing WooCommerce pages successfully installed', 'woocommerce' );
-
-		if ( version_compare( WC()->version, '3.1', '<' ) ) {
-			// In WC 3.0 the message will be above the message 'Tool ran'. See https://github.com/woocommerce/woocommerce/pull/14576
-			echo '<div class="updated"><p>' . esc_html( $message ) . '</p></div>';
-		} else {
-			return $message;
-		}
+		return __( 'All missing WooCommerce pages successfully installed', 'polylang-wc' );
 	}
 
 	/**
@@ -249,7 +244,7 @@ class PLLWC_Admin_WC_Install {
 	protected static function create_default_product_cat( $lang ) {
 		$default = get_option( 'default_product_cat' );
 		if ( $default && ! pll_get_term( $default, $lang ) ) {
-			$name = _x( 'Uncategorized', 'Default category slug', 'woocommerce' );
+			$name = _x( 'Uncategorized', 'Default category slug', 'polylang-wc' );
 			$slug = sanitize_title( $name . '-' . $lang );
 			$cat = wp_insert_term( $name, 'product_cat', array( 'slug' => $slug ) );
 
@@ -260,19 +255,6 @@ class PLLWC_Admin_WC_Install {
 			$translations = pll_get_term_translations( $default );
 			$translations[ $lang ] = $cat;
 			pll_save_term_translations( $translations );
-		}
-	}
-
-	/**
-	 * Assign the default language to default product category.
-	 *
-	 * @since 1.0
-	 */
-	public static function maybe_set_default_category_language() {
-		if ( $default = get_option( 'default_product_cat' ) ) {
-			if ( ! pll_get_term_language( $default ) ) {
-				pll_set_term_language( (int) $default, pll_default_language() );
-			}
 		}
 	}
 

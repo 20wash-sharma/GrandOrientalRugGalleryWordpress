@@ -29,7 +29,7 @@ class PLLWC_Export {
 		return array_merge(
 			$columns,
 			array(
-				'language'     => __( 'Language', 'polylang' ),
+				'language'     => __( 'Language', 'polylang-wc' ),
 				'translations' => __( 'Translation group', 'polylang-wc' ),
 			)
 		);

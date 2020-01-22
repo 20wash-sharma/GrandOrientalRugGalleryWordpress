@@ -22,8 +22,15 @@ class PLLWC_REST_Product extends PLL_REST_Translated_Object {
 		$this->id   = 'ID';
 
 		$this->data_store = PLLWC_Data_Store::load( 'product_language' );
-		add_filter( 'woocommerce_rest_product_object_query', array( $this, 'query' ), 10, 2 );
+
+		// FIXME Backward compatibility with Polylang Pro < 2.7
+		if ( method_exists( 'PLL_REST_Translated_Object', 'query' ) ) {
+			add_filter( 'woocommerce_rest_product_object_query', array( $this, 'query' ), 10, 2 );
+		}
+
 		add_filter( 'get_terms_args', array( $this, 'get_terms_args' ) ); // Before Auto translate
+
+		add_filter( 'pllwc_language_for_unique_sku', array( $this, 'language_for_unique_sku' ) );
 	}
 
 	/**
@@ -100,5 +107,21 @@ class PLLWC_REST_Product extends PLL_REST_Translated_Object {
 			$args['lang'] = '';
 		}
 		return $args;
+	}
+
+	/**
+	 * Returns the language to use when searching if a sku is unique
+	 * Requires Polylang Pro 2.7+
+	 *
+	 * @since 1.3
+	 *
+	 * @param PLL_Language $language Language for unique sku.
+	 * @return PLL_Language
+	 */
+	public function language_for_unique_sku( $language ) {
+		if ( isset( $this->params['lang'] ) && in_array( $this->params['lang'], $this->model->get_languages_list( array( 'fields' => 'slug' ) ) ) ) {
+			$language = $this->params['lang'];
+		}
+		return $language;
 	}
 }

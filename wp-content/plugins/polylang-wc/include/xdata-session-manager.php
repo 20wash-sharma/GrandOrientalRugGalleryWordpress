@@ -60,6 +60,6 @@ class PLLWC_Xdata_Session_Manager {
 			return maybe_unserialize( $value->session_value );
 		}
 
-		wp_die( esc_html__( 'Cheatin&#8217; uh?' ) );
+		wp_die( esc_html__( 'An error has occurred.', 'polylang-wc' ) );
 	}
 }

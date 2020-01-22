@@ -7,6 +7,11 @@
  * @since 1.1
  */
 class PLLWC_Product_Bundles {
+	/**
+	 * Array of cart keys with original as key and translation as value
+	 *
+	 * @var array
+	 */
 	protected $translated_cart_keys;
 
 	/**
@@ -63,7 +68,6 @@ class PLLWC_Product_Bundles {
 			$tr_id = $data_store->get( $item->get_product_id(), $lang );
 			if ( $tr_id ) {
 				$tr_ids[] = $tr_id;
-				$bundled_item_id = $item->get_bundled_item_id();
 
 				// Meta data
 				$meta_data = $item->get_meta_data();
@@ -157,7 +161,9 @@ class PLLWC_Product_Bundles {
 	 * @return array
 	 */
 	protected function translate_stamp( $item, $lang ) {
-		$data_store = PLLWC_Data_Store::load( 'product_language' );
+		$product_ids = array();
+		$tr_stamp    = array();
+		$data_store  = PLLWC_Data_Store::load( 'product_language' );
 
 		if ( isset( $item['bundled_by'], $this->stamps[ $item['bundled_by'] ] ) ) {
 			return $this->stamps[ $item['bundled_by'] ];
@@ -205,7 +211,7 @@ class PLLWC_Product_Bundles {
 			}
 		}
 
-		$tr_stamp = isset( $tr_stamp ) ? $tr_stamp : $item['stamp'];
+		$tr_stamp = empty( $tr_stamp ) ? $item['stamp'] : $tr_stamp;
 		$this->stamps[ $item['key'] ] = $tr_stamp;
 
 		return $tr_stamp;
@@ -284,6 +290,8 @@ class PLLWC_Product_Bundles {
 	 * @return array
 	 */
 	public function translate_cart_contents( $contents, $lang ) {
+		$bundled_by = array();
+
 		foreach ( $contents as $cart_key => $item ) {
 			if ( isset( $item['bundled_by'] ) ) {
 				$bundled_by[ $cart_key ] = $item['bundled_by'];
@@ -292,7 +300,7 @@ class PLLWC_Product_Bundles {
 
 		if ( isset( $bundled_by ) ) {
 			foreach ( $contents as $cart_key => $item ) {
-				if ( isset( $item['bundled_items'] ) ) {
+				if ( ! empty( $item['bundled_items'] ) ) {
 					$contents[ $cart_key ]['bundled_items'] = array_keys( $bundled_by, $item['key'] );
 				}
 			}

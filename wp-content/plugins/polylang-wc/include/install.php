@@ -7,6 +7,11 @@
  * @since 0.1
  */
 class PLLWC_Install {
+	/**
+	 * Plugin basename
+	 *
+	 * @var string
+	 */
 	protected $plugin_basename;
 
 	/**

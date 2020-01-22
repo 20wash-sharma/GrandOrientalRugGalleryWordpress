@@ -6,6 +6,11 @@
  * @since 1.0
  */
 class PLLWC_Admin_Product_Duplicate {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -28,12 +33,7 @@ class PLLWC_Admin_Product_Duplicate {
 	 * @since 0.9.3
 	 */
 	public function duplicate_product_action() {
-		// FIXME Backward compatibility with Polylang < 2.4
-		if ( method_exists( PLL()->filters_post, 'set_object_terms' ) ) {
-			remove_action( 'set_object_terms', array( PLL()->filters_post, 'set_object_terms' ), 10, 4 );
-		} else {
-			remove_action( 'set_object_terms', array( PLL()->posts, 'set_object_terms' ), 10, 4 );
-		}
+		remove_action( 'set_object_terms', array( PLL()->posts, 'set_object_terms' ), 10, 4 );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class PLLWC_Admin_Product_Duplicate {
 
 		// First set the language of the product duplicated by WooCommerce
 		$lang = $this->data_store->get_language( $product->get_id() );
-		$new_tr_ids[ $lang ] = $duplicate->get_id();
+		$new_tr_ids = array( $lang => $duplicate->get_id() );
 		$this->data_store->set_language( $new_tr_ids[ $lang ], $lang );
 
 		// Duplicate translations
@@ -67,7 +67,7 @@ class PLLWC_Admin_Product_Duplicate {
 
 				$tr_duplicate->set_id( 0 );
 				/* translators: %s is a product name */
-				$tr_duplicate->set_name( sprintf( __( '%s (Copy)', 'woocommerce' ), $tr_duplicate->get_name() ) );
+				$tr_duplicate->set_name( sprintf( __( '%s (Copy)', 'polylang-wc' ), $tr_duplicate->get_name() ) );
 				$tr_duplicate->set_total_sales( 0 );
 				$tr_duplicate->set_status( 'draft' );
 				$tr_duplicate->set_date_created( null );
@@ -104,7 +104,8 @@ class PLLWC_Admin_Product_Duplicate {
 				$tr_ids = $this->data_store->get_translations( $child_id );
 
 				if ( $tr_ids && $child = wc_get_product( $child_id ) ) {
-					$new_child_tr_ids = array();
+					$new_child_tr_ids   = array();
+					$tr_child_duplicate = array();
 
 					$sku = wc_product_generate_unique_sku( 0, $child->get_sku( 'edit' ) );
 

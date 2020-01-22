@@ -7,7 +7,26 @@
  * @since 0.1
  */
 class PLLWC_Emails {
-	protected $data_store, $switched_locale, $saved_curlang;
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
+	protected $data_store;
+
+	/**
+	 * Previous locale
+	 *
+	 * @var string
+	 */
+	protected $switched_locale;
+
+	/**
+	 * Previous current language
+	 *
+	 * @var object PLL_Language
+	 */
+	protected $saved_curlang;
 
 	/**
 	 * Constructor

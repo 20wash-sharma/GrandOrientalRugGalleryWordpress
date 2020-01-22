@@ -27,11 +27,14 @@ class PLLWC_REST_API {
 	 * @since 0.9
 	 */
 	public function init() {
-		add_filter( 'woocommerce_rest_product_cat_query', array( PLL()->rest_api->term, 'query' ), 10, 2 );
-		add_filter( 'woocommerce_rest_product_tag_query', array( PLL()->rest_api->term, 'query' ), 10, 2 );
+		// FIXME Backward compatibility with Polylang Pro < 2.7
+		if ( method_exists( 'PLL_REST_Translated_Object', 'query' ) ) {
+			add_filter( 'woocommerce_rest_product_cat_query', array( PLL()->rest_api->term, 'query' ), 10, 2 );
+			add_filter( 'woocommerce_rest_product_tag_query', array( PLL()->rest_api->term, 'query' ), 10, 2 );
 
-		foreach ( wc_get_attribute_taxonomy_names() as $attribute ) {
-			add_filter( "woocommerce_rest_{$attribute}_query", array( PLL()->rest_api->term, 'query' ), 10, 2 );
+			foreach ( wc_get_attribute_taxonomy_names() as $attribute ) {
+				add_filter( "woocommerce_rest_{$attribute}_query", array( PLL()->rest_api->term, 'query' ), 10, 2 );
+			}
 		}
 
 		$this->product = new PLLWC_REST_Product();

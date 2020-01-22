@@ -7,7 +7,12 @@
  * @since 0.1
  */
 class PLLWC_Post_Types {
-	protected $permalinks; // WooCommerce permalinks option
+	/**
+	 * WooCommerce permalinks option
+	 *
+	 * @var array
+	 */
+	protected $permalinks;
 
 	/**
 	 * Constructor

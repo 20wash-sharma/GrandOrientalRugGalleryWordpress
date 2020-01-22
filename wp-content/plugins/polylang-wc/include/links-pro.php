@@ -130,6 +130,8 @@ class PLLWC_Links_Pro extends PLLWC_Links {
 			return $rules;
 		}
 
+		$newrules = array();
+
 		$old = $this->slugs_model->translated_slugs[ $type ]['slug'] . '(/';
 		$new = '(' . implode( '|', $this->slugs_model->translated_slugs[ $type ]['translations'] ) . ')(/';
 
@@ -171,7 +173,7 @@ class PLLWC_Links_Pro extends PLLWC_Links {
 	 * @return array
 	 */
 	public function edit_address_slugs( $slugs ) {
-		foreach ( $slugs as $key => $slug ) {
+		foreach ( array_keys( $slugs ) as $key ) {
 			if ( isset( $this->slugs_model->translated_slugs[ 'wc_' . $key ] ) && $lang = pll_current_language() ) {
 				$slugs[ $key ] = rawurlencode( $this->slugs_model->translated_slugs[ 'wc_' . $key ]['translations'][ $lang ] );
 			} else {

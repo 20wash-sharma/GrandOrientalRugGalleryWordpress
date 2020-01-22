@@ -1,10 +1,12 @@
 === Polylang for WooCommerce ===
 Contributors: Chouby
 Tags: multilingual, woocommerce
-Requires at least: 4.7
+Requires at least: 4.9
 Tested up to: 5.3
-Stable tag: 1.2.5
+Requires PHP: 5.6
+Stable tag: 1.3
 License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
@@ -15,6 +17,20 @@ Some popular extensions such as WooCommerce Subscriptions, Dynamic Pricing, Tabl
 This extension can be used either with the free version of Polylang or in combination with Polylang Pro.
 
 == Changelog ==
+
+= 1.3 (2020-01-20) =
+
+* Requires PHP 5.6 or higher, WordPress 4.9 or higher, WooCommerce 3.2 or higher, Polylang 2.6 or higher
+* Change text domain from 'pllwc' to 'polylang-wc'
+* Add compatibility with WooCommerce 3.9
+* Add compatibility with WooCommerce Composite Products
+* Add compatibility with Checkout Field Editor for WooCommerce
+* Add compatibility with "All Reviews" block introduced in WC 3.8. Requires Polylang Pro 2.6.9+
+* Add compatibility with "All Products" block introduced in WC 3.9
+* Duplicate media if they don't exist when translating a product gallery
+* Fix jQuery undefined if a user decides to load jQuery in the footer
+* Fix duplicated sku error when creating a product translation with the REST API
+* Fix "On sale products" block. Requires Polylang Pro 2.6.9+
 
 = 1.2.5 (2019-12-26) =
 

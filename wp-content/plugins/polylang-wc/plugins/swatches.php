@@ -61,7 +61,11 @@ class PLLWC_Swatches {
 	 * @return int
 	 */
 	public function translate_swatches_photo( $value, $key, $lang ) {
-		return ( false !== strpos( $key, '_swatches_id_photo' ) && $to_value = pll_get_post( $value, $lang ) ) ? $to_value : $value;
+		if ( false !== strpos( $key, '_swatches_id_photo' ) ) {
+			$to_value = pll_get_post( $value, $lang );
+			$value = $to_value ? $to_value : $value;
+		}
+		return $value;
 	}
 
 	/**
@@ -93,6 +97,7 @@ class PLLWC_Swatches {
 	 */
 	public function translate_product_meta( $value, $key, $lang, $from ) {
 		if ( '_swatch_type_options' === $key && $product = wc_get_product( $from ) ) {
+			$attr_terms = array();
 			$data_store = PLLWC_Data_Store::load( 'product_language' );
 			$orig_lang  = $data_store->get_language( $from );
 			$attributes = $product->get_variation_attributes();

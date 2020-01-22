@@ -71,9 +71,9 @@ class PLLWC_Subscriptions {
 
 		// Strings translations
 		$options = array(
-			'add_to_cart_button_text' => __( 'Add to Cart Button Text', 'woocommerce-subscriptions' ),
-			'order_button_text'       => __( 'Place Order Button Text', 'woocommerce-subscriptions' ),
-			'switch_button_text'      => __( 'Switch Button Text', 'woocommerce-subscriptions' ),
+			'add_to_cart_button_text' => __( 'Add to Cart Button Text', 'polylang-wc' ),
+			'order_button_text'       => __( 'Place Order Button Text', 'polylang-wc' ),
+			'switch_button_text'      => __( 'Switch Button Text', 'polylang-wc' ),
 		);
 
 		add_filter( 'pll_sanitize_string_translation', array( $this, 'sanitize_strings' ), 10, 3 );
@@ -189,7 +189,7 @@ class PLLWC_Subscriptions {
 	public function add_meta_boxes( $post_type ) {
 		if ( 'shop_subscription' === $post_type ) {
 			remove_meta_box( 'ml_box', $post_type, 'side' ); // Remove Polylang metabox
-			add_meta_box( 'pllwc_box', __( 'Language', 'polylang' ), array( PLLWC()->admin_orders, 'order_language' ), $post_type, 'side', 'high' );
+			add_meta_box( 'pllwc_box', __( 'Language', 'polylang-wc' ), array( PLLWC()->admin_orders, 'order_language' ), $post_type, 'side', 'high' );
 		}
 	}
 

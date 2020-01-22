@@ -7,6 +7,11 @@
  * @since 0.6
  */
 class PLLWC_Bookings {
+	/**
+	 * Previous locale
+	 *
+	 * @var string
+	 */
 	private $switched_locale;
 
 	/**
@@ -294,16 +299,17 @@ class PLLWC_Bookings {
 	 * @param bool   $sync True if it is synchronization, false if it is a copy, defaults to false.
 	 */
 	public function copy_persons( $from, $to, $lang, $sync = false ) {
+		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_children
 		$persons = get_children(
 			array(
 				'post_parent' => $from,
 				'post_type'   => 'bookable_person',
 			),
-			ARRAY_A // wp_insert_post wants an array
+			ARRAY_A // wp_insert_post wants an array.
 		);
 
 		foreach ( $persons as $post ) {
-			$tr_id = $this->copy_bookable_post( $post, $to, $lang, $sync );
+			$this->copy_bookable_post( $post, $to, $lang, $sync );
 		}
 	}
 
@@ -395,6 +401,8 @@ class PLLWC_Bookings {
 			);
 
 			if ( ! empty( $query->posts ) ) {
+				$values = array();
+
 				foreach ( $query->posts as $booking ) {
 					$values[] = $wpdb->prepare( '( %d, %s, %d )', $booking, $meta_key, $post_id );
 				}
@@ -489,6 +497,8 @@ class PLLWC_Bookings {
 	 */
 	protected function translate_booking_persons_meta( $persons, $language ) {
 		if ( ! empty( $persons ) ) {
+			$_persons = array();
+
 			foreach ( $persons as $person => $n ) {
 				$_persons[ pll_get_post( $person, $language ) ] = $n;
 			}
@@ -642,6 +652,7 @@ class PLLWC_Bookings {
 	 */
 	public function translate_cart_item( $item, $lang ) {
 		if ( ! empty( $item['booking'] ) ) {
+			$persons = array();
 			$booking = &$item['booking'];
 
 			// Translate persons types
@@ -678,23 +689,23 @@ class PLLWC_Bookings {
 
 				switch ( $booking['_duration_unit'] ) {
 					case 'month':
-						$booking['duration'] = $total_duration . ' ' . _n( 'month', 'months', $total_duration, 'woocommerce-bookings' );
+						$booking['duration'] = $total_duration . ' ' . _n( 'month', 'months', $total_duration, 'polylang-wc' );
 						break;
 					case 'day':
 						if ( $total_duration % 7 ) {
-							$booking['duration'] = $total_duration . ' ' . _n( 'day', 'days', $total_duration, 'woocommerce-bookings' );
+							$booking['duration'] = $total_duration . ' ' . _n( 'day', 'days', $total_duration, 'polylang-wc' );
 						} else {
-							$booking['duration'] = ( $total_duration / 7 ) . ' ' . _n( 'week', 'weeks', $total_duration, 'woocommerce-bookings' );
+							$booking['duration'] = ( $total_duration / 7 ) . ' ' . _n( 'week', 'weeks', $total_duration, 'polylang-wc' );
 						}
 						break;
 					case 'hour':
-						$booking['duration'] = $total_duration . ' ' . _n( 'hour', 'hours', $total_duration, 'woocommerce-bookings' );
+						$booking['duration'] = $total_duration . ' ' . _n( 'hour', 'hours', $total_duration, 'polylang-wc' );
 						break;
 					case 'minute':
-						$booking['duration'] = $total_duration . ' ' . _n( 'minute', 'minutes', $total_duration, 'woocommerce-bookings' );
+						$booking['duration'] = $total_duration . ' ' . _n( 'minute', 'minutes', $total_duration, 'polylang-wc' );
 						break;
 					case 'night':
-						$booking['duration'] = $total_duration . ' ' . _n( 'night', 'nights', $total_duration, 'woocommerce-bookings' );
+						$booking['duration'] = $total_duration . ' ' . _n( 'night', 'nights', $total_duration, 'polylang-wc' );
 						break;
 					default:
 						$booking['duration'] = $total_duration;

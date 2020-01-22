@@ -157,6 +157,8 @@ class PLLWC_Mix_Match {
 	 * @return array
 	 */
 	public function translate_cart_contents( $contents, $lang ) {
+		$mnm_container = array();
+
 		foreach ( $contents as $cart_key => $item ) {
 			if ( isset( $item['mnm_container'] ) ) {
 				$mnm_container[ $cart_key ] = $item['mnm_container'];

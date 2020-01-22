@@ -6,7 +6,18 @@
  * @since 1.0
  */
 class PLLWC_Product_Language_CPT extends PLLWC_Translated_Object_Language_CPT {
-	protected $permalinks; // WooCommerce permalinks option
+	/**
+	 * WooCommerce permalinks option
+	 *
+	 * @var array
+	 */
+	protected $permalinks;
+
+	/**
+	 * Current attribute term being edited
+	 *
+	 * @var object WP_Term
+	 */
 	protected static $editing_term;
 
 	/**
@@ -150,7 +161,7 @@ class PLLWC_Product_Language_CPT extends PLLWC_Translated_Object_Language_CPT {
 			}
 
 			// Should we copy text ?
-			if ( ! PLLWC_Admin_Products::should_copy_texts( $from, $to, $sync ) ) {
+			if ( ! PLLWC_Products::should_copy_texts( $from, $to, $sync ) ) {
 				$to_copy = array_diff(
 					$to_copy,
 					array(
@@ -325,7 +336,7 @@ class PLLWC_Product_Language_CPT extends PLLWC_Translated_Object_Language_CPT {
 			} else {
 				$props = self::get_legacy_metas();
 				if ( isset( $props[ $key ] ) ) {
-					$value = PLLWC_Admin_Products::maybe_translate_property( $value, $props[ $key ], $lang );
+					$value = PLLWC_Products::maybe_translate_property( $value, $props[ $key ], $lang );
 				}
 			}
 

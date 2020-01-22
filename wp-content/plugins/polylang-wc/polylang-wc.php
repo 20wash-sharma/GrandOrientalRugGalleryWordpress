@@ -3,18 +3,18 @@
 /**
 Plugin name: Polylang for WooCommerce
 Plugin URI: https://polylang.pro
-Version: 1.2.5
+Version: 1.3
 Author: Frédéric Demarle
 Author uri: https://polylang.pro
 Description: Adds multilingual capability to WooCommerce
-Text Domain: pllwc
+Text Domain: polylang-wc
 Domain Path: /languages
-WC requires at least: 3.0
-WC tested up to: 3.7
+WC requires at least: 3.2
+WC tested up to: 3.9
  */
 
 /**
- * Copyright 2016-2019 Frédéric Demarle
+ * Copyright 2016-2020 Frédéric Demarle
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,8 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly
 }
 
-define( 'PLLWC_VERSION', '1.2.5' );
-define( 'PLLWC_MIN_PLL_VERSION', '2.5.1' );
+define( 'PLLWC_VERSION', '1.3' );
+define( 'PLLWC_MIN_PLL_VERSION', '2.6' );
 
 define( 'PLLWC_FILE', __FILE__ ); // This file
 define( 'PLLWC_DIR', dirname( __FILE__ ) );
@@ -50,9 +50,172 @@ require_once PLLWC_DIR . '/include/functions.php';
  * @since 0.1
  */
 class Polylang_Woocommerce {
-	public $post_types, $links, $stock, $emails, $strings;
+	/**
+	 * Instance of PLLWC_Post_Types
+	 *
+	 * @var object
+	 */
+	public $post_types;
+
+	/**
+	 * Instance of PLLWC_Links
+	 *
+	 * @var object
+	 */
+	public $links;
+
+	/**
+	 * Instance of PLLWC_Stock
+	 *
+	 * @var object
+	 */
+	public $stock;
+
+	/**
+	 * Instance of PLLWC_Emails
+	 *
+	 * @var object
+	 */
+	public $emails;
+
+	/**
+	 * Instance of PLLWC_Strings
+	 *
+	 * @var object
+	 */
+	public $strings;
+
+	/**
+	 * Instance of PLLWC_Xdata
+	 *
+	 * @var object
+	 */
+	public $data;
+
+	/**
+	 * Instance of PLLWC_Export
+	 *
+	 * @var object
+	 */
+	public $export;
+
+	/**
+	 * Instance of PLLWC_Import
+	 *
+	 * @var object
+	 */
+	public $import;
+
+	/**
+	 * Instance of PLLWC_REST_API
+	 *
+	 * @var object
+	 */
+	public $rest_api;
+
+	/**
+	 * Instance of PLLWC_Sync_Content
+	 *
+	 * @var object
+	 */
+	public $sync_content;
+
+	/**
+	 * Instance of PLLWC_Frontend
+	 *
+	 * @var object
+	 */
 	public $frontend;
-	public $admin_taxonomies, $admin_products, $admin_orders, $admin_reports, $admin_wc_install, $admin_menus;
+
+	/**
+	 * Instance of PLLWC_Frontend_Cart
+	 *
+	 * @var object
+	 */
+	public $cart;
+
+	/**
+	 * Instance of PLLWC_Frontend_Account
+	 *
+	 * @var object
+	 */
+	public $my_account;
+
+	/**
+	 * Instance of PLLWC_Coupons
+	 *
+	 * @var object
+	 */
+	public $coupons;
+
+	/**
+	 * Instance of PLLWC_Frontend_WC_Pages
+	 *
+	 * @var object
+	 */
+	public $wc_pages;
+
+	/**
+	 * Instance of PLLWC_Admin_WC_Install
+	 *
+	 * @var object
+	 */
+	public $admin_wc_install;
+
+	/**
+	 * Instance of PLLWC_Admin_Taxonomies
+	 *
+	 * @var object
+	 */
+	public $admin_taxonomies;
+
+	/**
+	 * Instance of PLLWC_Admin_Products
+	 *
+	 * @var object
+	 */
+	public $admin_products;
+
+	/**
+	 * Instance of PLLWC_Admin_Product_Duplicate
+	 *
+	 * @var object
+	 */
+	public $admin_product_duplicate;
+
+	/**
+	 * Instance of PLLWC_Admin_Orders
+	 *
+	 * @var object
+	 */
+	public $admin_orders;
+
+	/**
+	 * Instance of PLLWC_Admin_Reports
+	 *
+	 * @var object
+	 */
+	public $admin_reports;
+
+	/**
+	 * Instance of PLLWC_Admin_Status_Reports
+	 *
+	 * @var object
+	 */
+	public $admin_status_reports;
+
+	/**
+	 * Instance of PLLWC_Admin_Menus
+	 *
+	 * @var object
+	 */
+	public $admin_menus;
+
+	/**
+	 * Singleton
+	 *
+	 * @var object PLLWC_Plugins_Compat
+	 */
 	protected static $instance;
 
 	/**
@@ -128,7 +291,7 @@ class Polylang_Woocommerce {
 
 		foreach ( $dirs as $dir ) {
 			if ( file_exists( $file = "$dir/$class.php" ) ) {
-				require_once $file;
+				require_once $file; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 				return;
 			}
 		}
@@ -140,8 +303,8 @@ class Polylang_Woocommerce {
 	 * @since 0.1
 	 */
 	public function init() {
-		// Silently disable the plugin if Polylang or WooCommerce are not active
-		if ( ! defined( 'POLYLANG_VERSION' ) || ! defined( 'WOOCOMMERCE_VERSION' ) ) {
+		// Silently disable the plugin if WooCommerce are not active
+		if ( ! defined( 'WOOCOMMERCE_VERSION' ) ) {
 			return;
 		}
 
@@ -153,6 +316,7 @@ class Polylang_Woocommerce {
 
 		if ( PLL() instanceof PLL_Admin_Base ) {
 			new PLL_License( __FILE__, 'Polylang for WooCommerce', PLLWC_VERSION, 'Frédéric Demarle' );
+			new PLL_T15S( 'polylang-wc', 'https://s3.eu-central-1.amazonaws.com/api.translationspress.com/wp-syntex/polylang-wc/polylang-wc.json' );
 		}
 
 		// Bail early if no language has been defined yet.
@@ -161,17 +325,6 @@ class Polylang_Woocommerce {
 		}
 
 		add_action( 'admin_init', array( $this, 'maybe_upgrade' ) );
-
-		// Maybe assign the default language to the default category
-		PLLWC_Admin_WC_Install::maybe_set_default_category_language();
-
-		// Install default categories at WooCommerce install
-		add_action( 'add_option_default_product_cat', array( 'PLLWC_Admin_WC_Install', 'create_default_product_cats' ) );
-
-		// FIXME backward compatibility with WC < 3.1
-		if ( version_compare( WC()->version, '3.1.0', '<' ) ) {
-			add_action( 'before_woocommerce_init', array( $this, 'prevent_caching' ), 1 ); // Before WooCommerce
-		}
 
 		add_action( 'woocommerce_delete_product_transients', array( $this, 'delete_product_transients' ) );
 
@@ -183,6 +336,7 @@ class Polylang_Woocommerce {
 		$this->data       = new PLLWC_Xdata();
 		$this->export     = new PLLWC_Export();
 		$this->import     = new PLLWC_Import();
+		$this->products   = new PLLWC_Products();
 
 		if ( defined( 'POLYLANG_PRO' ) && POLYLANG_PRO ) {
 			$this->rest_api     = new PLLWC_REST_API();
@@ -203,6 +357,11 @@ class Polylang_Woocommerce {
 		} else {
 			$this->admin_wc_install = new PLLWC_Admin_WC_Install();
 
+			// Admin and Polylang settings because wizard is based on PLL_Settings
+			if ( PLL() instanceof PLL_admin_Base ) {
+				$this->admin_status_reports = new PLLWC_Admin_Status_Reports( PLL()->model );
+				load_plugin_textdomain( 'polylang-wc', false, basename( PLLWC_DIR ) . '/languages' );
+			}
 			// Admin only ( but not useful on Polylang settings pages )
 			if ( PLL() instanceof PLL_admin ) {
 				$this->admin_taxonomies        = new PLLWC_Admin_Taxonomies();
@@ -214,8 +373,7 @@ class Polylang_Woocommerce {
 				$this->coupons                 = new PLLWC_Admin_Coupons();
 
 				add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-				add_action( 'woocommerce_system_status_report', array( $this, 'status_report' ) );
-				load_plugin_textdomain( 'pllwc', false, basename( PLLWC_DIR ) . '/languages' );
+
 			}
 		}
 
@@ -235,14 +393,14 @@ class Polylang_Woocommerce {
 	 * @since 0.1
 	 */
 	public function admin_notices() {
-		load_plugin_textdomain( 'pllwc', false, basename( PLLWC_DIR ) . '/languages' );
+		load_plugin_textdomain( 'polylang-wc', false, basename( PLLWC_DIR ) . '/languages' );
 		printf(
 			'<div class="error"><p>%s</p><p>%s</p></div>',
-			esc_html__( 'Polylang for WooCommerce has been deactivated because you are using an old version of Polylang.', 'pllwc' ),
+			esc_html__( 'Polylang for WooCommerce has been deactivated because you are using an old version of Polylang.', 'polylang-wc' ),
 			esc_html(
 				sprintf(
 					/* translators: %1$s and %2$s are Polylang version numbers */
-					__( 'You are using Polylang %1$s. Polylang for WooCommerce requires at least Polylang %2$s.', 'pllwc' ),
+					__( 'You are using Polylang %1$s. Polylang for WooCommerce requires at least Polylang %2$s.', 'polylang-wc' ),
 					POLYLANG_VERSION,
 					PLLWC_MIN_PLL_VERSION
 				)
@@ -289,28 +447,8 @@ class Polylang_Woocommerce {
 			$options['version'] = PLLWC_VERSION;
 			update_option( 'polylang-wc', $options );
 		}
-	}
 
-	/**
-	 * Prevents caching the cart, checkout and account pages, including translations
-	 * Backward compatibility with WC < 3.1
-	 *
-	 * @since 0.4.3
-	 */
-	public static function prevent_caching() {
-		if ( false === ( $wc_page_uris = get_transient( 'woocommerce_cache_excluded_uris' ) ) ) {
-			$wc_page_uris = array();
-
-			foreach ( array( 'cart', 'checkout', 'myaccount' ) as $wc_page ) {
-				foreach ( pll_get_post_translations( wc_get_page_id( $wc_page ) ) as $page_id ) {
-					if ( $page_id && $page_id > 0 && ( $page = get_post( $page_id ) ) ) {
-						$wc_page_uris[] = 'p=' . $page_id;
-						$wc_page_uris[] = '/' . $page->post_name . '/';
-					}
-				}
-			}
-			set_transient( 'woocommerce_cache_excluded_uris', $wc_page_uris );
-		}
+		PLLWC_Admin_WC_Install::create_default_product_cats();
 	}
 
 	/**
@@ -340,15 +478,6 @@ class Polylang_Woocommerce {
 	public function admin_enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'pll_wc_admin', plugins_url( '/css/admin' . $suffix . '.css', PLLWC_FILE ), array(), PLLWC_VERSION );
-	}
-
-	/**
-	 * Loads the status report for the translations of the default pages
-	 *
-	 * @since 0.1
-	 */
-	public function status_report() {
-		include PLLWC_DIR . '/admin/view-status-report.php';
 	}
 }
 

@@ -21,7 +21,7 @@ class PLLWC_Admin {
 		}
 
 		// Or the current locale ( admin language )
-		if ( $curlang = PLL()->model->get_language( version_compare( $GLOBALS['wp_version'], '4.7', '<' ) ? get_locale() : get_user_locale() ) ) {
+		if ( $curlang = PLL()->model->get_language( get_user_locale() ) ) {
 			return $curlang->slug;
 		}
 

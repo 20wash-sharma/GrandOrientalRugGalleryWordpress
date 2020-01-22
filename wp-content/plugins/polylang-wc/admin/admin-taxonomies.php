@@ -129,7 +129,8 @@ class PLLWC_Admin_Taxonomies {
 	 */
 	public function translate_meta( $value, $key, $lang ) {
 		if ( 'thumbnail_id' === $key ) {
-			$value = ( $tr_value = pll_get_post( $value, $lang ) ) ? $tr_value : $value;
+			$tr_value = pll_get_post( $value, $lang );
+			$value = $tr_value ? $tr_value : $value;
 		}
 		return $value;
 	}

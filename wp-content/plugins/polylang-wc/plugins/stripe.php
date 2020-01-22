@@ -58,7 +58,7 @@ class PLLWC_Stripe {
 			// Add testmode string as dont in WC_Gateway_Stripe stripe
 			if ( $gateways['stripe']->testmode ) {
 				/* translators: %s is a link to the Stripe documentation */
-				$description .= ' ' . sprintf( __( 'TEST MODE ENABLED. In test mode, you can use the card number 4242424242424242 with any CVC and a valid expiration date or check the documentation "<a href="%s">Testing Stripe</a>" for more card numbers.', 'woocommerce-gateway-stripe' ), 'https://stripe.com/docs/testing' );
+				$description .= ' ' . sprintf( __( 'TEST MODE ENABLED. In test mode, you can use the card number 4242424242424242 with any CVC and a valid expiration date or check the documentation "<a href="%s">Testing Stripe</a>" for more card numbers.', 'polylang-wc' ), 'https://stripe.com/docs/testing' );
 				$description  = trim( $description );
 			}
 		}

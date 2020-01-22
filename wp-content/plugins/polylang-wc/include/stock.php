@@ -6,6 +6,11 @@
  * @since 0.1
  */
 class PLLWC_Stock {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -88,24 +93,8 @@ class PLLWC_Stock {
 			if ( $tr_id !== $id && $product = wc_get_product( $tr_id ) ) {
 				$product_id_with_stock = $product->get_stock_managed_by_id();
 
-				// 1. Actions done in WC_Product_Data_Store_CPT::update_product_stock() for the source product
 				wp_cache_delete( $product_id_with_stock, 'post_meta' );
 				$this->data_store->update_lookup_table( $tr_id, 'wc_product_meta_lookup' );
-
-				// 2. Actions done in wc_update_product_stock()
-				// Some products (variations) can have their stock managed by their parent. Get the correct ID to reduce here.
-				delete_transient( 'wc_product_children_' . ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
-				wp_cache_delete( 'product-' . $product_id_with_stock, 'products' );
-				// Re-read product data after updating stock, then have stock status calculated and saved.
-				$product_with_stock = wc_get_product( $product_id_with_stock );
-				$product_with_stock->set_stock_status();
-				$product_with_stock->set_date_modified( current_time( 'timestamp', true ) );
-				$product_with_stock->save();
-				if ( $product_with_stock->is_type( 'variation' ) ) {
-					do_action( 'woocommerce_variation_set_stock', $product_with_stock );
-				} else {
-					do_action( 'woocommerce_product_set_stock', $product_with_stock );
-				}
 			}
 		}
 	}

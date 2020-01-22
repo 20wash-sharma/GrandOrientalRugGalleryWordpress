@@ -19,7 +19,11 @@ class PLLWC_REST_Order extends PLL_REST_Translated_Object {
 		parent::__construct( $instance, array( 'shop_order' => array( 'filters' => false, 'translations' => false ) ) );
 
 		$this->data_store = PLLWC_Data_Store::load( 'order_language' );
-		add_filter( 'woocommerce_rest_shop_order_object_query', array( $this, 'query' ), 10, 2 );
+
+		// FIXME Backward compatibility with Polylang Pro < 2.7
+		if ( method_exists( 'PLL_REST_Translated_Object', 'query' ) ) {
+			add_filter( 'woocommerce_rest_shop_order_object_query', array( $this, 'query' ), 10, 2 );
+		}
 	}
 
 	/**

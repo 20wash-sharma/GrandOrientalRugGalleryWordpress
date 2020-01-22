@@ -34,7 +34,7 @@ class PLLWC_Table_Rate_Shipping {
 		$labels = array_filter( $labels ); // Remove empty labels.
 
 		foreach ( $labels as $label ) {
-			pll_register_string( __( 'Label', 'woocommerce-table-rate-shipping' ), $label, 'WooCommerce Table Rate Shipping' );
+			pll_register_string( __( 'Label', 'polylang-wc' ), $label, 'WooCommerce Table Rate Shipping' );
 		}
 	}
 

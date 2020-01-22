@@ -6,6 +6,11 @@
  * @since 0.1
  */
 class PLLWC_Admin_Orders {
+	/**
+	 * Order language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -54,7 +59,7 @@ class PLLWC_Admin_Orders {
 
 		// Don't add the column when using a language filter
 		if ( empty( PLL()->curlang ) ) {
-			$columns['language'] = '<span class="order_language tips" data-tip="' . __( 'Language', 'polylang' ) . '">' . __( 'Language', 'polylang' ) . '</span>';
+			$columns['language'] = '<span class="order_language tips" data-tip="' . __( 'Language', 'polylang-wc' ) . '">' . __( 'Language', 'polylang-wc' ) . '</span>';
 		}
 
 		return isset( $end ) ? array_merge( $columns, $end ) : $columns;
@@ -88,7 +93,7 @@ class PLLWC_Admin_Orders {
 	public function add_meta_boxes( $post_type ) {
 		if ( 'shop_order' === $post_type ) {
 			remove_meta_box( 'ml_box', $post_type, 'side' ); // Remove Polylang metabox.
-			add_meta_box( 'pllwc_box', __( 'Language', 'polylang' ), array( $this, 'order_language' ), $post_type, 'side', 'high' );
+			add_meta_box( 'pllwc_box', __( 'Language', 'polylang-wc' ), array( $this, 'order_language' ), $post_type, 'side', 'high' );
 
 			// Translate the checkout page url in the order language for the customer payment page link included in pending orders details.
 			add_filter( 'option_woocommerce_checkout_page_id', 'pll_get_post' );
@@ -131,7 +136,7 @@ class PLLWC_Admin_Orders {
 			'<p><strong>%1$s</strong></p>
 			<label class="screen-reader-text" for="post_lang_choice">%1$s</label>
 			<div id="select-post-language">%2$s</div>',
-			esc_html__( 'Language', 'polylang' ),
+			esc_html__( 'Language', 'polylang-wc' ),
 			$dropdown_html // PHPCS:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 	}

@@ -37,13 +37,6 @@ class PLLWC_Strings {
 
 		// Translate strings in emails
 		add_action( 'pllwc_email_language', array( $this, 'translate_emails' ) );
-
-		// Translate strings on frontend
-		if ( PLL() instanceof PLL_Frontend ) {
-			add_action( 'init', array( $this, 'translate_strings' ) );
-		} else {
-			add_filter( 'woocommerce_attribute_label', array( $this, 'attribute_label' ), 10, 3 );
-		}
 	}
 
 	/**
@@ -56,15 +49,15 @@ class PLLWC_Strings {
 	 */
 	protected static function get_options() {
 		return array(
-			'email_footer_text'                           => array( 'name' => __( 'Footer text', 'woocommerce' ), 'multiline' => true ),
-			'demo_store_notice'                           => array( 'name' => __( 'Store notice text', 'woocommerce' ), 'multiline' => true ),
+			'email_footer_text'                           => array( 'name' => __( 'Footer text', 'polylang-wc' ), 'multiline' => true ),
+			'demo_store_notice'                           => array( 'name' => __( 'Store notice text', 'polylang-wc' ), 'multiline' => true ),
 			'price_display_suffix'                        => array( 'name' => 'price_display_suffix' ),
-			'currency_pos'                                => array( 'name' => __( 'Currency position', 'woocommerce' ) ),
-			'price_thousand_sep'                          => array( 'name' => __( 'Thousand separator', 'woocommerce' ) ),
-			'price_decimal_sep'                           => array( 'name' => __( 'Decimal separator', 'woocommerce' ) ),
-			'registration_privacy_policy_text'            => array( 'name' => __( 'Registration privacy policy', 'woocommerce' ), 'multiline' => true ),
-			'checkout_privacy_policy_text'                => array( 'name' => __( 'Checkout privacy policy', 'woocommerce' ), 'multiline' => true ),
-			'checkout_terms_and_conditions_checkbox_text' => array( 'name' => __( 'Terms and conditions', 'woocommerce' ) ),
+			'currency_pos'                                => array( 'name' => __( 'Currency position', 'polylang-wc' ) ),
+			'price_thousand_sep'                          => array( 'name' => __( 'Thousand separator', 'polylang-wc' ) ),
+			'price_decimal_sep'                           => array( 'name' => __( 'Decimal separator', 'polylang-wc' ) ),
+			'registration_privacy_policy_text'            => array( 'name' => __( 'Registration privacy policy', 'polylang-wc' ), 'multiline' => true ),
+			'checkout_privacy_policy_text'                => array( 'name' => __( 'Checkout privacy policy', 'polylang-wc' ), 'multiline' => true ),
+			'checkout_terms_and_conditions_checkbox_text' => array( 'name' => __( 'Terms and conditions', 'polylang-wc' ) ),
 		);
 	}
 
@@ -172,8 +165,8 @@ class PLLWC_Strings {
 
 		// BACS Account details
 		foreach ( get_option( 'woocommerce_bacs_accounts', array() ) as $account ) {
-			pll_register_string( __( 'Account name', 'woocommerce' ), $account['account_name'], 'WooCommerce' );
-			pll_register_string( __( 'Bank name', 'woocommerce' ), $account['bank_name'], 'WooCommerce' );
+			pll_register_string( __( 'Account name', 'polylang-wc' ), $account['account_name'], 'WooCommerce' );
+			pll_register_string( __( 'Bank name', 'polylang-wc' ), $account['bank_name'], 'WooCommerce' );
 		}
 
 		// Shipping methods
@@ -204,14 +197,14 @@ class PLLWC_Strings {
 
 		// Attributes labels
 		foreach ( wc_get_attribute_taxonomies() as $attr ) {
-			pll_register_string( __( 'Attribute', 'woocommerce' ), $attr->attribute_label, 'WooCommerce' );
+			pll_register_string( __( 'Attribute', 'polylang-wc' ), $attr->attribute_label, 'WooCommerce' );
 		}
 
 		// Tax rate labels
 		$labels = $wpdb->get_col( "SELECT tax_rate_name FROM {$wpdb->prefix}woocommerce_tax_rates" );
 
 		foreach ( $labels as $label ) {
-			pll_register_string( __( 'Tax name', 'woocommerce' ), $label, 'WooCommerce' );
+			pll_register_string( __( 'Tax name', 'polylang-wc' ), $label, 'WooCommerce' );
 		}
 	}
 
@@ -238,16 +231,16 @@ class PLLWC_Strings {
 			}
 
 			// Account details
-			if ( __( 'Account name', 'woocommerce' ) === $name || __( 'Bank name', 'woocommerce' ) === $name ) {
+			if ( __( 'Account name', 'polylang-wc' ) === $name || __( 'Bank name', 'polylang-wc' ) === $name ) {
 				$translation = wc_clean( wp_unslash( $translation ) );
 			}
 
-			if ( __( 'Currency position', 'woocommerce' ) === $name && ! in_array( $translation, array( 'left', 'right', 'left_space', 'right_space' ) ) ) {
+			if ( __( 'Currency position', 'polylang-wc' ) === $name && ! in_array( $translation, array( 'left', 'right', 'left_space', 'right_space' ) ) ) {
 				$translation = get_option( 'woocommerce_currency_pos', 'left' );
 			}
 
 			// Attributes labels
-			if ( __( 'Attribute', 'woocommerce' ) === $name ) {
+			if ( __( 'Attribute', 'polylang-wc' ) === $name ) {
 				$translation = wc_clean( stripslashes( $translation ) );
 			}
 		}
@@ -263,14 +256,13 @@ class PLLWC_Strings {
 		// Gateway instructions in emails
 		add_action( 'woocommerce_email_before_order_table', array( $this, 'translate_instructions' ), 5 ); // Before WooCommerce.
 
+		// Gateway instructions in thankyou page
+		add_action( 'woocommerce_before_thankyou', array( $this, 'translate_instructions' ) ); // Since WooCommerce 3.7.
+
 		// Gateways
 		add_filter( 'woocommerce_gateway_title', 'pll__' );
 		add_filter( 'woocommerce_gateway_description', 'pll__' );
 
-		// Gateway instructions in thankyou page
-		add_action( 'woocommerce_thankyou_bacs', array( $this, 'translate_instructions' ), 5 ); // Before WooCommerce.
-		add_action( 'woocommerce_thankyou_cheque', array( $this, 'translate_instructions' ), 5 );
-		add_action( 'woocommerce_thankyou_cod', array( $this, 'translate_instructions' ), 5 );
 
 		add_filter( 'woocommerce_bacs_accounts', array( $this, 'translate_bacs_accounts' ) );
 
@@ -304,26 +296,7 @@ class PLLWC_Strings {
 	 * @since 0.1
 	 */
 	public function translate_emails() {
-		// FIXME Backward compatibility with WC < 3.1
-		if ( version_compare( WC()->version, '3.1', '<' ) ) {
-			foreach ( WC_Emails::instance()->get_emails() as $email ) {
-				foreach ( $email as $prop => $value ) {
-					if ( $this->is_translated_email_property( $prop ) ) {
-						$email->$prop = pll__( $value );
-					}
-				}
-
-				if ( ! empty( $email->settings ) ) {
-					foreach ( $email->settings as $prop => $value ) {
-						if ( $this->is_translated_email_property( $prop ) ) {
-							$email->settings[ $prop ] = pll__( $value );
-						}
-					}
-				}
-			}
-		} else {
-			add_filter( 'woocommerce_email_get_option', array( $this, 'translate_email_option' ), 10, 4 );
-		}
+		add_filter( 'woocommerce_email_get_option', array( $this, 'translate_email_option' ), 10, 4 );
 
 		// These filters are added by Polylang but not on admin
 		foreach ( array( 'option_blogname', 'option_blogdescription', 'option_date_format', 'option_time_format' ) as $filter ) {

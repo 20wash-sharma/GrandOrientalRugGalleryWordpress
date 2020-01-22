@@ -9,6 +9,11 @@
  */
 class PLLWC_Data_Store {
 
+	/**
+	 * Array of data stores
+	 *
+	 * @var array
+	 */
 	private static $stores = array(
 		'order_language'   => 'PLLWC_Order_Language_CPT',
 		'product_language' => 'PLLWC_Product_Language_CPT',

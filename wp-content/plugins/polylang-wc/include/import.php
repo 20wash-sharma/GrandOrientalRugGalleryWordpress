@@ -6,6 +6,11 @@
  * @since 0.8
  */
 class PLLWC_Import {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -39,7 +44,7 @@ class PLLWC_Import {
 		return array_merge(
 			$mappings,
 			array(
-				__( 'Language', 'polylang' )             => 'language',
+				__( 'Language', 'polylang-wc' )          => 'language',
 				__( 'Translation group', 'polylang-wc' ) => 'translations',
 			)
 		);
@@ -63,7 +68,7 @@ class PLLWC_Import {
 		$options = array_merge(
 			$options,
 			array(
-				'language'     => __( 'Language', 'polylang' ),
+				'language'     => __( 'Language', 'polylang-wc' ),
 				'translations' => __( 'Translation group', 'polylang-wc' ),
 			)
 		);
@@ -82,7 +87,7 @@ class PLLWC_Import {
 	public function inserted_product_object( $object, $data ) {
 		$id = $object->get_id();
 
-		if ( isset( $data['language'] ) && $language = PLL()->model->get_language( $data['language'] ) ) {
+		if ( isset( $data['language'] ) && PLL()->model->get_language( $data['language'] ) ) {
 			if ( isset( $data['translations'] ) ) {
 				$this->set_translation_group( $id, $data );
 			}
@@ -109,7 +114,7 @@ class PLLWC_Import {
 		$term = get_term_by( 'name', $group, $taxonomy );
 
 		if ( empty( $term ) ) {
-			$translations[ $data['language'] ] = $id;
+			$translations = array( $data['language'] => $id );
 			$term = wp_insert_term( $group, $taxonomy, array( 'description' => serialize( $translations ) ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
 			if ( ! is_wp_error( $term ) ) {
 				wp_set_object_terms( $id, $term['term_id'], $taxonomy );
@@ -184,8 +189,6 @@ class PLLWC_Import {
 	 * @return int
 	 */
 	public function get_product_id_by_sku( $product_id, $sku ) {
-		global $wpdb;
-
 		if ( $sku && ! empty( PLL()->pref_lang ) ) {
 			$product_id = $this->data_store->get_product_id_by_sku( $sku, PLL()->pref_lang->slug );
 		}

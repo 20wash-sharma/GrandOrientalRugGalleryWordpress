@@ -7,6 +7,11 @@
  * @since 0.1
  */
 class PLLWC_Admin_Reports {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -130,6 +135,8 @@ class PLLWC_Admin_Reports {
 	 * @retunr array
 	 */
 	public function get_products_in_category( $product_ids, $category_id ) {
+		$term_ids = array();
+
 		foreach ( pll_get_term_translations( $category_id ) as $tr_id ) {
 			$term_ids[] = get_term_children( $tr_id, 'product_cat' );
 			$term_ids[] = $tr_id;

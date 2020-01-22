@@ -6,6 +6,11 @@
  * @since 0.9
  */
 class PLLWC_Coupons {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**

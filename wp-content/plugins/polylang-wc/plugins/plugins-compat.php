@@ -7,7 +7,12 @@
  * @since 0.3.2
  */
 class PLLWC_Plugins_Compat {
-	protected static $instance; // For singleton
+	/**
+	 * Singleton
+	 *
+	 * @var object PLLWC_Plugins_Compat
+	 */
+	protected static $instance;
 
 	/**
 	 * Constructor
@@ -77,6 +82,24 @@ class PLLWC_Plugins_Compat {
 
 		if ( defined( 'WC_MIN_MAX_QUANTITIES' ) ) {
 			$this->min_max = new PLLWC_Min_Max_Quantities();
+		}
+
+		if ( class_exists( 'WC_Composite_Products' ) ) {
+			$this->composite = new PLLWC_Composite_Products();
+		}
+
+		// Special case for Checkout Field Editor which defines constant in a function hooked to 'init'.
+		add_action( 'init', array( $this, 'maybe_init_wcfd' ), 20 );
+	}
+
+	/**
+	 * Initializes the compatibility with the plugin Checkout Field Editor for WooCommerce
+	 *
+	 * @since 1.3
+	 */
+	public function maybe_init_wcfd() {
+		if ( defined( 'TH_WCFD_VERSION' ) ) {
+			$this->wcfd = new PLLWC_WCFD();
 		}
 	}
 

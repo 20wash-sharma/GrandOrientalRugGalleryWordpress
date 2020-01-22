@@ -121,12 +121,14 @@ class PLLWC_Follow_Up_Emails {
 			switch ( $key ) {
 				case '_category_id':
 					// Translate a product category id
-					$value = ( $tr_value = pll_get_term( $value, $lang ) ) ? $tr_value : $value;
+					$tr_value = pll_get_term( $value, $lang );
+					$value = $tr_value ? $tr_value : $value;
 					break;
 				case '_product_id':
 					// Translate a product id
 					$data_store = PLLWC_Data_Store::load( 'product_language' );
-					$value = ( $tr_value = $data_store->get( $value, $lang ) ) ? $tr_value : $value;
+					$tr_value = $data_store->get( $value, $lang );
+					$value = $tr_value ? $tr_value : $value;
 					break;
 				case '_meta':
 					foreach ( $value as $k => $v ) {

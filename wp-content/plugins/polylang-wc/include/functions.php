@@ -16,7 +16,7 @@ if ( ! function_exists( 'pll_remove_anonymous_object_filter' ) ) {
 	 */
 	function pll_remove_anonymous_object_filter( $tag, $method, $priority = 10, $accepted_args = 1 ) {
 		if ( ! empty( $GLOBALS['wp_filter'][ $tag ][ $priority ] ) ) {
-			foreach ( $GLOBALS['wp_filter'][ $tag ][ $priority ] as $identifier => $function ) {
+			foreach ( $GLOBALS['wp_filter'][ $tag ][ $priority ] as $function ) {
 				if ( is_array( $function ) && is_array( $function['function'] ) && is_a( $function['function'][0], $method[0] ) && $method[1] === $function['function'][1] ) {
 					remove_filter( $tag, array( $function['function'][0], $method[1] ), $priority );
 				}
@@ -40,7 +40,7 @@ if ( ! function_exists( 'pll_get_anonymous_object_from_filter' ) ) {
 	 */
 	function pll_get_anonymous_object_from_filter( $tag, $method, $priority = 10, $accepted_args = 1 ) {
 		if ( ! empty( $GLOBALS['wp_filter'][ $tag ][ $priority ] ) ) {
-			foreach ( $GLOBALS['wp_filter'][ $tag ][ $priority ] as $identifier => $function ) {
+			foreach ( $GLOBALS['wp_filter'][ $tag ][ $priority ] as $function ) {
 				if ( is_array( $function ) && is_array( $function['function'] ) && is_a( $function['function'][0], $method[0] ) && $method[1] === $function['function'][1] ) {
 					return $function['function'][0];
 				}

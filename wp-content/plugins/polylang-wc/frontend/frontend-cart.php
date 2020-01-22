@@ -6,6 +6,11 @@
  * @since 1.0
  */
 class PLLWC_Frontend_Cart {
+	/**
+	 * Product language data store
+	 *
+	 * @var object
+	 */
 	protected $data_store;
 
 	/**
@@ -41,8 +46,7 @@ class PLLWC_Frontend_Cart {
 	public function init() {
 		// Resets the cart when switching the language
 		if ( isset( $_COOKIE[ PLL_COOKIE ] ) && pll_current_language() !== $_COOKIE[ PLL_COOKIE ] ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-			add_action( 'wp_head', array( $this, 'wp_head' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) ); // After WooCommerce load_scripts()
 		}
 
 		// Translate products in cart
@@ -72,46 +76,34 @@ class PLLWC_Frontend_Cart {
 	}
 
 	/**
-	 * Enqueues jQuery
-	 *
-	 * @since 0.1
-	 */
-	public function wp_enqueue_scripts() {
-		wp_enqueue_script( 'jquery' );
-	}
-
-	/**
 	 * Reset cached data when switching the language
 	 *
 	 * @since 0.1
 	 */
-	public function wp_head() {
-		// reset shipping methods (needed since WC 2.6)
+	public function wp_enqueue_scripts() {
+		// Reset shipping methods (needed since WC 2.6).
 		WC()->shipping->calculate_shipping( WC()->cart->get_shipping_packages() );
 
-		if ( version_compare( WC()->version, '3.1', '<' ) ) {
-			// FIXME backward compatibility with WC < 3.1
-			$cart_hash_key = 'wc_cart_hash';
-			$fragment_name = 'wc_fragments';
-		} elseif ( version_compare( WC()->version, '3.4', '<' ) ) {
-			// FIXME backward compatibility with WC < 3.4
+		if ( version_compare( WC()->version, '3.4', '<' ) ) {
+			// FIXME backward compatibility with WC < 3.4.
 			$cart_hash_key = 'wc_cart_hash';
 			$fragment_name = apply_filters( 'woocommerce_cart_fragment_name', 'wc_fragments_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) ) );
 		} else {
 			$cart_hash_key = apply_filters( 'woocommerce_cart_hash_key', 'wc_cart_hash_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ) );
 			$fragment_name = apply_filters( 'woocommerce_cart_fragment_name', 'wc_fragments_' . md5( get_current_blog_id() . '_' . get_site_url( get_current_blog_id(), '/' ) . get_template() ) );
 		}
-
-		// Add js to reset the cart
-		printf(
-			'<script type="text/javascript">
-				jQuery( document ).ready( function( $ ){
+		// Add js to reset the cart.
+		wp_add_inline_script( // Since WP 4.5.
+			'wc-cart-fragments',
+			sprintf(
+				'jQuery( document ).ready( function( $ ){
 					sessionStorage.removeItem( "%s" );
 					sessionStorage.removeItem( "%s" );
-				} );
-			</script>',
-			esc_js( $cart_hash_key ),
-			esc_js( $fragment_name )
+				} );',
+				esc_js( $cart_hash_key ),
+				esc_js( $fragment_name )
+			),
+			'before'
 		);
 	}
 

@@ -1623,7 +1623,7 @@ class QuoteUpAddCustomField
             if ($inlcudeField) {
                 $email .= "
            <tr >
-            <th style='width:35%;text-align:left'>".__($v[ 'label' ], QUOTEUP_TEXT_DOMAIN)." </th>
+            <th style='width:35%;text-align:left'>".pll__($v[ 'label' ], QUOTEUP_TEXT_DOMAIN)." </th>
                 <td style='width:65%'>: ".stripslashes($_POST[ $v[ 'id' ] ]).'</td>
            </tr>';
             }

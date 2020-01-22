@@ -215,5 +215,7 @@ add_action('init', function() {
 	pll_register_string('remarks', 'Remarks');
 	pll_register_string('customer-name', 'Customer Name*');
 	pll_register_string('form-message', 'Message*');
+	pll_register_string('enquiry-phone-number', 'Phone Number');
+	pll_register_string('enquiry-mail-subject', 'Subject');
 	pll_register_string('please-enter-message', 'Please Enter Message');
   });

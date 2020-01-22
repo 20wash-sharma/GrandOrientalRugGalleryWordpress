@@ -3,7 +3,7 @@
 function required($reqparams) {
     $str = '';
     if (isset($reqparams['required'])) {
-        $msg = ($reqparams['reqmsg'] != '') ? __($reqparams['reqmsg'], QUOTEUP_TEXT_DOMAIN) : __('Please fill out this field', QUOTEUP_TEXT_DOMAIN);
+        $msg = ($reqparams['reqmsg'] != '') ? __(pll__($reqparams['reqmsg']), QUOTEUP_TEXT_DOMAIN) : __(pll__('Please fill out this field'), QUOTEUP_TEXT_DOMAIN);
         $str .= " required='required' data-msg-required='{$msg}' ";
     }
 

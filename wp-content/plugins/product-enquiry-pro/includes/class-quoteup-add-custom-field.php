@@ -115,9 +115,10 @@ class QuoteUpAddCustomField
                     break;
                 
                 default:
+                    $value  = stripslashes($value);
                     $email .= "<tr>
-                        <th style='width:35%;text-align:left'>".$key." </th>
-                        <td style='width:65%'>: ".stripslashes($value).'</td>
+                        <th style='width:35%;text-align:left'>".quoteupReturnWPMLVariableStrTranslation($key)." </th>
+                        <td style='width:65%'>: ".quoteupReturnWPMLVariableStrTranslation($value).'</td>
                         </tr>';
                     break;
             }
@@ -1623,7 +1624,7 @@ class QuoteUpAddCustomField
             if ($inlcudeField) {
                 $email .= "
            <tr >
-            <th style='width:35%;text-align:left'>".__(pll__($v[ 'label' ]), QUOTEUP_TEXT_DOMAIN)." </th>
+            <th style='width:35%;text-align:left'>".__($v[ 'label' ], QUOTEUP_TEXT_DOMAIN)." </th>
                 <td style='width:65%'>: ".stripslashes($_POST[ $v[ 'id' ] ]).'</td>
            </tr>';
             }

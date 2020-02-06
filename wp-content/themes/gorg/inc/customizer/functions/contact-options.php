@@ -233,7 +233,7 @@ $wp_customize->add_setting(
 $wp_customize->add_control('gorg_theme_options[contact_form]',
     array(
         'label' => esc_html__('Contact Form Shortcode', 'gorg'),
-        'description'        => esc_html__( 'Get Contact Form Shortcode', 'gorg' ). "<a href=".esc_url(home_url('/').'wp-admin/admin.php?page=wpcf7')." target='_blank'>". ' ' .esc_html__('From Here', 'gorg'). '</a>',
+        'description'        => esc_html__( 'Get Contact Form Shortcode', 'gorg' ). "<a href=".esc_url(home_url('/').'wp-admin/edit.php?post_type=wpcf7_contact_form')." target='_blank'>". ' ' .esc_html__('From Here', 'gorg'). '</a>',
         'type' => 'text',
         'section' => 'contact_section',
         'settings' => 'gorg_theme_options[contact_form]',

@@ -52,6 +52,7 @@ abstract class QuoteupList extends \WP_List_Table
         parent::__construct($displayNames);
 
         add_filter('removable_query_args', array($this, 'customRemovableArgs'), 10, 1);
+        add_filter('quoteup_enquiry_list_base_query', array($this, 'modifyBaseQueryForEnquirySearch'));
     }
     /**
 
@@ -95,7 +96,7 @@ abstract class QuoteupList extends \WP_List_Table
         }
     }
 /**
-* If it is a buk delete of enquiries.
+* If it is a bulk delete of enquiries.
 * take the selected enquiries and delete them.
 */
     public function _delteEnquiriesInBulk()
@@ -103,6 +104,8 @@ abstract class QuoteupList extends \WP_List_Table
         // If the delete bulk action is triggered
         if ((isset($_POST[ 'action' ]) && $_POST[ 'action' ] == 'bulk-delete') || (isset($_POST[ 'action2' ]) && $_POST[ 'action2' ] == 'bulk-delete')
             ) {
+            check_admin_referer('bulk-enquiries');
+
             if (isset($_POST[ 'bulk-select' ])) {
                 $delete_ids = esc_sql($_POST[ 'bulk-select' ]);
 
@@ -200,6 +203,7 @@ abstract class QuoteupList extends \WP_List_Table
         }
 
         $results = $wpdb->get_results($sql, 'ARRAY_A');
+
         if ($results) {
             $this->setTotalResultsFound($results);
 
@@ -251,8 +255,10 @@ abstract class QuoteupList extends \WP_List_Table
     protected function convertPostSearchToGet()
     {
         if (isset($_POST['s']) && $_POST['s'] != '') {
-            $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http')."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-            header("Location: $actual_link&s=$_POST[s]");
+            $searchByParam = isset($_POST['quoteup_enq_search_param']) ? $_POST['quoteup_enq_search_param'] : 'search-by-all';
+            $searchTerm    = trim($_POST['s']);
+            $actual_link   = (isset($_SERVER['HTTPS']) ? 'https' : 'http')."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            header("Location: $actual_link&s=$searchTerm&quoteup_enq_search_param=$searchByParam");
         } elseif (isset($_POST['s']) && $_POST['s'] == '') {
             $requestedURL = get_admin_url('', 'admin.php?page=quoteup-details-new');
             header("Location: $requestedURL");
@@ -285,7 +291,7 @@ abstract class QuoteupList extends \WP_List_Table
             $columnExists = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$tableName} LIKE %s", $columnSlug));
 
             if ($columnExists != null) {
-                $filteredColumns[] = $columnSlug;
+                $filteredColumns[] = $tableName . '.' . $columnSlug;
             }
         }
 
@@ -298,11 +304,20 @@ abstract class QuoteupList extends \WP_List_Table
             $foundRows = 'SQL_CALC_FOUND_ROWS';
         }
 
-        $query[] = "SELECT {$foundRows} {$columns} FROM {$tableName}";
+        $baseQuery = "SELECT {$foundRows} DISTINCT {$columns} FROM {$tableName} ";
+        /**
+         * Filter to change the enquiry list search query.
+         *
+         * @since 6.4.4
+         *
+         * @param   bool    SQL Query to search enquiry list.
+         *
+         */
+        $baseQuery        = apply_filters('quoteup_enquiry_list_base_query', $baseQuery);
+        $query[]          = $baseQuery;
         $query['where'][] = $this->appendSearchQuery();
-
-        $enquiryIds = $this->statusSpecificEnquiries();
-        $enquiryIds = apply_filters('quoteup_enq_quote_ids', $enquiryIds);
+        $enquiryIds       = $this->statusSpecificEnquiries();
+        $enquiryIds       = apply_filters('quoteup_enq_quote_ids', $enquiryIds);
 
         if ($enquiryIds === -1) {
             $query['where'][] = "enquiry_id = 0";
@@ -333,12 +348,13 @@ abstract class QuoteupList extends \WP_List_Table
     */
     protected function orderByQuery()
     {
-        $sql = '';
+        $sql       = '';
+        $tableName = $this->table();
         if (!empty($_REQUEST['orderby'])) {
-            $sql = 'ORDER BY '.esc_sql($_REQUEST['orderby']);
+            $sql = "ORDER BY $tableName.".esc_sql($_REQUEST['orderby']);
             $sql .= !empty($_REQUEST['order']) ? ' '.esc_sql($_REQUEST['order']) : ' ASC';
         } else {
-            $sql = 'ORDER BY enquiry_id DESC';
+            $sql = 'ORDER BY ' . $tableName .'.enquiry_id DESC';
         }
 
         return $sql;
@@ -359,9 +375,6 @@ abstract class QuoteupList extends \WP_List_Table
     */
     protected function offsetQuery()
     {
-        if ($this->isSearchRequest()) {
-            return 'OFFSET 0';
-        }
         return 'OFFSET '.($this->pageNumber - 1) * $this->perPageEnquiries;
     }
 
@@ -371,14 +384,72 @@ abstract class QuoteupList extends \WP_List_Table
     */
     protected function appendSearchQuery()
     {
+        $searchQuery = $searchTerm = $searchByParam = '';
+
         if ($this->isSearchRequest()) {
-            $searchParameter = $this->getSearchParameter();
-            if (!empty($searchParameter)) {
-                return "(name LIKE '%{$searchParameter}%' OR email LIKE '%{$searchParameter}%')";
+            $searchTerm = $this->getSearchTerm();
+            if (!empty($searchTerm)) {
+                $searchByParam = $this->getSelectedSearchByParam();
+
+                switch ($searchByParam) {
+                    case 'enq-id':
+                        if (is_numeric($searchTerm)) {
+                            $searchQuery = " enquiry_id = {$searchTerm} ";
+                        } else {
+                            $searchQuery = " enquiry_id = -1 ";
+                        }
+                        break;
+                    
+                    case 'cust-name':
+                        $searchQuery = " name LIKE '%{$searchTerm}%' ";
+                        break;
+                    
+                    case 'cust-email':
+                        $searchQuery = " email LIKE '%{$searchTerm}%' ";
+                        break;
+
+                    case 'product-name':
+                        $enquiryProductsTable = getEnquiryProductsTable();
+                        $searchQuery          = " $enquiryProductsTable.product_title LIKE '%{$searchTerm}%' ";
+
+                        if (isQuotationModuleEnabled()) {
+                            $enquiryQuotationTable = getQuotationProductsTable();
+                            $searchQuery          .= " OR $enquiryQuotationTable.product_title LIKE '%{$searchTerm}%' ";
+                        }
+                        break;
+                    
+                    default: // enquivalent to 'search-by-all' parameter
+                        $enquiryProductsTable   = getEnquiryProductsTable();
+                        
+                        if (is_numeric($searchTerm)) {
+                            $enquiryDetailsNewTable = getEnquiryDetailsTable();
+                            $searchQuery            = " $enquiryDetailsNewTable.enquiry_id = {$searchTerm} OR ";
+                        }
+                    
+                        $searchQuery .= " name LIKE '%{$searchTerm}%' OR email LIKE '%{$searchTerm}%' ";
+                        $searchQuery .= " OR $enquiryProductsTable.product_title LIKE '%{$searchTerm}%' ";
+
+                        if (isQuotationModuleEnabled()) {
+                            $enquiryQuotationTable = getQuotationProductsTable();
+                            $searchQuery          .= " OR $enquiryQuotationTable.product_title LIKE '%{$searchTerm}%' ";
+                        }
+                        break;
+                }
             }
         }
 
-        return;
+        /**
+         * Filter to change the where clause query.
+         *
+         * @since 6.4.4
+         *
+         * @param string $searchQuery String containing where clause query.
+         * @param string $searchTerm  String containing search term/ keyword.
+         * @param string $searchByParam String containing search by Parameter.
+         *
+         */
+        $searchQuery = apply_filters('quoteup_enquiry_list_where_clause', $searchQuery, $searchTerm, $searchByParam);
+        return $searchQuery;
     }
     /**
     * Search is selected.
@@ -393,14 +464,16 @@ abstract class QuoteupList extends \WP_List_Table
     {
         return array();
     }
+
     /**
-    * Returns the search parameter
-    * @return search parameter
-    */
-    protected function getSearchParameter()
+     * Returns the Search term/ keyword.
+     *
+     * @return string Return the searched term/ keyword.
+     */
+    protected function getSearchTerm()
     {
-        if (isset($_GET['s']) && $_GET['s'] != '') {
-            return filter_var($_GET['s'], FILTER_SANITIZE_STRING);
+        if (isset($_GET['s']) &&  '' !== $_GET['s']) {
+            return filter_var(trim($_GET['s']), FILTER_SANITIZE_STRING);
         } else {
             return '';
         }
@@ -643,5 +716,80 @@ abstract class QuoteupList extends \WP_List_Table
         echo '<tr class = "'.$class.'">';
         $this->single_row_columns($item);
         echo '</tr>';
+    }
+
+    /**
+     * Render the dropdown containing the enquiry search by parameters.
+     *
+     * @since 6.4.4
+     *
+     * @return void
+     */
+    public function renderEnqSearchByParamDropdown()
+    {
+        $selectedSearchByParam = $this->getSelectedSearchByParam();
+        $searchByParameters    = array(
+            'search-by-all' => __('Search by (All)', QUOTEUP_TEXT_DOMAIN),
+            'enq-id'        => __('Enquiry Id', QUOTEUP_TEXT_DOMAIN),
+            'cust-name'     => __('Customer Name', QUOTEUP_TEXT_DOMAIN),
+            'cust-email'    => __('Customer Email', QUOTEUP_TEXT_DOMAIN),
+            'product-name'  => __('Product Name', QUOTEUP_TEXT_DOMAIN),
+        );
+        ?>
+        <select name="quoteup_enq_search_param" id="quoteup_dropdown_enq_search_param" class="quoteup_enq_search_param">
+            <?php
+            foreach ($searchByParameters as $key => $search_param) {
+                ?>
+                    <option value="<?php echo esc_attr($key); ?>" <?php selected($selectedSearchByParam, $key); ?>><?php echo esc_html($search_param); ?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <?php
+    }
+
+    /**
+     * Return the Search by Parameter selected by admin.
+     *
+     * @since 6.4.4
+     *
+     * @return string   Return the selected search by parameter.
+     */
+    public function getSelectedSearchByParam()
+    {
+        $searchByParam = '';
+        if (!empty($_GET['quoteup_enq_search_param'])) {
+            $searchByParam = filter_var($_GET['quoteup_enq_search_param'], FILTER_SANITIZE_STRING);
+        }
+
+        return $searchByParam;
+    }
+
+    /**
+     * Return the modified query to search for the products.
+     * Callback function for 'quoteup_enquiry_list_base_query' filter.
+     *
+     * @since 6.4.4
+     *
+     * @param   string   $searchQuery    The SQL Query for enquiry list search.
+     *
+     * @return  string   Return the modified query to search for the products.
+     */
+    public function modifyBaseQueryForEnquirySearch($baseQuery) {
+        if ($this->isSearchRequest()) {
+            $searchByParam = $this->getSelectedSearchByParam();
+            if (!empty($searchByParam) && ('product-name' === $searchByParam  || 'search-by-all' === $searchByParam)) {
+                $enquiryDetailsNewTable = getEnquiryDetailsTable();
+                $enquiryProductsTable   = getEnquiryProductsTable();
+                $baseQuery             .= " INNER JOIN $enquiryProductsTable ON $enquiryDetailsNewTable.enquiry_id = $enquiryProductsTable.enquiry_id ";
+
+                if (isQuotationModuleEnabled()) {
+                    $enquiryQuotationTable = getQuotationProductsTable();
+                    $baseQuery            .= " LEFT JOIN $enquiryQuotationTable ON $enquiryDetailsNewTable.enquiry_id = $enquiryQuotationTable.enquiry_id ";
+                }
+            }
+        }
+
+        return $baseQuery;
     }
 }

@@ -29,8 +29,12 @@ jQuery('.generated_for_desktop').each(function () {
             var classname = i % 2 ? 'even' : 'odd';
             cols.each(function (k) {
                 var new_tr = jQuery('<tr class="' + classname + '"></tr>').appendTo(newtable_tbody);
+                var $td    = jQuery(this);
                 new_tr.append(head.clone().get(k));
-                new_tr.append(jQuery(this));
+                if ($td.hasClass('product-remove') || $td.hasClass('product-thumbnail')) {
+                    $td.attr('colspan', '2');
+                }
+                new_tr.append($td);
             });
         });
 

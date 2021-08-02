@@ -111,6 +111,9 @@ class QuoteupCreateDashboardQuotation
 
         $this->addInlineCss();
 
+        $upload_dir     = wp_upload_dir();
+        $quoteupPDFPath = $upload_dir['baseurl'].'/QuoteUp_PDF/';
+
         wp_localize_script(
             'quoteup-functions',
             'quote_data',
@@ -120,7 +123,7 @@ class QuoteupCreateDashboardQuotation
                     'decimals' => wc_get_price_decimals(),
                     'price_format' => get_woocommerce_price_format(),
                     'currency_symbol' => get_woocommerce_currency_symbol(),
-                    'path' => WP_CONTENT_URL.'/uploads/QuoteUp_PDF/',
+                    'path' => $quoteupPDFPath,
                     )
         );
 
@@ -336,7 +339,7 @@ class QuoteupCreateDashboardQuotation
                         $found_products = self::getSimpleProduct($post, $product, $found_products, $excludedProducts);
                         break;
                     case 'variable':
-                        $found_products = self::addAllVariationsInSearchResults($product, $found_products, $excludedProducts);
+                        $found_products = self::addAllVariationsInSearchResults($post, $product, $found_products, $excludedProducts);
                         break;
                     case 'variation':
                         if (!$product || ($product->is_type('variation'))) {
@@ -513,13 +516,63 @@ class QuoteupCreateDashboardQuotation
     * Then the variations are fetched according to the attributes combinations.
     * It is then checked that if variation with similar attribute combination is present in the variable product list or not.
     * If yes the variable product details for that variation is fetched and put in the search bar.
+    * @param array $post Post ID having the title similar to searched term
     * @param array $product product details
     * @param array $found_products product details of the products having similar term as searched.
     * @param array $excluded_products products which are included previously.
     * @return array $found_products products found with the required variations.
     */
-    private static function addAllVariationsInSearchResults($product, $found_products, $excluded_products)
+    private static function addAllVariationsInSearchResults($post, $product, $found_products, $excluded_products)
     {
+        /**
+         * Using this filter will change the variable search functionality. If
+         * the filter returns true, then the variable product will be listed
+         * without its attributes. The admin will have to select the variations
+         * from the drop down menu after adding a variable product in enquirt
+         * list. Return true, if you have many variations for your variable
+         * products.
+         *
+         * @param  bool   false     Not to use modified search functionality.
+         * @param  int    $post     Post ID.
+         * @param  object $product  Product object.
+         * @param  array  $found_products    Product details having similar
+         *                                   term as searched.
+         * @param  array  $excluded_products Products which are included
+         *                                   previously.
+         *
+         * @return bool   Return true if need to use modified search
+         *                functionality, otherwise return false.
+         */
+        $altVariableSearch = apply_filters('quoteup_use_alt_variable_search', false, $post, $product, $found_products, $excluded_products);
+
+        if ($altVariableSearch) {
+            $img_url = '';
+            if (! $img_url || $img_url == '') {
+                $img_url = wp_get_attachment_url(get_post_thumbnail_id($post));
+            }
+            if (! $img_url || $img_url == '') {
+                $img_url = WC()->plugin_url() . '/assets/images/placeholder.png';
+            }
+
+            if (! in_array(md5($post . time()), $excluded_products)) {
+                $found_products[ md5($post . time()) ] = array(
+                    'product_id'           => $post,
+                    'variation_id'         => '0',
+                    'product_type'         => 'variation',
+                    'formatted_name'       => rawurldecode($product->get_formatted_name()) . __(' - variable', QUOTEUP_TEXT_DOMAIN),
+                    'price'                => $product->get_price(),
+                    'product_title'        => $product->get_title(),
+                    'url'                  => admin_url("/post.php?post={$post}&action=edit"),
+                    'product_image'        => $img_url,
+                    'sku'                  => $product->get_sku(),
+                    'variation_attributes' => '',
+                    'variation_string'     => '',
+                );
+            }
+
+            return $found_products;
+        }
+
         /*
          * Below we will be calling get_variation_attributes function which makes a call to get_attributes.
          * get_variation_attributes uses name of attribute as a key in the returned array. We need to change the

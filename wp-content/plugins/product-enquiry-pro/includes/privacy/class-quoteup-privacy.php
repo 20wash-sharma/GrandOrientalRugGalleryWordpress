@@ -142,6 +142,8 @@ class QuoteupPrivacy extends QuoteupAbstractPrivacy
         // If the remove personal data bulk action is triggered
         if ((isset($_POST[ 'action' ]) && $_POST[ 'action' ] == 'remove-personal-data') || (isset($_POST[ 'action2' ]) && $_POST[ 'action2' ] == 'remove-personal-data')
             ) {
+            check_admin_referer('bulk-enquiries');
+
             if (isset($_POST[ 'bulk-select' ])) {
                 $anonimizedIds = esc_sql($_POST[ 'bulk-select' ]);
 

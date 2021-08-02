@@ -28,6 +28,11 @@ if (isset($form_data[ 'enable_disable_mpe' ]) && $form_data[ 'enable_disable_mpe
         //This loads the template for products table body for multi product enquiry
         quoteupGetPublicTemplatePart('enquiry-mail/multi-product-enquiry/products-table-body', '', $args);
 
+        if (!quoteupIsPriceColumnDisabled($form_data)) :
+            //This loads the template for products table footer for multi product enquiry
+            quoteupGetPublicTemplatePart('enquiry-mail/multi-product-enquiry/products-table-footer', '', $args);
+        endif;
+
         ?>
     </table>
     <?php
@@ -40,6 +45,27 @@ else :
 
         //This loads the template for products table body for single product enquiry
         quoteupGetPublicTemplatePart('enquiry-mail/single-product-enquiry/products-table-body', '', $args);
+
+        if (!quoteupIsPriceColumnDisabled($form_data)) :
+            $productQuantity = $data_obtained_from_form[ 'product_quant' ];
+            $product_id      = $data_obtained_from_form[ 'product_id' ];
+            $variation_id    = filter_var($data_obtained_from_form['variation_id'], FILTER_SANITIZE_NUMBER_INT);
+
+            if ($variation_id != '') {
+                $product = wc_get_product($variation_id);
+                $price   = quoteupGetPriceToDisplay($product, $productQuantity);
+            } else {
+                $product = wc_get_product($product_id);
+                $price   = quoteupGetPriceToDisplay($product, $productQuantity);
+            }
+
+            $args['productQuantity'] = $productQuantity;
+            $args['price']           = $price;
+            $args['enable_price']    = get_post_meta($product_id, '_enable_price', true);
+
+            //This loads the template for products table footer for single product enquiry
+            quoteupGetPublicTemplatePart('enquiry-mail/single-product-enquiry/products-table-footer', '', $args);
+        endif;
         ?>
     </table>
     <?php

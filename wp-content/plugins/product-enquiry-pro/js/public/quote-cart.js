@@ -267,6 +267,12 @@ lastRowClass = jQuery('.generated_for_mobile tr:last td').attr('class')
 if (lastRowClass == "td-btn-update") {
     jQuery('.generated_for_mobile tr:last th').remove();
 }
+$secondLastRow = jQuery('.generated_for_mobile tr:last').prev();
+if ($secondLastRow.find('td').attr('class') == 'cart-total') {
+    $secondLastRow.find('th').html(wdm_data.totalText);
+    $secondLastRow.prev().remove();
+    $secondLastRow.prev().remove();
+}
 //End of enquiry button code
 
 // Code to adjust view of total row when in mobile view.
@@ -395,6 +401,7 @@ function desktopTableEnquiryCartRemoveRow($rowElement)
           if ( jQuery('.generated_for_desktop .cart_item').length == 1 ) {
             jQuery('.wdm-quote-cart-table').append("<tr> <td colspan='6 class='no-product'>"+ wdm_data.empty_cart_remove +"</td></tr>");
             jQuery('.td-btn-update').remove();
+            jQuery('.quoteup-cart-total-row').remove();
             jQuery('.wdm-enquiry-form').remove();
         }
 
@@ -544,7 +551,7 @@ function sendRequestToUpdateCart( showUpdateCartImage, showAlertAfterUpdateCart 
 
                             });
                         }
-
+                        jQuery('.cart-total').html(response.total);
                         jQuery('.sold_individually').val(1);
 
                     },

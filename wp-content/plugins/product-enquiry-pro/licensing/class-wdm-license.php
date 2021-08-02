@@ -66,7 +66,8 @@ if (!class_exists('Licensing\WdmLicense')) {
         public static function getCachedVersionInfo($cacheKey)
         {
             $cache = get_option($cacheKey);
-            if ($cache['timeout'] != 0 && (empty($cache['timeout']) || current_time('timestamp') > $cache['timeout'])) {
+
+            if (empty($cache['timeout']) || current_time('timestamp') > $cache['timeout']) {
                 return false; // Cache is expired
             }
 

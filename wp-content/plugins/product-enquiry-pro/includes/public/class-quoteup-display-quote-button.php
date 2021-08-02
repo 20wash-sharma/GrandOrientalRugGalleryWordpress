@@ -7,11 +7,10 @@ if (!defined('ABSPATH')) {
 }
 
 /**
-* This class is to display the quote button according to the settings specified by admin.
-* Quote button of single product enquiry or multiproduct.
-* If variable product then link to select a variation.
-
-*/
+ * This class is to display the quote button according to the settings specified by admin.
+ * Quote button of single product enquiry or multiproduct.
+ * If variable product then link to select a variation.
+ */
 class QuoteUpDisplayQuoteButton
 {
     /**
@@ -37,38 +36,45 @@ class QuoteUpDisplayQuoteButton
     }
 
     /**
-    * Load the templates.
-    * action for quote button display.
-    */
+     * Load the templates.
+     * action for quote button display.
+     */
     protected function __construct()
     {
         $this->loadTemplates();
         add_action('wp_head', array($this, 'bootstrapQuoteupButtonDisplay'), 10);
+        $this->hookAllRequiredActions();
     }
 
     /**
-    * Checks the google Captcha.
-    * For  various action hooks that are required.
-    */
+     * Checks the google Captcha.
+     * For  various action hooks that are required.
+     */
     public function bootstrapQuoteupButtonDisplay()
     {
         $form_data = quoteupSettings();
+
         if (!quoteupIsMPEEnabled($form_data) && !quoteupIsCustomFormEnabled($form_data) && isset($form_data['enable_google_captcha']) && $form_data['enable_google_captcha'] == 1 && (is_archive() || is_product())) {
             // When 'default form' and 'single product enquiry' enabled.
             $siteKey            = $form_data[ 'google_site_key' ];
+            $lang_query_var     = quoteupIsWpmlActive() ? '&hl='.ICL_LANGUAGE_CODE : '';
             $isCaptchaVersion3  = quoteupIsCaptchaVersion3($form_data);
 
             if ($isCaptchaVersion3) {
                 // If reCaptcha version 3.
-                wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey, array(), QUOTEUP_VERSION, true);
+                wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey.$lang_query_var, array(), QUOTEUP_VERSION, true);
                 wp_enqueue_script('quoteup-google-captcha');
-                wp_localize_script('quoteup-google-captcha', 'quoteup_captcha_data', array(
+                wp_localize_script(
+                    'quoteup-google-captcha',
+                    'quoteup_captcha_data',
+                    array(
                     'captcha_version'   => 'v3',
                     'site_key'          =>  $siteKey,
-                ));
+                    )
+                );
             } else {
                 // If reCaptcha version 2.
-                echo "<script src='https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit' async defer></script>";
+                echo '<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit'.$lang_query_var.'" async defer></script>';
                 echo "<script type='text/javascript'>
                     var CaptchaCallback = function() {
                         jQuery('.g-recaptcha').each(function(index, el) {
@@ -84,19 +90,18 @@ class QuoteUpDisplayQuoteButton
                 </script>";
             }
         }
-        $this->hookAllRequiredActions();
     }
 
     /**
-    * This function is to add various actions and filter hooks required.
-    * Filter to find if Product is purchasable or not.
-    * Filter for getting price , variation price for the Products.
-    * Action to decide position of Quote button.
-    * Action to check Language Error.
-    * Action to display Quote button on Archive page.
-    * Action to hide variations and add to cart button on the Archive page for Variable Product.
-    * Action to display Quote button on Single Product page.
-    */
+     * This function is to add various actions and filter hooks required.
+     * Filter to find if Product is purchasable or not.
+     * Filter for getting price , variation price for the Products.
+     * Action to decide position of Quote button.
+     * Action to check Language Error.
+     * Action to display Quote button on Archive page.
+     * Action to hide variations and add to cart button on the Archive page for Variable Product.
+     * Action to display Quote button on Single Product page.
+     */
     private function hookAllRequiredActions()
     {
         $form_data = quoteupSettings();
@@ -132,9 +137,9 @@ class QuoteUpDisplayQuoteButton
     }
 
     /**
-    * This function get the instances of the Single Product and Multiproduct Quote buttons.
-    * These instances are then set to global variables.
-    */
+     * This function get the instances of the Single Product and Multiproduct Quote buttons.
+     * These instances are then set to global variables.
+     */
     private function loadTemplates()
     {
         include_once QUOTEUP_PLUGIN_DIR.'/templates/public/class-quoteup-multiproduct-quote-button.php';
@@ -147,8 +152,9 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function decides to display add to cart button or not based on settings done by admin
-     * @param int $purchasable 1 if purchasable
-     * @param object $product Woocommerce products.
+     *
+     * @param int    $purchasable 1 if purchasable
+     * @param object $product     Woocommerce products.
      * @param string $purchasable 1 if purchasable and false if not.
      */
     public function enableAddToCartForProduct($purchasable, $product)
@@ -183,9 +189,10 @@ class QuoteUpDisplayQuoteButton
     }
 
     /**
-    * This function set add to cart disable for variable products.
-    * @param int $prod_id 0 if add to cart disable.
-    */
+     * This function set add to cart disable for variable products.
+     *
+     * @param int $prod_id 0 if add to cart disable.
+     */
     protected function setAddToCartDisabledVariableProducts($prod_id)
     {
         if (!in_array($prod_id, $this->add_to_cart_disabled_variable_products)) {
@@ -193,9 +200,10 @@ class QuoteUpDisplayQuoteButton
         }
     }
     /**
-    * This function disables enquiry for variable product.
-    * @param int $prod_id Variable Product Id.
-    */
+     * This function disables enquiry for variable product.
+     *
+     * @param int $prod_id Variable Product Id.
+     */
     protected function setEnquiryDisabledVariableProducts($prod_id)
     {
         if (!in_array($prod_id, $this->enquiry_disabled_variable_products)) {
@@ -204,9 +212,10 @@ class QuoteUpDisplayQuoteButton
     }
 
     /**
-    * This function disables the Price for Variable Products.
-    * @param int $prod_id 0 if enable price disable.
-    */
+     * This function disables the Price for Variable Products.
+     *
+     * @param int $prod_id 0 if enable price disable.
+     */
     protected function setPriceDisabledVariableProducts($prod_id)
     {
         if (!in_array($prod_id, $this->price_disabled_variable_products)) {
@@ -220,7 +229,9 @@ class QuoteUpDisplayQuoteButton
      */
     public function addCustomQtyFieldDisplayToWcHook()
     {
-        add_action('woocommerce_single_product_summary', array($this, 'addQuantityFieldIfRequired'), 30);
+        if (quoteupIsQuantityFieldEnabled()) {
+            add_action('woocommerce_single_product_summary', array($this, 'addQuantityFieldIfRequired'), 30);
+        }
     }
 
     /**
@@ -242,18 +253,21 @@ class QuoteUpDisplayQuoteButton
             $productId = $wp_query->post->ID;
             $product   = wc_get_product($productId);
 
-            woocommerce_quantity_input(array(
+            woocommerce_quantity_input(
+                array(
                 'min_value'   => apply_filters('woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product),
                 'max_value'   => apply_filters('woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product),
-                'input_value' => $product->get_min_purchase_quantity()
-            ));
+                    'input_value' => $product->get_min_purchase_quantity(),
+                )
+            );
         }
     }
 
     /**
      * This function decides to display price or not based on settings done by admin
-     * @param html $price price of the Product
-     * @param object $product Woocommerce Products
+     *
+     * @param  html   $price   price of the Product
+     * @param  object $product Woocommerce Products
      * @return mixed html of price if price enabled , false if disabled
      */
     public function displayPrice($price, $product)
@@ -282,10 +296,11 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * THis function is used to get stock status of product
+     *
      * @param boolean $isProductObjectAvailable true if available else false
-     * @param object $product Woocommerce Product object
-     * @param int $product_id Product id
-     * @param boolean $isProductInStock true if yes.
+     * @param object  $product                  Woocommerce Product object
+     * @param int     $product_id               Product id
+     * @param boolean $isProductInStock         true if yes.
      */
     public function getStockStatus($isProductObjectAvailable, $product, $product_id)
     {
@@ -319,7 +334,7 @@ class QuoteUpDisplayQuoteButton
             $displayButton = true;
         }
 
-        return apply_filters('quoteup_get_display_button', $displayButton);
+        return apply_filters('quoteup_get_display_button', $displayButton, $product_id);
     }
 
     /**
@@ -327,7 +342,8 @@ class QuoteUpDisplayQuoteButton
      * Checks whether the post is a product.
      * If yes check whether in settings display button in out of stock checked or not.
      * If yes display button otherwise return false.
-     * @global object $post wordpress posts
+     *
+     * @global object $post WordPress posts
      *
      * @return bool return true if button should be displayed. otherwise returns false.
      */
@@ -335,24 +351,21 @@ class QuoteUpDisplayQuoteButton
     {
         global $post, $product;
         $isProductObjectAvailable = false;
+        $shouldDisplayQuoteBtn    = true;
 
         //Check if Global $product exists or not. If that exists, take information from $product
         //else read $post.
 
-        if (method_exists($product, 'get_id')) {
-            $product_id = $product->get_id();
+        if (!empty($product) && method_exists($product, 'get_id')) {
+            $product_id               = $product->get_id();
+            $product_type             = $product->get_type();
             $isProductObjectAvailable = true;
         } elseif (isset($post->ID)) {
-            $product_id = $post->ID;
+            $product_id     = $post->ID;
+            $product_object = wc_get_product($product_id);
+            $product_type   = $product_object->get_type();
         } else {
             return false;
-        }
-
-        if (method_exists($product, 'get_type')) {
-            $product_type = $product->get_type();
-        } else {
-            $product_object = wc_get_product($product_id);
-            $product_type = $product_object->get_type();
         }
 
         $form_data = quoteupSettings();
@@ -360,15 +373,28 @@ class QuoteUpDisplayQuoteButton
         if (isset($form_data[ 'only_if_out_of_stock' ]) && $form_data[ 'only_if_out_of_stock' ] == 1) {
             $isProductInStock = $this->getStockStatus($isProductObjectAvailable, $product, $product_id);
             if ($isProductInStock) {
-                if ($product_type == 'variable') {
-                    $this->setEnquiryDisabledVariableProducts($product_id);
+                if ($product_type != 'variable') {
+                    $shouldDisplayQuoteBtn = false;
                 }
-
-                return false;
             }
         }
 
-        return $this->getDisplayButton($product_id, $product_type);
+        if (true === $shouldDisplayQuoteBtn) {
+            $shouldDisplayQuoteBtn = $this->getDisplayButton($product_id, $product_type);
+        }
+
+        /**
+         * Use this filter to decide whether to show enquiry\ quote button.
+         *
+         * @since 6.4.4
+         *
+         * @param   bool    Boolean value indicating whether to show enquiry\
+         *                  quote button.
+         * @param   int     Product Id.
+         *
+         */
+        $shouldDisplayQuoteBtn = apply_filters('quoteup_should_show_quote_btn', $shouldDisplayQuoteBtn, $product_id);
+        return $shouldDisplayQuoteBtn;
     }
 
     /**
@@ -402,16 +428,16 @@ class QuoteUpDisplayQuoteButton
         do_action('quoteup_before_setting_pos_quote_button', $post);
 
         $default_vals = array(
-            'pos_radio' => 'show_after_summary',
+            'pos_radio' => 'after_add_cart',
         );
 
         $form_init_data = get_option('wdm_form_data', $default_vals);
 
         if (isset($form_init_data[ 'pos_radio' ])) {
-            if ($form_init_data[ 'pos_radio' ] == 'show_after_summary') {
+            if ('after_add_cart' === $form_init_data['pos_radio']) {
                 add_action('woocommerce_single_product_summary', array($this, 'displayAddToQuoteButtonOnSingleProduct'), 30);
-            } elseif ($form_init_data[ 'pos_radio' ] == 'show_at_page_end') {
-                add_action('woocommerce_after_single_product', array($this, 'displayAddToQuoteButtonOnSingleProduct'), 10);
+            } elseif ('after_product_summary' === $form_init_data['pos_radio']) {
+                add_action('woocommerce_after_single_product_summary', array( $this, 'displayAddToQuoteButtonOnSingleProduct' ), 10);
             }
         } else {
             add_action('woocommerce_single_product_summary', array($this, 'displayAddToQuoteButtonOnSingleProduct'), 30);
@@ -433,7 +459,8 @@ class QuoteUpDisplayQuoteButton
 
         $btn_class = apply_filters('quoteup_enquiry_button_classes', 'single_add_to_cart_button button alt wdm_enquiry');
 
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array(
+            'after_add_cart'             => 1,
             'button_CSS' => 0,
             'pos_radio' => 0,
             'show_powered_by_link' => 0,
@@ -470,9 +497,10 @@ class QuoteUpDisplayQuoteButton
     }
 
     /**
-    * This function is to enqueue Scripts and styles for the QuoteUp.
-    * @param array $form_data settings of quoteup.
-    */
+     * This function is to enqueue Scripts and styles for the QuoteUp.
+     *
+     * @param array $form_data settings of quoteup.
+     */
     public function enqueueScripts($form_data)
     {
         wp_enqueue_style('modal_css1', QUOTEUP_PLUGIN_URL.'/css/wdm-bootstrap.css', false, false);
@@ -519,6 +547,7 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function is used to get the username if user is logged in.
+     *
      * @return string $name username of logged in user or username stored in cookie.
      */
     public function getUserName()
@@ -543,6 +572,7 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function is used to get the user email if user is logged in.\
+     *
      * @return string $email user email id if logged in or email stored in cookie.
      */
     public function getUserEmail()
@@ -563,7 +593,8 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function is used to get dialog color
-     * @param array $form_data QuoteUp Settings
+     *
+     * @param  array $form_data QuoteUp Settings
      * @return atring $color dialog color
      */
     public function getDialogColor($form_data)
@@ -593,7 +624,8 @@ class QuoteUpDisplayQuoteButton
 
         $btn_class = 'button wdm_enquiry';
 
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array(
+            'after_add_cart'         => 1,
             'button_CSS' => 0,
             'pos_radio' => 0,
             'show_powered_by_link' => 0,
@@ -653,8 +685,8 @@ class QuoteUpDisplayQuoteButton
         echo $quoteButtonContent;
     }
     /**
-    * This function gets instance of the Multiproduct and Single Product Quote button.
-    */
+     * This function gets instance of the Multiproduct and Single Product Quote button.
+     */
     public function instantiateViews()
     {
         global $quoteupMultiproductQuoteButton, $quoteupSingleProductModal;
@@ -665,7 +697,8 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function is used to get the redirect URL after successful enquiry request
-     * @param array $form_data Settings for Quoteup
+     *
+     * @param  array $form_data Settings for Quoteup
      * @return string $redirect_url redirection page url
      */
     public function getRedirectUrl($form_data)
@@ -681,12 +714,13 @@ class QuoteUpDisplayQuoteButton
 
     /**
      * This function is used to get the button text saved in settings
-     * @param array $form_data Settings for Quoteup
+     *
+     * @param  array $form_data Settings for Quoteup
      * @return string custom label for button
      */
     public function returnButtonText($form_data)
     {
-        return empty($form_data[ 'custom_label' ]) ? __('Make an Enquiry', QUOTEUP_TEXT_DOMAIN) : $form_data[ 'custom_label' ];
+        return empty($form_data[ 'custom_label' ]) ? __('Make an Enquiry', QUOTEUP_TEXT_DOMAIN) : quoteupReturnWPMLVariableStrTranslation($form_data[ 'custom_label' ]);
     }
 
     /**
@@ -707,18 +741,19 @@ class QuoteUpDisplayQuoteButton
         echo '<div class="quote-form">';
         if (isset($form_data[ 'show_button_as_link' ]) && $form_data[ 'show_button_as_link' ] == 1) {
             ?>
-            <a id="wdm-variable-product-trigger-<?php echo $product->get_id() ?>" href='<?php echo esc_url($product->add_to_cart_url()) ?>' style='font-weight: bold;
+            <a id="wdm-variable-product-trigger-<?php echo $product->get_id(); ?>" href='<?php echo esc_url($product->add_to_cart_url()); ?>' style='font-weight: bold;
             <?php
             if ($form_data[ 'button_text_color' ]) {
                 echo 'color: '.$form_data[ 'button_text_color' ].';';
             }
-            ?>'>
+            ?>
+            '>
                 <?php echo $this->returnButtonText($form_data); ?>
             </a>
             <?php
         } else {
             ?>
-            <button class="<?php echo $btn_class ?>" id="wdm-variable-product-trigger-<?php echo $product->get_id(); ?>"  <?php echo ($manual_css == 1) ? getManualCSS($form_data) : ''; ?><?php echo 'onclick="location.href=\''.esc_url($product->add_to_cart_url()).'\'"'; ?>>
+            <button class="<?php echo $btn_class; ?>" id="wdm-variable-product-trigger-<?php echo $product->get_id(); ?>"  <?php echo ( $manual_css == 1 ) ? getManualCSS($form_data) : ''; ?><?php echo 'onclick="location.href=\'' . esc_url($product->add_to_cart_url()) . '\'"'; ?>>
                 <?php echo $this->returnButtonText($form_data); ?>
             </button>
             <?php
@@ -737,12 +772,15 @@ class QuoteUpDisplayQuoteButton
         if (empty($this->add_to_cart_disabled_variable_products) && empty($this->enquiry_disabled_variable_products) && empty($this->price_disabled_variable_products)) {
             return;
         }
+
+        global $product;
+
         /*
          * Hide variation for variable products if 'Add to Cart' and Enquiry/Quote request is disabled for
          * variable product
 
         * This js file is to remove add to cart option for variable products on the archive page.
-*/
+        */
         wp_enqueue_script('hide-variation', QUOTEUP_PLUGIN_URL.'/js/public/hide-var.js', array('jquery'));
         if (!empty($this->add_to_cart_disabled_variable_products)) {
             wp_localize_script('hide-variation', 'quoteup_add_to_cart_disabled_variable_products', $this->add_to_cart_disabled_variable_products);
@@ -762,6 +800,16 @@ class QuoteUpDisplayQuoteButton
         if (!empty($this->add_to_cart_disabled_variable_products) && !empty($this->enquiry_disabled_variable_products) && !empty($this->price_disabled_variable_products)) {
             $common_product_ids = array_intersect($this->add_to_cart_disabled_variable_products, $this->enquiry_disabled_variable_products, $this->price_disabled_variable_products);
             wp_localize_script('hide-variation', 'quoteup_hide_variation_variable_products', $common_product_ids);
+        }
+
+        if (!quoteupIsQuantityFieldEnabled() || apply_filters('quoteup_remove_qty_field_product_page', false, $product)) {
+            wp_localize_script(
+                'hide-variation',
+                'quoteup_remove_qty_field',
+                array(
+                    'remove_qty_field' => 'yes',
+                )
+            );
         }
     }
 

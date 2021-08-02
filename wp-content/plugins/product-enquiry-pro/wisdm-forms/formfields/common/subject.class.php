@@ -87,7 +87,13 @@ class Subject {
         $name = $params['label'];
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <!-- <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label> -->
+            <?php
+            if (quoteupCFFieldsLabel(false, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <input type='text' id="<?php echo $id; ?>" name='submitform[<?php echo $name; ?>]' class='form-control wdm-subject' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>' value='' <?php echo required($params); ?> />
             <div>
                 <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>

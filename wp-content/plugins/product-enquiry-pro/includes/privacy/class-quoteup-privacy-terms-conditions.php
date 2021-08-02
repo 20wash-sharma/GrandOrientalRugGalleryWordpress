@@ -85,13 +85,14 @@ class QuoteupPrivacyTermsCond
      * and conditions field is disabled, it returns false.
      * When it echo the HTML markup, returns true. Otherwise, returns the HTML
      * markup as string if first parameter is set to false.
-     * @param  bool     $echo           Optional. True if you want to echo the
-     *                                  Terms and Conditions field, false
-     *                                  otherwise. Default true.
-     * @param  string   $class          Optional. classname to add to Terms and
-     *                                  Conditions Field wrapper. Default ''.
-     * @param  bool     $defaultForm    Optional. True if current form is
-     *                                  'default' form, false otherwise.
+     *
+     * @param bool   $echo        Optional. True if you want to echo the
+     *                            Terms and Conditions field, false
+     *                            otherwise. Default true.
+     * @param string $class       Optional. classname to add to Terms and
+     *                            Conditions Field wrapper. Default ''.
+     * @param bool   $defaultForm Optional. True if current form is
+     *                            'default' form, false otherwise.
      *
      * @return mixed                    Returns false, if Terms and Conditions
      *                                  field is disabled or returns HTML markup
@@ -135,6 +136,7 @@ class QuoteupPrivacyTermsCond
 
     /**
      * Returns true if terms and conditions settings is enabled or not set, false otherwise
+     *
      * @param array $quoteupSettings array of quoteup settings
      *
      * @return array bool true if terms and conditions settings is enabled or not set, false otherwise
@@ -150,8 +152,9 @@ class QuoteupPrivacyTermsCond
     /**
      * Appends the terms and condtions text with checkbox to $sendCopy, if custom form is
      * activated irrespective of enquiry type
-     * @param   string  $sendCopy   HTML markup of 'Send Me Copy' field
-     *                              displayed in the enquiry form
+     *
+     * @param string $sendCopy HTML markup of 'Send Me Copy' field
+     *                         displayed in the enquiry form
      *
      * @return string               Returns 'Terms and Conditions' field
      *                              Markup added to 'Send Me Copy' field markup
@@ -242,11 +245,11 @@ class QuoteupPrivacyTermsCond
         if ((isset($form_data['term-cond-cc']) && 'yes' === $form_data['term-cond-cc']) || (isset($form_data['terms and conditions']) && 'yes' === $form_data['terms and conditions'])) {
             $customerEmail = $form_data['txtemail'];
             $customerEmail = apply_filters('quoteup_customer_email_in_tc_text', $customerEmail, $source);
-            $tcText = "<br /><br />".sprintf(__('%s accepted the enquiry terms and conditions', QUOTEUP_TEXT_DOMAIN), $customerEmail);
-            ?>
-            <p><?php echo $tcText;
-            ?></p>
-            <?php
+            $tcText        = sprintf(__('%s accepted the enquiry terms and conditions.', QUOTEUP_TEXT_DOMAIN), $customerEmail);
+            $tcText        = '<br /><br />.<p>' . $tcText . '</p>';
+            $tcText        = apply_filters('quoteup_modify_tc_text_in_email', $tcText, $customerEmail, $source, $form_data);
+
+            echo esc_html($tcText);
         }
     }
 }

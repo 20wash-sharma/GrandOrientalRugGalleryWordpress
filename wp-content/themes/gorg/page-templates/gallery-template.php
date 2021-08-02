@@ -16,7 +16,7 @@ get_header();?>
 					$counter = 0;
 					$count_galleries = wp_count_posts( 'gorg_gallery' )->publish; 
 					$gallery_args = array(
-						'post_type' => 'gorg_gallery',
+						'post_type' => 'gorg-gallery',
 						'posts_per_page'=> -1
 					);
 					$gallery_query = new WP_query($gallery_args);

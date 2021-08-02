@@ -3,22 +3,22 @@ Contributors: Milap
 Tags: facebook, facebook like box, facebook simple like, facebook fan pages, facebook like button, facebook button share, facebook social bookmarking, facebook feeds, facebook feed widget, social share, wordpress social share, socialmedia, social media widget, social media sharing, social media icon 
 Donate link: https://www.paypal.me/MilapPatel
 Requires at least: 3.0.1
-Tested up to: 5.3
+Tested up to: 5.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin adds a Simple Facebook page Like Widget into your WordPress sidebar, footer area(as widget) & Page or Post(as shortcode).
+Formerly "Facebook Page Like Widget". This plugin adds a Simple Facebook page Like Widget into your WordPress sidebar, footer area(as widget) & Page or Post(as shortcode).
 
 == Description ==
 
-> COPYRIGHT DISCLAIMER: THIS PLUGIN ISN'T OFFICIALLY DEVELOPED OR MAINTAINED BY FACEBOOK INC. THIS PLUGIN IS DEVELOPED AND MAINTAINED BY ME ONLY. NO COPYRIGHT INFRINGEMENT INTENDED.
+**Formerly "Facebook Page Like Widget".**
 
 > Did you find this plugin helpful? Please consider [leaving a 5-star review](https://wordpress.org/support/plugin/facebook-pagelike-widget/reviews/?filter=5#new-post).
 
 > Did this plugin made your life easy? Please consider [donating](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=neetap179@gmail.com&lc=US&item_name=Providing+Excellent+WordPress+plugin+support&no_note=0&no_shipping=2&curency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted).
 
-One of the most popular & lightweight plugin for Facebook page feeds widget with over 10,25,000 downloads and 1,00,000+ active installs.
+One of the most popular & lightweight plugin for Facebook page feeds widget with over 12,55,000 downloads and 1,00,000+ active installs.
 
 An inside look:
 
@@ -36,7 +36,9 @@ This widget will provide you the most simple and attractive way to display Faceb
 
 It supports short code, open your Post or Page, Add **[fb_widget]** into Post or Page, Save it. You are done. Check FAQ for more shortcode options.
 
-If you have any questions / issues / suggestions regarding my plugin, reach me at,
+**Paid Support**
+
+If you need my help with installation / configurations / issues with my plugin, reach me at below for paid support,
 
 * Gmail : cemilap.88@gmail.com
 * Blog : https://patelmilap.wordpress.com/contact-me/
@@ -47,6 +49,20 @@ I will try my best to reply you within 1 business day.
 
 If you loved my plugin & support, please leave your review [Here](https://wordpress.org/support/view/plugin-reviews/facebook-pagelike-widget?filter=5) , so people can use it with confidence.
 
+= Recommended Plugins =
+
+The following plugins are recommended for users:
+
+* [Ultimate Twitter Feeds](https://wordpress.org/plugins/ultimate-twitter-feeds/) With Ultimate Twitter Feeds Widget, you can display your Twitter Profile feeds, Profile List Feeds and Single Tweet on your website quickly.
+
+= Privacy Notices =
+
+With the default configuration, this plugin, in itself, does not:
+
+* use cookies.
+* track users by stealth.
+* write any user personal data to the database.
+* send any data to external servers.
 
 == Installation ==
 
@@ -76,7 +92,7 @@ You can use more parameters like below.
 
 = It is working in some system, not working in other system ? =
 * If it is working in some system & not working with other system, there are 2 possibilties :
-	1) Anti virus of your computer can stop my widget loading. Some of my widget users had same problem in past. You can check with disable your anti virus temporary. 
+	1) Anti virus of your computer can stop my widget loading. Some of my widget users had same problem in past. You can check with disable your anti virus temporarily.
 	2) Your browser has some ad block extention installed that may cause stop my plugin loading.  
 
 

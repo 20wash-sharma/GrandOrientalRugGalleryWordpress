@@ -17,15 +17,15 @@ jQuery(document).ready(function () {
                 if ( $allVariationForms.length > 1 ) {
                     $allVariationForms.each(function () {
                         if ( jQuery(this).data('product_id') == quoteup_add_to_cart_disabled_variable_products[$i] ) {
-                            if (!quoteupButtonExists) {
-                                jQuery(this).find('.quantity').remove();
+                            if (typeof quoteup_remove_qty_field != "undefined" && "yes" == quoteup_remove_qty_field.remove_qty_field) {
+                                $allVariationForms.find('.quantity').remove();
                             }
                             jQuery(this).find('.single_add_to_cart_button').remove();
                         }
                     })
                 } else {
                     if ( $allVariationForms.data('product_id') == quoteup_add_to_cart_disabled_variable_products[$i] ) {
-                        if (!quoteupButtonExists) {
+                        if (typeof quoteup_remove_qty_field != "undefined" && "yes" == quoteup_remove_qty_field.remove_qty_field) {
                             $allVariationForms.find('.quantity').remove();
                         }
                         $allVariationForms.find('.single_add_to_cart_button').remove();
@@ -34,6 +34,7 @@ jQuery(document).ready(function () {
             }
         }
     }
+
     if ( typeof quoteup_hide_variation_variable_products != 'undefined' ) {
         //Hide variation on single product page if Add to Cart and Enquiry/Quote request both are disabled
         for ($i = 0; $i < quoteup_hide_variation_variable_products.length; $i++) {

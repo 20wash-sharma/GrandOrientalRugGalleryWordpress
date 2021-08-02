@@ -35,13 +35,16 @@ function enableMultiproductQuote($form_data)
         <div class='left_div'>
             <label for="enable_disable_mpe"> <?php _e('Enable Multiproduct Enquiry and Quote Request', QUOTEUP_TEXT_DOMAIN) ?> </label>
         </div>
-        <div class='right_div'>
+        <div class='right_div help-doc-link-checkbox'>
             <?php
             $helptip = __('You can enable/disable multiproduct enquiry or quote. At a time single or multiproduct enquiry or quote will be available.', QUOTEUP_TEXT_DOMAIN);
             echo \quoteupHelpTip($helptip, true);
             ?>          
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'enable_disable_mpe' ]) ? $form_data[ 'enable_disable_mpe' ] : 0); ?> id="enable-multiproduct" /> 
             <input type="hidden" name="wdm_form_data[enable_disable_mpe]" value="<?php echo isset($form_data[ 'enable_disable_mpe' ]) && $form_data[ 'enable_disable_mpe' ] == 1 ? $form_data[ 'enable_disable_mpe' ] : 0 ?>" />
+        </div>
+        <div class="help-doc-link">
+            <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-features/single-product-enquiry-spe-mode-and-multi-product-enquiry-mpe-mode/'); ?>" target="_blank"><i><?php echo esc_html(__('Help', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
         </div>
         <div class='clear'></div>
     </div>

@@ -247,7 +247,7 @@ jQuery(document).ready(function ( $ ) {
         variationID = "";
         if(jQuery('#variation-id-' + rowNumber).length>0){
             variationID = jQuery('#variation-id-' + rowNumber).val();
-            if ( !variationID) {
+            if ( !variationID || 0 == variationID) {
               var message = wdm_data.invalid_variation + " " + jQuery('#product-title-' + rowNumber).text();
               jQuery("#text").css("visibility", "visible");
               jQuery("#text").css("display", "block");
@@ -521,7 +521,7 @@ jQuery.ajax( {
     if ('undefined' != typeof validInput && validInput == false) {
         $formID = $this.closest('.btn_div').siblings('.wdm-enquiry-form').find('form').attr('id')
         msgs = new Array();
-        msgs.push("Please fill this section properly before proceeding");
+        msgs.push(quoteup_cf_err_msg.validation_err_msg);
         $('.formnotice').slideUp();
         alert_box = '<div style="margin-top: 20px" class="alert formnotice alert-danger disappear"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
         for (i = 0; i < msgs.length; i++) {
@@ -790,8 +790,16 @@ jQuery('.rateit-range').hover(function() {
 clearStatus(jQuery('.rateit-range'));
 /* End Custom Form - Rating Field Functionalities */
 
+  // Remove 'If pdf not ...' text when PDF is loaded succesfully.
+  jQuery('.wdm-pdf-iframe').on('load', function() {
+    jQuery('#pdf-preview-reload-wrapper').remove();
+  });
 
-
+  // Modify the 'src' attribute of the iframe when an user clicks on the 'Here'
+  // button shown on the PDF preview modal.
+  jQuery('#pdf-preview-reload').click(function() {
+      jQuery('.wdm-pdf-iframe').attr('src', jQuery('.wdm-pdf-iframe').attr('src'));
+  });
 })
 
 qtyValidated = true;

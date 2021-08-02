@@ -1363,3 +1363,10 @@ tr.version-row {
 
 
 /* End of css for versions meta box*/
+
+/* PDF preview CSS */
+#pdf-preview-reload {
+    cursor: pointer;
+}
+
+/* End for PDF preview CSS */

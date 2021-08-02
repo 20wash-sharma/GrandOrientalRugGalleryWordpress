@@ -122,6 +122,8 @@ class Cf7_Grid_Layout {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-grid-layout-loader.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wordpress-gurus-debug-api.php';
+    /** @since 5.0 dynamic tags interface */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/lists/class-cf7sg-dynamic-select.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -134,6 +136,11 @@ class Cf7_Grid_Layout {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cf7-grid-layout-admin.php';
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'assets/cf7-admin-table/cf7-admin-table-loader.php';
+    /**
+    * Persist admin notices:
+    * @since 4.0.2
+    */
+    require_once  plugin_dir_path( dirname( __FILE__ ) ) . '/assets/persist-admin-notices/persist-admin-notices-dismissal.php';
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
@@ -187,11 +194,13 @@ class Cf7_Grid_Layout {
     $this->loader->add_action('init',  $plugin_admin, 'register_dynamic_dropdown_taxonomy' , 20, 2 );
     //$this->loader->add_action('init',  $plugin_admin, 'modify_cf7_post_type' , 20 );
     //add some metabox to the wpcf7_contact_form post type
-    $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'main_editor_meta_box' );
-    $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'info_meta_box' );
-    $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'helper_meta_box');
+    $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'edit_page_metabox' );
+    /** @since 4.6.0 hide author metabox by default */
+    $this->loader->add_filter('hidden_meta_boxes', $plugin_admin, 'hide_author_metabox',10,3);
     //save the post
     $this->loader->add_action('save_post_wpcf7_contact_form', $plugin_admin, 'save_post', 10,3);
+    /** delete post @since 4.3.0 */
+    $this->loader->add_action('before_delete_post', $plugin_admin, 'delete_post');
     //ajax load cf7 form content
     $this->loader->add_action('wp_ajax_get_cf7_content', $plugin_admin, 'get_cf7_content');
     //hook for adding fields to sumit action metabox
@@ -224,9 +233,25 @@ class Cf7_Grid_Layout {
     /** @since 3.0.0 */
     $this->loader->add_filter( 'wpcf7_map_meta_cap', $plugin_admin, 'reset_meta_cap' , 5,1);
     //make sure users that cannot publish forms are set to pending.
-    $this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'pending_for_review');
+    $this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'pending_for_review',10,2);
     //add all form capabilities to editor role.
     $this->loader->add_action( 'admin_init', $plugin_admin, 'enable_cf7_editor_role', 5,0 );
+    /** @since 3.3.0 helper hooks added via action hook */
+    $this->loader->add_action( 'cf7sg_ui_grid_helper_hooks', $plugin_admin, 'print_helper_hooks');
+    /** @since 4.0.0 include default js template */
+    $this->loader->add_action( 'cf7sg_default_custom_js_template', $plugin_admin, 'print_default_js', 1,1);
+    /** @since 4.0.0 enable toggle mail tags */
+    $this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'setup_cf7_mailtags');
+    /** persist admin notices plugin. @since 4.1.0 */
+    $this->loader->add_action( 'admin_init',  'PAnD', 'init' );
+    $this->loader->add_action( 'admin_init',  $plugin_admin, 'init_notices' );
+    $this->loader->add_action( 'admin_notices', $plugin_admin, 'admin_notices' );
+    $this->loader->add_action('wp_ajax_validate_cf7sg_version_update', $plugin_admin, 'validate_cf7sg_version_update');
+    $this->loader->add_filter('upgrader_post_install', $plugin_admin, 'post_plugin_upgrade',10,3);
+    /** @since 4.3.0 enable previews/views of forms */
+    $this->loader->add_action( 'init',  $plugin_admin, 'register_form_preview_posttype', 0 );
+    /** @since 4.4 load translation files */
+    $this->loader->add_action( 'cf7pll_load_plugin_translation_resource', $plugin_admin, 'load_translation_files');
 
 	}
 
@@ -263,7 +288,7 @@ class Cf7_Grid_Layout {
     //setup individual tag filers
     $this->loader->add_filter( 'wpcf7_posted_data', $plugin_public, 'setup_grid_values', 5, 1 );
     //filter cf7 validation
-    $this->loader->add_filter( 'wpcf7_validate', $plugin_public, 'filter_wpcf7_validate', 30, 2 );
+    $this->loader->add_filter( 'wpcf7_validate', $plugin_public, 'filter_wpcf7_validate', 1, 1);
     //benchmark validation
     $this->loader->add_filter( 'wpcf7_validate_dynamic_select*', $plugin_public, 'validate_required', 30, 2 );
     $this->loader->add_filter( 'wpcf7_validate_benchmark*', $plugin_public, 'validate_required', 30, 2 );
@@ -280,6 +305,10 @@ class Cf7_Grid_Layout {
 		$this->loader->add_action('cf7_2_post_form_posted', $plugin_public, 'save_toggle_status', 10, 5 );
     /** @since 2.4.1 attache array file fields to mails */
     $this->loader->add_filter( 'wpcf7_mail_components', $plugin_public, 'wpcf7_mail_components' , 999,3);
+    /** @since 4.0.0 enable/disable autop with filter */
+    $this->loader->add_filter( 'wpcf7_autop_or_not', $plugin_public, 'disable_autop_for_grid' ,5,1);
+    /** @since 4.4 prefill preview forms */
+    $this->loader->add_action( 'wpcf7_before_send_mail', $plugin_public, 'on_submit_success');
 
 	}
 

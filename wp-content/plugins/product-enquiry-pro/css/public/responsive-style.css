@@ -21,7 +21,6 @@ Generic Styling, for Desktops/Laptops
 .generated_for_desktop th,
 .generated_for_mobile td, 
 .generated_for_mobile th  { 
-    text-align: left; 
     padding: 1.618em;
     display: table-cell;
     text-align: justify;
@@ -30,7 +29,6 @@ Generic Styling, for Desktops/Laptops
 .generated_for_desktop td.td-btn-update{
     text-align: right;
 }
-
 
 .generated_for_desktop tr:nth-of-type(even), .generated_for_desktop th { 
     background-color: #f8f8f8;
@@ -45,11 +43,9 @@ Generic Styling, for Desktops/Laptops
 }
 
 @media 
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+only screen and (max-width: 768px) {
     .generated_for_mobile{
         display: table;
-        
     }
 
     .generated_for_mobile tr th,  .generated_for_mobile tr td{
@@ -70,6 +66,13 @@ only screen and (max-width: 760px),
 
     .generated_for_mobile th:after {
         content: ':';
+    }
+
+    .quoteup-quote-cart table.generated_for_desktop.cart td,
+    .quoteup-quote-cart table.generated_for_desktop.cart th,
+    .quoteup-quote-cart table.generated_for_mobile.cart td,
+    .quoteup-quote-cart table.generated_for_mobile.cart td {
+        padding: 1.618em;
     }
 
     .generated_for_desktop {
@@ -101,16 +104,24 @@ only screen and (max-width: 760px),
         padding-left: 2px !important;
     }
 
-    .quoteup-quote-cart th.product-remove {
+    .quoteup-quote-cart th.product-remove, .quoteup-quote-cart th.product-thumbnail {
         display: none;
     }
 
-    .quoteup-quote-cart td.product-remove {
-        display: inline-table;
+    .quoteup-quote-cart table.generated_for_mobile.cart td.product-remove {
+        display: table-cell;
+        padding: 0;
         width: 251%;
     }
 
-    .mpe-right {
+    table.generated_for_mobile.cart td.product-remove a.remove     {
+        font-size: 1.41575em;
+        position: absolute;
+        right: -0.6180469716em;
+        top: -0.6180469716em;
+    }
+
+    .mpe-right, .quoteup-quote-cart td.product-thumbnail img {
         width: 100%;
     }
 }

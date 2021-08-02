@@ -63,8 +63,9 @@ class QuoteupOrderQuoteMapping
             $sql = $wpdb->prepare("SELECT order_id FROM $table_name WHERE enquiry_id=%d", $enquiry_id);
         }
         if (isset($sql)) {
-            $result  = $wpdb->get_row($sql, ARRAY_A);
-            $orderId = apply_filters('quoteup_order_id_of_quote', $result['order_id'], $enquiry_id);
+            $result = $wpdb->get_row($sql, ARRAY_A);
+
+            $orderId = apply_filters('quoteup_order_id_of_quote', isset($result['order_id']) ? $result['order_id'] : null, $enquiry_id);
 
             return $orderId;
         }

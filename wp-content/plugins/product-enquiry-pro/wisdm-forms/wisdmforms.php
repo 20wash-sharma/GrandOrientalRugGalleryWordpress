@@ -31,14 +31,16 @@ require_once WF_BASE_DIR . 'libs/font-awesome.php';
 require_once WF_BASE_DIR . 'settings.php';
 require_once WF_BASE_DIR . 'form-functions.php';
 
-class WisdmForm {
+class WisdmForm
+{
 
     public $fields_common;
     public $fields_generic;
     public $fields_advaced;
     public $set_methods;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         static $instance;
         if ($instance == null) {
             $instance = new self;
@@ -49,7 +51,8 @@ class WisdmForm {
     /**
      * Constructor function
      */
-    private function __construct() {
+    private function __construct()
+    {
         // Public view shortcodes
         add_shortcode('wisdmform', array($this, 'view_showform'));
         // add_shortcode('wisdmform_agent', array($this, 'view_agent'));
@@ -81,7 +84,7 @@ class WisdmForm {
 
         // wisdmform bindings
         add_action('save_post_form', array($this, 'action_save_form'));
-        add_action( 'admin_notices', array($this, 'my_admin_notice') );
+        add_action('admin_notices', array($this, 'my_admin_notice'));
         add_action("wp_ajax_get_reqlist", array($this, "action_get_reqlist"));
         add_filter("the_content", array($this, "form_preview"));
 
@@ -93,7 +96,7 @@ class WisdmForm {
         $this->setup_fields();
 
 
-        if(is_admin()){
+        if(is_admin()) {
             WisdmFormSettings::getInstance();
         }
     }
@@ -104,7 +107,8 @@ class WisdmForm {
      * - Add additional roles
      */
 
-    function install() {
+    function install()
+    {
         // Invoke wordpress Database object
         global $wpdb;
 
@@ -147,14 +151,15 @@ class WisdmForm {
     }
 
     /**
-     * @function        setup_fields
-     * @uses            Add the field definitions
+     * @function setup_fields
+     * @uses     Add the field definitions
      *                    - Common Field types
      *                    - Advanced Field types
      *                    - Generic Field types
      *                    - Method Set
      */
-    function setup_fields() {
+    function setup_fields()
+    {
         $this->fields_common = apply_filters("common_fields", $this->fields_common);
         $this->fields_generic = apply_filters("generic_fields", $this->fields_generic);
         $this->fields_advanced = apply_filters("advanced_fields", $this->fields_advaced);
@@ -163,11 +168,12 @@ class WisdmForm {
 
     // Custom menu items for the Admin UI
     /**
-     * @function    register_custom_menu_items
-     * @uses        Adds various additional menu and list items to wordpress
-     * @global type $submenu to modify the wordpress menu items
+     * @function register_custom_menu_items
+     * @uses     Adds various additional menu and list items to wordpress
+     * @global   type $submenu to modify the wordpress menu items
      */
-    function register_custom_menu_items() {
+    function register_custom_menu_items()
+    {
         // Submenu item in the "Forms" menu item
         // add_submenu_page('edit.php?post_type=form', __('Form entries'), __('Form entries'), 'manage_options', 'form-entries', array($this, 'admin_view_submitted_forms'));
         // add_submenu_page('edit.php?post_type=form', __('Statistics'), __('Statistics'), 'manage_options', 'statistics', array($this, 'admin_view_global_stats'));
@@ -179,10 +185,10 @@ class WisdmForm {
 
     /**
      * @function add_option_showreqs
-     * @param array $actions Add link to 'Entries' list for a form
-     * @param type $post Get the details of the 'Form'
-     * @return string
-     * @uses Add a link to all the 'Entries' that have been posted through a 'Form'. This link
+     * @param    array $actions Add link to 'Entries' list for a form
+     * @param    type $post Get the details of the 'Form'
+     * @return   string
+     * @uses     Add a link to all the 'Entries' that have been posted through a 'Form'. This link
      *        is added to the Forms list in the Administration backend
      */
     // function add_option_showreqs($actions, $post) {
@@ -195,7 +201,7 @@ class WisdmForm {
     // }
 
     /**
-     * @param $url
+     * @param  $url
      * @return mixed
      */
 
@@ -225,7 +231,7 @@ class WisdmForm {
 
     /**
      * @function addons_list
-     * @uses Fetch add-on list from server
+     * @uses     Fetch add-on list from server
      */
     // function addons_list(){
 
@@ -245,21 +251,22 @@ class WisdmForm {
 
     /**
      * @function is_ajax
-     * @uses Library fucntion to check if an ajax request
+     * @uses     Library fucntion to check if an ajax request
      * is being handled
-     * @return type boolean
+     * @return   type boolean
      */
-    function is_ajax() {
+    function is_ajax()
+    {
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 
     /**
      * @function enqueue_scripts
-     * @uses Add the JS and CSS dependencies for loading on the public accessible pages
-     *
+     * @uses     Add the JS and CSS dependencies for loading on the public accessible pages
      */
-    function enqueue_scripts() {
+    function enqueue_scripts()
+    {
         $quoteupSettings = quoteupSettings();
         
         wp_enqueue_style("lf_bootstrap_css", WF_BASE_URL . "views/css/bootstrap.min.css");
@@ -305,14 +312,16 @@ class WisdmForm {
         wp_enqueue_script('jquery-validate', WF_BASE_URL . 'views/js/jquery.validate.min.js', array('jquery'));
         wp_enqueue_script('frontendJs', WF_BASE_URL . 'views/js/frontend.js', array('jquery'));
 
+        quoteupCustomFormErrorMessages();
     }
 
 
     /**
      * @function admin_enqueue_scripts
-     * @uses Add the JS and CSS dependencies for loading on the admin accessible sections
+     * @uses     Add the JS and CSS dependencies for loading on the admin accessible sections
      */
-    function admin_enqueue_scripts() {
+    function admin_enqueue_scripts()
+    {
         if ((get_post_type()!='form' && !(isset($_GET['post_type']) && $_GET['post_type']=='form')) && (!isset($_GET['page']) || $_GET['page'] != "quoteup-create-quote")) {
             return;
         }
@@ -353,9 +362,14 @@ class WisdmForm {
 
         wp_enqueue_script('customJs', WF_BASE_URL . "views/js/common.js");
         wp_enqueue_style('customCss', WF_BASE_URL . "views/css/common2.css");
-        wp_localize_script('customJs', 'dateData', array(
+        wp_localize_script(
+            'customJs', 'dateData', array(
             'date_format' => $this->dateFormatTojQueryUIDatePickerFormat(get_option('date_format')),
-            ));
+            )
+        );
+
+        // Validation Localization
+        quoteupCustomFormErrorMessages();
     }
 
     /**
@@ -381,22 +395,23 @@ class WisdmForm {
 
     /**
      * @function add_meta_box
-     * @uses Adds the metaboxes in the 'Form' creation
+     * @uses     Adds the metaboxes in the 'Form' creation
      *        section of the Administration dashboard
      *        -- Form creation panel
      *        -- Agent selection panel
      */
-    function add_meta_box($post_type) {
+    function add_meta_box($post_type)
+    {
         $post_types = array('form'); //limit meta box to certain post types
         //if (in_array($post_type, $post_types)) {
         // Add the 'Form' creation panel
         add_meta_box(
-            'createnew'
-            , __("Form builder", QUOTEUP_TEXT_DOMAIN)
-            , array($this, 'view_createnew')
-            , 'form'
-            , 'advanced'
-            , 'high'
+            'createnew',
+            __("Form builder", QUOTEUP_TEXT_DOMAIN),
+            array($this, 'view_createnew'),
+            'form',
+            'advanced',
+            'high'
         );
         // Add the 'Agent selection panel'
         // add_meta_box(
@@ -411,9 +426,10 @@ class WisdmForm {
 
     /**
      * @function form_post_type_init
-     * @uses Initiate the custom post type
+     * @uses     Initiate the custom post type
      */
-    function form_post_type_init() {
+    function form_post_type_init()
+    {
         $form_post_type_labels = array(
             'name' => _x('Wisdm Forms', 'post type general name', QUOTEUP_TEXT_DOMAIN),
             'singular_name' => _x('Form', 'post type singular name', QUOTEUP_TEXT_DOMAIN),
@@ -452,9 +468,10 @@ class WisdmForm {
 
     /**
      * @function action_save_form
-     * @uses Save the form after creation through the 'Form' creation panel
+     * @uses     Save the form after creation through the 'Form' creation panel
      */
-    function action_save_form($post_id) {
+    function action_save_form($post_id)
+    {
         $error = false;
         if (isset($_REQUEST['contact'])) {
             $formadata = $_REQUEST['contact'];
@@ -462,7 +479,9 @@ class WisdmForm {
                 foreach ($formadata['fieldsinfo'] as $key => $value) {
                     if(isset($value['primary']) && $value['primary'] == 'yes') {
                         $formadata['fieldsinfo'][$key]['required'] = 1;
-                        $formadata['fieldsinfo'][$key]['reqmsg'] = "Please enter ".$value['label'];
+                        if (empty($formadata['fieldsinfo'][$key]['reqmsg'])) {
+                            $formadata['fieldsinfo'][$key]['reqmsg'] = "Please enter ".$value['label'];
+                        }
                     }
                 }
 
@@ -489,7 +508,7 @@ class WisdmForm {
                 $duplicateResult = $this->hasDuplicate($labelsArray);
 
                 if ($error) {
-                    if ( !session_id() ) {
+                    if (!session_id() ) {
                         session_start();
                     }
                     $_SESSION['form_errors'] = $error->get_error_message();
@@ -532,7 +551,7 @@ class WisdmForm {
         }
 
         if ($error) {
-            if ( !session_id() ) {
+            if (!session_id() ) {
                 session_start();
             }
             $_SESSION['form_errors'] = $error->get_error_message();
@@ -548,18 +567,19 @@ class WisdmForm {
     function my_admin_notice()
     {
         @session_start();
-        if (isset($_SESSION) && array_key_exists( 'form_errors', $_SESSION ) ) {?>
+        if (isset($_SESSION) && array_key_exists('form_errors', $_SESSION) ) {?>
             <div class="error">
                 <p><?php echo $_SESSION['form_errors']; ?></p>
             </div><?php
 
-            unset( $_SESSION['form_errors'] );
+            unset($_SESSION['form_errors']);
         }
     }
 
 
 
-    function hasDuplicate($array){
+    function hasDuplicate($array)
+    {
         $dups = array();
         foreach(array_count_values($array) as $val => $c) {
             if($c > 1) {
@@ -573,17 +593,20 @@ class WisdmForm {
 
     /**
      * @function ajax_get_request_list
-     * @uses Respond to ajax request for list of "List of entry replies"
-     * @return string HTML output for the table of requests
+     * @uses     Respond to ajax request for list of "List of entry replies"
+     * @return   string HTML output for the table of requests
      */
-    function ajax_get_request_list() {
+    function ajax_get_request_list()
+    {
         if ($this->is_ajax() && isset($_REQUEST['section']) && $_REQUEST['section'] == 'stat_req') {
             $_REQUEST['paged'] = 1;
-            $ajax_html = $this->action_get_reqlist($args = array(
+            $ajax_html = $this->action_get_reqlist(
+                $args = array(
                 'form_id' => (int)$_REQUEST['form_id'],
                 'status' => esc_attr($_REQUEST['status']),
                 'template' => 'showreqs_ajax'
-            ));
+                )
+            );
             echo $ajax_html;
             die();
         }
@@ -591,10 +614,11 @@ class WisdmForm {
 
     /**
      * @function ajax_submit_reply
-     * @uses Respond to ajax request for list of "List of entry replies"
-     * @return string HTML output for the recent reply
+     * @uses     Respond to ajax request for list of "List of entry replies"
+     * @return   string HTML output for the recent reply
      */
-    function ajax_submit_reply() {
+    function ajax_submit_reply()
+    {
         if ($this->is_ajax() && isset($_REQUEST['section']) && $_REQUEST['section'] == 'reply') {
             // Add reply to DB
             $reply_id = $this->handle_replies();
@@ -642,10 +666,11 @@ class WisdmForm {
 
     /**
      * @function ajax_submit_change_request_state
-     * @uses Respond to ajax request to change the state of a request
-     * @global type $wpdb Wordpress databse object
+     * @uses     Respond to ajax request to change the state of a request
+     * @global   type $wpdb Wordpress databse object
      */
-    function ajax_submit_change_request_state() {
+    function ajax_submit_change_request_state()
+    {
         if ($this->is_ajax() && isset($_REQUEST['action']) && $_REQUEST['action'] == 'change_req_state') {
             if (isset($_REQUEST['ids'])) {
                 foreach($_REQUEST['ids'] as $id){
@@ -662,15 +687,15 @@ class WisdmForm {
                 $args['status'] = $query_status;
                 $query = '';
                 switch ($status) {
-                    case "delete":
-                        $query = "delete from {$wpdb->prefix}wisdmform_conreqs where `id` in ({$ids})";
-                        break;
-                    default:
-                        $query = "update {$wpdb->prefix}wisdmform_conreqs set `status`='{$status}' where `id` in ({$ids})";
-//                        $get_count_query = "select * from {$wpdb->prefix}wisdmforms_conreqs where `status`='{$query_status}'";
-//                        $new_stat_count = $wpdb->query($get_count_query, ARRAY_A);
+                case "delete":
+                    $query = "delete from {$wpdb->prefix}wisdmform_conreqs where `id` in ({$ids})";
+                    break;
+                default:
+                    $query = "update {$wpdb->prefix}wisdmform_conreqs set `status`='{$status}' where `id` in ({$ids})";
+                    //                        $get_count_query = "select * from {$wpdb->prefix}wisdmforms_conreqs where `status`='{$query_status}'";
+                    //                        $new_stat_count = $wpdb->query($get_count_query, ARRAY_A);
                 }
-                $query = apply_filters('wisdmform_form-entries_action_query',$query,$status,$ids);
+                $query = apply_filters('wisdmform_form-entries_action_query', $query, $status, $ids);
                 $wpdb->query($query);
 
                 // Get counts
@@ -699,10 +724,11 @@ class WisdmForm {
 
     /**
      * @function view_public_token
-     * @uses Render view for Token/Query entry page
-     * @return type string(html)
+     * @uses     Render view for Token/Query entry page
+     * @return   type string(html)
      */
-    function view_public_token() {
+    function view_public_token()
+    {
         $html = '';
         if (isset($_REQUEST['section'])) {
             $args = array();
@@ -732,8 +758,8 @@ class WisdmForm {
 
     /**
      * @function view_agent
-     * @uses Render view for the agent
-     * @return type string HTML
+     * @uses     Render view for the agent
+     * @return   type string HTML
      */
     // function view_agent() {
     //     $html = '';
@@ -783,9 +809,9 @@ class WisdmForm {
 
     /**
      * @function view_list_agent
-     * @uses Render view for the list of agents
+     * @uses     Render view for the list of agents
      *        in the metabox for 'Agent selection' of a form
-     * @return type string HTML
+     * @return   type string HTML
      */
     // function view_list_agents($post) {
     //     $formdata = get_post_meta($post->ID, 'form_data', true);
@@ -800,10 +826,10 @@ class WisdmForm {
 
     /**
      * @function view_agent_requests
-     * @uses Render view for the list of requests
+     * @uses     Render view for the list of requests
      *        that are accessilble for the current
      *        logged in agent user
-     * @return type string HTML
+     * @return   type string HTML
      */
     // function view_agent_requests() {
     //     $html = "<div class='w3eden'>";
@@ -833,11 +859,12 @@ class WisdmForm {
 
     /**
      * @function admin_view_submitted_forms
-     * @uses Render view for the list of requests
+     * @uses     Render view for the list of requests
      *        for the Admin
-     * @return type string HTML
+     * @return   type string HTML
      */
-    function admin_view_submitted_forms() {
+    function admin_view_submitted_forms()
+    {
         $html = '';
         $forms_list = query_posts('post_type=form');
         wp_reset_query();
@@ -875,19 +902,23 @@ class WisdmForm {
                 $html .= $this->action_get_reqlist($args);
             }
             if ($section == 'request' && isset($_REQUEST['req_id'])) {
-                $html .= $this->view_get_request_data($args = array(
+                $html .= $this->view_get_request_data(
+                    $args = array(
                     'fid' => (int)$_REQUEST['form_id'],
                     'reply_for' => (int)$_REQUEST['req_id'],
                     'template' => 'admin_reply_req'
-                ));
+                    )
+                );
             }
             if ($section == 'reply') {
                 $this->handle_replies();
-                $html .= $this->view_get_request_data($args = array(
+                $html .= $this->view_get_request_data(
+                    $args = array(
                     'fid' => (int)$_REQUEST['form_id'],
                     'reply_for' => (int)$_REQUEST['req_id'],
                     'template' => 'admin_reply_req'
-                ));
+                    )
+                );
             }
         }
         $html .= '</div></div>';
@@ -897,10 +928,11 @@ class WisdmForm {
 
     /**
      * @function admin_view_global_stats
-     * @uses Render the statistics page in the Admin panel
-     * @return type string HTML
+     * @uses     Render the statistics page in the Admin panel
+     * @return   type string HTML
      */
-    function admin_view_global_stats() {
+    function admin_view_global_stats()
+    {
         global $wpdb;
 
         $form_query = 'post_type=form';
@@ -933,36 +965,36 @@ class WisdmForm {
 
         foreach($all_stats as $stat) {
             switch($stat['action']) {
-                case 'v':
-                    $view_counts[$stat['fid']] = isset($view_counts[$stat['fid']]) ? $view_counts[$stat['fid']]++ : 1;
-                    $view_count += $view_counts[$stat['fid']];
-                    $view_count_stats[$stat['fid']][] = array(
-                        'ip' => $stat['ip'],
-                        'time' => array(
-                            'second' => date('Y-m-d H:m:s', $stat['time']),
-                            'minute' => date('Y-m-d H:m', $stat['time']),
-                            'hour' => date('Y-m-d h', $stat['time']),
-                            'day' => date('Y-m-d', $stat['time']),
-                            'month' => date('Y-m', $stat['time']),
-                            'year' => date('Y', $stat['time'])
-                        )
-                    );
-                    break;
-                case 's':
-                    $submit_counts[$stat['fid']] = isset($submit_counts[$stat['fid']]) ? $submit_counts[$stat['fid']]++ : 1;
-                    $submit_count += $submit_counts[$stat['fid']];
-                    $submit_count_stats[$stat['fid']][] = array(
-                        'ip' => $stat['ip'],
-                        'time' => array(
-                            'second' => date('Y-m-d H:m:s', $stat['time']),
-                            'minute' => date('Y-m-d H:m', $stat['time']),
-                            'hour' => date('Y-m-d h', $stat['time']),
-                            'day' => date('Y-m-d', $stat['time']),
-                            'month' => date('Y-m', $stat['time']),
-                            'year' => date('Y', $stat['time'])
-                        )
-                    );
-                    break;
+            case 'v':
+                $view_counts[$stat['fid']] = isset($view_counts[$stat['fid']]) ? $view_counts[$stat['fid']]++ : 1;
+                $view_count += $view_counts[$stat['fid']];
+                $view_count_stats[$stat['fid']][] = array(
+                    'ip' => $stat['ip'],
+                    'time' => array(
+                        'second' => date('Y-m-d H:m:s', $stat['time']),
+                        'minute' => date('Y-m-d H:m', $stat['time']),
+                        'hour' => date('Y-m-d h', $stat['time']),
+                        'day' => date('Y-m-d', $stat['time']),
+                        'month' => date('Y-m', $stat['time']),
+                        'year' => date('Y', $stat['time'])
+                    )
+                );
+                break;
+            case 's':
+                $submit_counts[$stat['fid']] = isset($submit_counts[$stat['fid']]) ? $submit_counts[$stat['fid']]++ : 1;
+                $submit_count += $submit_counts[$stat['fid']];
+                $submit_count_stats[$stat['fid']][] = array(
+                    'ip' => $stat['ip'],
+                    'time' => array(
+                        'second' => date('Y-m-d H:m:s', $stat['time']),
+                        'minute' => date('Y-m-d H:m', $stat['time']),
+                        'hour' => date('Y-m-d h', $stat['time']),
+                        'day' => date('Y-m-d', $stat['time']),
+                        'month' => date('Y-m', $stat['time']),
+                        'year' => date('Y', $stat['time'])
+                    )
+                );
+                break;
             }
             if (isset($formtitles[$stat['fid']])) {
                 if ($view_count > $max_views) {
@@ -1021,14 +1053,17 @@ class WisdmForm {
         echo $html;
     }
 
-    /** View callers * */
+    /**
+     * View callers * 
+     */
 
     /**
      * @function view_createnew
-     * @uses Render the Form builder window for building form
-     * @return type string HTML
+     * @uses     Render the Form builder window for building form
+     * @return   type string HTML
      */
-    function view_createnew($post) {
+    function view_createnew($post)
+    {
         $formdata = get_post_meta($post->ID, 'form_data', $single = true);
         $html_data = array(
             'commonfields' => $this->fields_common,
@@ -1044,15 +1079,18 @@ class WisdmForm {
         echo $view;
     }
 
-    function view_showform($params) {
+    function view_showform($params)
+    {
         $form_id = $params['form_id'];
         $formdata = get_post_meta($form_id, 'form_data', true);
         if (!empty($formdata)) {
-            $paginated_form = paginate_form($formdata, array(
+            $paginated_form = paginate_form(
+                $formdata, array(
                 'fields_common' => $this->fields_common,
                 'fields_generic' => $this->fields_generic,
                 'fields_advanced' => $this->fields_advanced
-            ));
+                )
+            );
             $html_data = array_merge($paginated_form, array('form_id' => $form_id, 'formsetting' => $formdata));
             $view = $this->get_html("showform", $html_data);
 
@@ -1064,11 +1102,13 @@ class WisdmForm {
         return $view;
     }
 
-    /** Action callers * */
+    /**
+     * Action callers * 
+     */
     /**
      * @function ajax_action_upadate_agent
-     * @uses Update the agent info using AJAX from the User
-     * @return type ajax response
+     * @uses     Update the agent info using AJAX from the User
+     * @return   type ajax response
      */
     // public function ajax_action_upadate_agent() {
     //     if ($this->is_ajax() and isset($_REQUEST['section']) and $_REQUEST['section'] == 'update_agent') {
@@ -1109,15 +1149,16 @@ class WisdmForm {
 
     /**
      * @function ajax_action_submit_form
-     * @uses Submit form using AJAX
-     * @return type ajax response
+     * @uses     Submit form using AJAX
+     * @return   type ajax response
      */
-    public function ajax_action_submit_form() {
+    public function ajax_action_submit_form()
+    {
         global $wpdb, $quoteup;
         $formSetting = quoteupSettings();
         if (isset($_REQUEST['g-recaptcha-response'])) {
             $secretKey          = $formSetting[ 'google_secret_key' ];
-            $errorMsg           = isset($formSetting['google_captcha_err_msg']) && !empty($formSetting['google_captcha_err_msg']) ? $formSetting['google_captcha_err_msg'] : __('Captcha could not be verified.', QUOTEUP_TEXT_DOMAIN);
+            $errorMsg           = isset($formSetting['google_captcha_err_msg']) && !empty($formSetting['google_captcha_err_msg']) ? quoteupReturnWPMLVariableStrTranslation($formSetting['google_captcha_err_msg']) : __('Captcha could not be verified.', QUOTEUP_TEXT_DOMAIN);
             $response           = isset($_REQUEST['g-recaptcha-response']) ? $_REQUEST['g-recaptcha-response'] : '';
             $verify             = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$response}");
             $captcha_success    = json_decode($verify);
@@ -1137,9 +1178,9 @@ class WisdmForm {
         } else {
             $nonce = wp_verify_nonce($_REQUEST['__iswisdmform'], NONCE_KEY);
         }
-        if(!$nonce){
+        if(!$nonce) {
             $return_data = array();
-            $return_data['message'] = apply_filters("wisdmform_submitform_error_message",'Invalid Data!');
+            $return_data['message'] = apply_filters("wisdmform_submitform_error_message", 'Invalid Data!');
             $return_data['action'] = 'danger';
             echo json_encode($return_data);
             die();
@@ -1259,7 +1300,7 @@ class WisdmForm {
         }
 
         $return_data = array();
-        $return_data['message'] = apply_filters("wisdmform_submitform_thankyou_message",stripslashes($form_data['thankyou']));
+        $return_data['message'] = apply_filters("wisdmform_submitform_thankyou_message", stripslashes($form_data['thankyou']));
         $return_data['action'] = 'success';
         $return_data['gaProducts'] = $gaProducts;
         echo json_encode($return_data);
@@ -1297,23 +1338,28 @@ class WisdmForm {
 
     /**
      * @function add_payment_verification_hook
-     * @uses Payment verification hook
-     * @return type ajax response
+     * @uses     Payment verification hook
+     * @return   type ajax response
      */
-    function add_payment_verification_hook() {
+    function add_payment_verification_hook()
+    {
         $pay_object = new WisdmForm_Payment();
         $pay_object->payment_verification();
     }
 
-    /** Library to get template * */
+    /**
+     * Library to get template * 
+     */
     /**
      * @function get_html
-     * @uses Main rendering engine for views
-     * @return type HTML output
+     * @uses     Main rendering engine for views
+     * @return   type HTML output
      */
-    function get_html($view, $html_data) {
-        if (empty($view))
+    function get_html($view, $html_data)
+    {
+        if (empty($view)) {
             return null;
+        }
         extract($html_data);
         ob_start();
         include(WF_BASE_DIR . "views/{$view}.php");
@@ -1324,28 +1370,32 @@ class WisdmForm {
 
     /**
      * @function entry_has_emails
-     * @uses Check if form submission (form structure) has any email fields or not
-     * @returns List of emails submitted via the form
-     * @return type formatted array of string
+     * @uses     Check if form submission (form structure) has any email fields or not
+     * @returns  List of emails submitted via the form
+     * @return   type formatted array of string
      */
-    function entry_has_emails($data) {
+    function entry_has_emails($data)
+    {
         $emails = array();
-        if (!is_array($data))
+        if (!is_array($data)) {
             return $emails;
+        }
         foreach ($data as $value) {
-            if (is_valid_email($value))
+            if (is_valid_email($value)) {
                 $emails[] = $value;
+            }
         }
         return $emails;
     }
 
     /**
      * @function view_get_request_data
-     * @uses Gather and return all the data submitted during a form submission along
+     * @uses     Gather and return all the data submitted during a form submission along
      *          with any responses done afterwards to that request
-     * @return type HTML output
+     * @return   type HTML output
      */
-    function view_get_request_data($args = array()) {
+    function view_get_request_data($args = array())
+    {
         global $wpdb;
         // initialize view output
 
@@ -1437,10 +1487,11 @@ class WisdmForm {
 
     /**
      * @function handle_replies
-     * @uses Record replies done via the response system
-     * @return type Reply insertion id
+     * @uses     Record replies done via the response system
+     * @return   type Reply insertion id
      */
-    function handle_replies() {
+    function handle_replies()
+    {
         global $wpdb;
         $user_id = is_user_logged_in() ? get_current_user_id() : -1;
 
@@ -1476,10 +1527,11 @@ class WisdmForm {
 
     /**
      * @function action_get_reqlist
-     * @uses Get a list of requests submitted via a particular form
-     * @return type html render ouptut
+     * @uses     Get a list of requests submitted via a particular form
+     * @return   type html render ouptut
      */
-    function action_get_reqlist($args) {
+    function action_get_reqlist($args)
+    {
         global $wpdb;
 
         $form_id = $args['form_id'];
@@ -1562,8 +1614,8 @@ class WisdmForm {
 
     /**
      * @function add_columns_to_form_list
-     * @uses Modify the form(post) list in the admin panel and add extra columns
-     * @return type modified list of colums for wp native post list
+     * @uses     Modify the form(post) list in the admin panel and add extra columns
+     * @return   type modified list of colums for wp native post list
      */
     // function add_columns_to_form_list($column) {
     //     $column['form_id'] = 'Shortcode';
@@ -1575,8 +1627,8 @@ class WisdmForm {
 
     /**
      * @function populate_form_list_custom_columns
-     * @uses Fill up the custom columns added via the 'add_columns_to_form_list' method
-     * @return type null
+     * @uses     Fill up the custom columns added via the 'add_columns_to_form_list' method
+     * @return   type null
      */
     // function populate_form_list_custom_columns($column_name, $post_id) {
     //     // $custom_field = get_post_custom($post_id);
@@ -1598,21 +1650,24 @@ class WisdmForm {
 
     /**
      * @function form_preview
-     * @uses Generate a preview of form
-     * @return type  HTML render string
+     * @uses     Generate a preview of form
+     * @return   type  HTML render string
      */
-    function form_preview($content) {
-        if (get_post_type() != "form")
+    function form_preview($content)
+    {
+        if (get_post_type() != "form") {
             return $content;
+        }
         return do_shortcode("[wisdmform form_id='" . get_the_ID() . "']");
     }
 
     /**
      * @function show_captcha_image
-     * @uses Generate and server a captcha image
-     * @return type  binary image file
+     * @uses     Generate and server a captcha image
+     * @return   type  binary image file
      */
-    function show_captcha_image() {
+    function show_captcha_image()
+    {
         if (isset($_REQUEST['show_captcha'])) {
             $coj = new SimpleCaptcha();
             echo json_encode($coj->get_image());
@@ -1620,7 +1675,8 @@ class WisdmForm {
         }
     }
 
-    function payment_fields($submission) {
+    function payment_fields($submission)
+    {
         $payment_fields = array();
         foreach ($submission as $key => $value) {
             if (strstr($key, 'PaymentMethods_')) {
@@ -1636,10 +1692,11 @@ class WisdmForm {
 
     /**
      * @function has_payment_fields
-     * @uses Checks if submission has any pay methods
-     * @return type boolean
+     * @uses     Checks if submission has any pay methods
+     * @return   type boolean
      */
-    function has_payment_fields($submission) {
+    function has_payment_fields($submission)
+    {
         foreach ($submission as $key => $value) {
             if (strstr($key, 'PaymentMethods_')) {
                 return true;
@@ -1651,10 +1708,11 @@ class WisdmForm {
 
     /**
      * @function record_view_stat
-     * @uses Record and increment the view count of a form by 1 and store the ip used
-     * @return type  null
+     * @uses     Record and increment the view count of a form by 1 and store the ip used
+     * @return   type  null
      */
-    function record_view_stat($form_id, $ip = 'not acquired') {
+    function record_view_stat($form_id, $ip = 'not acquired')
+    {
         global $wpdb;
         $form_data = get_post($form_id);
         $form_author_id = $form_data->post_author;
@@ -1671,10 +1729,11 @@ class WisdmForm {
 
     /**
      * @function get_field_names
-     * @uses Extract field names from serialized form data and prepare an array with ID => Label
-     * @return type array
+     * @uses     Extract field names from serialized form data and prepare an array with ID => Label
+     * @return   type array
      */
-    function get_field_names($ef_data, $ef_form_data) {
+    function get_field_names($ef_data, $ef_form_data)
+    {
         $ef_data = maybe_unserialize($ef_data);
         $ef_form_data = maybe_unserialize($ef_form_data);
         $ef_prep_fields = array();
@@ -1688,10 +1747,11 @@ class WisdmForm {
 
     /**
      * @function record_submission_stat
-     * @uses Record and increment the submission count of a form by 1 and store the ip used
-     * @return type  null
+     * @uses     Record and increment the submission count of a form by 1 and store the ip used
+     * @return   type  null
      */
-    function record_submission_stat($form_id, $ip = 'not acquired') {
+    function record_submission_stat($form_id, $ip = 'not acquired')
+    {
         global $wpdb;
         $form_data = get_post($form_id);
         $form_author_id = $form_data->post_author;
@@ -1705,16 +1765,18 @@ class WisdmForm {
         $wpdb->query("INSERT into {$wpdb->prefix}wisdmform_stats SET `fid`='{$form_id}', `author_id`='{$form_author_id}', `action`='s', `ip`='{$ip}', `time`='{$current_time}' ");
     }
 
-    function wisdmform_submitform_thankyou_message($message) {
+    function wisdmform_submitform_thankyou_message($message)
+    {
         return $message;
     }
 
     /**
      * @function autoload_field_classes
-     * @uses Autoloader to load field classes when they are used
-     * @return type  null
+     * @uses     Autoloader to load field classes when they are used
+     * @return   type  null
      */
-    public static function autoload_field_classes() {
+    public static function autoload_field_classes()
+    {
         $field_class_directories = array(
             WF_BASE_DIR . 'formfields/common/',
             WF_BASE_DIR . 'formfields/generic/',
@@ -1722,7 +1784,7 @@ class WisdmForm {
         );
         foreach($field_class_directories as $dir) {
             $class_files = scandir($dir);
-            for($it=2 ; $it<count($class_files) ; $it++) {
+            for($it=2 ; $it<count($class_files); $it++) {
                 include $dir.$class_files[$it];
             }
         }
@@ -1730,7 +1792,9 @@ class WisdmForm {
 
 }
 
-/** Initialize * */
+/**
+ * Initialize * 
+*/
 //new wisdmform();
 
 wisdmform::getInstance();

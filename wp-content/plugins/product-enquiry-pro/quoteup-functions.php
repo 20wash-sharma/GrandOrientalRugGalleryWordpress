@@ -9,14 +9,13 @@ if (!defined('ABSPATH')) {
  * This function is alternative for:
  *  isset($arr[$key]) ? $arr[$key] : '';
  *
- * @param   $arr        array
- * @param   $key        string  String containing array key.
- * @param   $default    mixed   Value which should be returned if key doesn't
- *                              exist in array.
+ * @param $arr     array
+ * @param $key     string  String containing array key.
+ * @param $default mixed   Value which should be returned if key doesn't
+ *                 exist in array.
  *
- * @return  mixed       Return a value from an array for a particular key. If
+ * @return mixed       Return a value from an array for a particular key. If
  *                      key doesn't exist, then return a default value.
- *                      
  */
 function quoteupGetValueFromArray($arr, $key, $default = '')
 {
@@ -43,7 +42,7 @@ function isSimpleProduct($productId)
 /**
  * Returns the Manual CSS Settings saved in the options table.
  *
- * @param array $form_data Quoteup settings
+ * @param  array $form_data Quoteup settings
  * @return array $style_attr manual styling  array
  */
 function getManualCSS($form_data = array())
@@ -60,7 +59,7 @@ function getManualCSS($form_data = array())
     $style_attr = "style = '";
     $style_array = array();
     if (!empty($btn_text_color)) {
-        $style_array[] = "color:{$btn_text_color} !important";
+        $style_array[] = "color:{$btn_text_color}";
     }
     if (!empty($btn_border)) {
         $style_array[] = "border-color:{$btn_border}";
@@ -79,6 +78,17 @@ function getManualCSS($form_data = array())
         $style_array[] = "-ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr={$start}, endColorstr={$end})";
         $style_array[] = "background: linear-gradient({$start}, {$end})";
     }
+
+    /**
+     * Use this filter to modify the manual CSS.
+     *
+     * @since 6.4.4
+     *
+     * @param   array   $style_array    CSS style.
+     * @param   array   $form_data      Settings data.
+     */
+    $style_array = apply_filters('quoteup_manual_css', $style_array, $form_data);
+
     $style_attr .= implode(';', $style_array)."'";
 
     return htmlspecialchars($style_attr);
@@ -89,7 +99,8 @@ function getManualCSS($form_data = array())
  * Checks some settings for the data.
  * Check if multiproduct is checked or not ,and the get the MPE Cart page.
  * Gets the text of the buttons specified by the user.
- * @param string $redirect_url redirect url to some page if it is specified in the settings.
+ *
+ * @param  string $redirect_url redirect url to some page if it is specified in the settings.
  * @return array data which can be required for js processing.
  */
 function getLocalizationDataForJs($redirect_url)
@@ -108,8 +119,7 @@ function getLocalizationDataForJs($redirect_url)
     }
     if (isset($form_data[ 'mpe_cart_page' ])) {
         $quoteCart = $form_data[ 'mpe_cart_page' ];
-        // $quoteCartLink = get_permalink($quoteCart);
-        $quoteCartLink = get_permalink(pll_get_post($quoteCart));
+        $quoteCartLink = get_permalink($quoteCart);
     }
 
     if (isset($form_data[ 'cart_custom_label' ]) && !empty($form_data[ 'cart_custom_label' ])) {
@@ -120,7 +130,7 @@ function getLocalizationDataForJs($redirect_url)
         $QuoteCartLinkWithText = "<a href='$quoteCartLink'>".__('View Enquiry Cart', QUOTEUP_TEXT_DOMAIN).'</a>';
     }
 
-    $buttonText = empty($form_data[ 'custom_label' ]) ? __('Make an Enquiry', QUOTEUP_TEXT_DOMAIN) : $form_data[ 'custom_label' ];
+    $buttonText = empty($form_data[ 'custom_label' ]) ? __('Make an Enquiry', QUOTEUP_TEXT_DOMAIN) : quoteupReturnWPMLVariableStrTranslation($form_data[ 'custom_label' ]);
 
     $localizationData = array(
         'ajax_admin_url' => admin_url('admin-ajax.php'),
@@ -139,6 +149,7 @@ function getLocalizationDataForJs($redirect_url)
         'redirect' => $redirect_url,
         'product_id' => $product_id,
         'MPE' => $mpe,
+        'is_out_of_stock_set_enabled' => quoteupIsOutOfStockSettingEnabled() ? 1 : 0,
         'view_quote_cart_link_with_text' => $QuoteCartLinkWithText,
         'view_quote_cart_link_with_sold_individual_text' => __('Products that are sold individually can be added only once', QUOTEUP_TEXT_DOMAIN),
         'view_quote_cart_link' => $quoteCartLink,
@@ -150,6 +161,7 @@ function getLocalizationDataForJs($redirect_url)
         'spinner_img_url' => admin_url('images/spinner.gif'),
         'empty_cart_remove' => __('Your cart is currently empty', QUOTEUP_TEXT_DOMAIN),
         'buttonText' => $buttonText,
+        'totalText'  => __('Total', QUOTEUP_TEXT_DOMAIN),
         'cf_phone_field_pref_countries' => quoteupReturnPreferredCountryCodes(),
         //'cf_phone_field_inc_cc' => quoteupReturnOnlyAllowedCC(),
     );
@@ -169,6 +181,7 @@ function quoteupPluginUrl()
 
 /**
  * Returns the  Base dir of the plugin without trailing slash.
+ *
  * @return string PEP Plugin directory.
  */
 function quoteupPluginDir()
@@ -178,6 +191,7 @@ function quoteupPluginDir()
 
 /**
  * Returns the Base dir of the WooCommerce plugin without trailing slash.
+ *
  * @return string Woocommerce directory
  */
 function quoteupWcPluginDir()
@@ -188,6 +202,7 @@ function quoteupWcPluginDir()
 /**
  * Returns the Path of dir containing the vendor abstract classes without
  * trailing slash.
+ *
  * @return string Abstract directory
  */
 function quoteupVendorDir()
@@ -239,15 +254,15 @@ function quoteLinkGenerator($enquiryHash)
 /**
  * Return the approve and reject URL.
  *
- * @param  int      $enquiryid Enquiry ID
+ * @param  int $enquiryid Enquiry ID
  * @return array    Returns an associative array containing the Approval and
  *                  Rejection URL or empty array.
  */
 function getApproveRejectLink($enquiryId)
 {
     global $wpdb;
-    $appRejURL = array();    
-    $tblname = getEnquiryDetailsTable();    
+    $appRejURL = array();
+    $tblname = getEnquiryDetailsTable();
 
     $hash = quoteupEnquiryHashGenerator($enquiryId);
     \updateHash($enquiryId, $hash);
@@ -273,8 +288,9 @@ function getApproveRejectLink($enquiryId)
 
 /**
  * Set hash to the enquiry in database.
- * @param int $enquiry_id unique id for enquiry.
- * @param string $hash Hash value for the enquiry.
+ *
+ * @param int    $enquiry_id unique id for enquiry.
+ * @param string $hash       Hash value for the enquiry.
  */
 function updateHash($enquiry_id, $hash)
 {
@@ -293,7 +309,8 @@ function updateHash($enquiry_id, $hash)
 
 /**
  * Check if a product is sold individually (no quantities).
- * @param [int] $productId [Id of the product]
+ *
+ * @param  [int] $productId [Id of the product]
  * @return bool [if a product is sold individually (no quantities)->yes else no]
  */
 function isSoldIndividually($productId)
@@ -308,8 +325,8 @@ function isSoldIndividually($productId)
  * it is the copy of wordpress download URL function.
  * We have replaced wp_remote_safe_get to wp_remote_get.
  *
- * @param [string] $url     [URL from which we have to download file]
- * @param int $timeout [set timeout to 300]
+ * @param  [string] $url     [URL from which we have to download file]
+ * @param  int      $timeout [set timeout to 300]
  * @return string quoteup download  url
  */
 function quoteup_download_url($url, $timeout = 300)
@@ -324,8 +341,11 @@ function quoteup_download_url($url, $timeout = 300)
         return new WP_Error('http_no_file', __('Could not create Temporary file.', QUOTEUP_TEXT_DOMAIN));
     }
 
-    $response = wp_remote_get($url, array('timeout' => $timeout, 'stream' => true,
-        'filename' => $tmpfname, ));
+    $response = wp_remote_get(
+        $url,
+        array('timeout' => $timeout, 'stream' => true,
+        'filename' => $tmpfname, )
+    );
 
     if (is_wp_error($response)) {
         unlink($tmpfname);
@@ -355,8 +375,8 @@ function quoteup_download_url($url, $timeout = 300)
 /**
  * This function is used to get enquiry id from hash.
  *
- * @param [string] $quoteupHash [enquiry hash]
-*@return string enquiry hash value
+ * @param  [string] $quoteupHash [enquiry hash]
+ * @return string enquiry hash value
  */
 function getEnquiryIdFromHash($quoteupHash)
 {
@@ -469,7 +489,7 @@ function replaceText($translatedText, $text, $domain)
             case 'Create New Quote':
             case 'Alternate word for Enquiry.':
             case 'Alternate word for Quote and Quotation.':
-                return $translatedText;            
+                return $translatedText;
             default:
                 //Check if replace text for enquiry is set by the admin
                 if (isset($form_data['replace_enquiry']) && !empty($form_data['replace_enquiry'])) {
@@ -493,6 +513,7 @@ function replaceText($translatedText, $text, $domain)
 /**
  * This function is used to get settings.
  * WPML
+ *
  * @return array $settings settings of quoteup for current language
  */
 function quoteupSettings()
@@ -519,33 +540,36 @@ function quoteupSettings()
 }
 
 /**
-* Get the Admin Template
-* @param string $slug slug name for template.
-* @param string $name
-* @param array $args parameters to be passed if any.
-*/
+ * Get the Admin Template
+ *
+ * @param string $slug slug name for template.
+ * @param string $name
+ * @param array  $args parameters to be passed if any.
+ */
 function quoteupGetAdminTemplatePart($slug, $name = '', $args = array())
 {
     quoteupGetTemplatePart($args, $slug, $name, 'admin');
 }
 /**
-* Get the Public Template
-* @param string $slug slug name for template.
-* @param string $name
-* @param array $args parameters to be passed if any.
-*/
+ * Get the Public Template
+ *
+ * @param string $slug slug name for template.
+ * @param string $name
+ * @param array  $args parameters to be passed if any.
+ */
 function quoteupGetPublicTemplatePart($slug, $name = '', $args = array())
 {
     quoteupGetTemplatePart($args, $slug, $name, 'public');
 }
 
 /**
-* Get the  Template for the page
-* @param string $templateType admin or public
-* @param string $slug slug name for template.
-* @param string $name
-* @param array $args parameters to be passed if any.
-*/
+ * Get the  Template for the page
+ *
+ * @param string $templateType admin or public
+ * @param string $slug         slug name for template.
+ * @param string $name
+ * @param array  $args         parameters to be passed if any.
+ */
 function quoteupGetTemplatePart($args, $slug, $name = '', $templateType = 'public')
 {
     $template = '';
@@ -620,12 +644,13 @@ function getManageStockQuantity($_product, $product_id, $variation_id, $quantiti
 }
 
 /**
-* Sets Enough stock to false and returns the variation details in string format.
-* @param int $product_id Product Id
-* @param int $variation_id Variation Id if Variable Product
-* @param array $variationDetail Variation details
-* @return string Varaiation details in string format
-*/
+ * Sets Enough stock to false and returns the variation details in string format.
+ *
+ * @param  int   $product_id      Product Id
+ * @param  int   $variation_id    Variation Id if Variable Product
+ * @param  array $variationDetail Variation details
+ * @return string Varaiation details in string format
+ */
 function setEnoughStockFalse($product_id, $variation_id, $variationDetail)
 {
     global $quoteup_enough_stock, $quoteup_enough_stock_product_id;
@@ -639,7 +664,7 @@ function setEnoughStockFalse($product_id, $variation_id, $variationDetail)
 /**
  * Returns the Product Details of Enquiry.
  *
- * @param  [int]    Enquiry Id
+ * @param [int]    Enquiry Id
  *
  * @return [mix] Returns the array of Product details if found. Else returns Null
  */
@@ -657,7 +682,7 @@ function getProductDetailsOfEnquiry($enquiryId)
 /**
  * Returns list of all Product ids in the Quote. For variable products, it returns variation ids.
  *
- * @param  [int]    Enquiry Id
+ * @param [int]    Enquiry Id
  *
  * @return [mix] Returns array of product ids in the Quote if found. Else returns null.
  */
@@ -670,7 +695,7 @@ function getProductIdsInQuote($enquiryId)
 /**
  * THis function is used to get variation string for error in quote.
  *
- * @param [type] $variationDetails [description]
+ * @param  [type] $variationDetails [description]
  * @return string variation string with variation data appended
  */
 function getQuoteVariationString($variationDetails)
@@ -698,10 +723,11 @@ function getQuoteVariationString($variationDetails)
 }
 
  /**
- * THis function is used to get variation string for error in quote
- * @param  [array] $variationDetails [Variation details if Variable Product]
- * @return [string] $variationString Variation details appended as string
- */
+  * THis function is used to get variation string for error in quote
+  *
+  * @param  [array] $variationDetails [Variation details if Variable Product]
+  * @return [string] $variationString Variation details appended as string
+  */
 function getCartVariationString($variationDetail)
 {
     if ($variationDetail != '') {
@@ -737,7 +763,8 @@ function quoteupWpmlRemoveAdminBarMenu()
 
 /**
  * Returns true if WPML is active. Else returns false.
- * @return bool 
+ *
+ * @return bool
  */
 function quoteupIsWpmlActive()
 {
@@ -778,10 +805,11 @@ function quoteupAddShortcodeOnPage($pageId, $shortcode)
 }
 
 /**
-* Gets the related pages to the selected page corresponding to translations.
-* @param object $selectedPage Page selected
-* @return array $pages related pages
-*/
+ * Gets the related pages to the selected page corresponding to translations.
+ *
+ * @param  object $selectedPage Page selected
+ * @return array $pages related pages
+ */
 function getRelatedPages($selectedPage)
 {
     $pages = array($selectedPage);
@@ -830,24 +858,24 @@ function quoteupRemoveShortcodeFromPage($pageId, $shortcode)
 
 /**
  * Returns Attribute Name for variations which are not Taxonomies.
- * @param string $variableProduct Variable PRoduct 
- * @param string $variationAttribute Variation attribute
- * @param array $allAttributes ALL variation attributes
+ *
+ * @param  string $variableProduct    Variable Product
+ * @param  string $variationAttribute Variation attribute
+ * @param  array  $allAttributes      ALL variation attributes
  * @return string $label label for variation
  */
-function quoteupVariationAttributeLabel($variableProduct, $variationAttribute, $allAttributes){
+function quoteupVariationAttributeLabel($variableProduct, $variationAttribute, $allAttributes)
+{
 
-        if (version_compare(WC_VERSION, '3.0.0', '<')) {
-
-            if(isset($allAttributes[ str_replace('attribute_', '', $variationAttribute) ])) {
-                $label = wc_attribute_label($allAttributes[ str_replace('attribute_', '', $variationAttribute) ]['name']);
-            } else {
-                $label = $variationAttribute;
-            }
-            
+    if (version_compare(WC_VERSION, '3.0.0', '<')) {
+        if (isset($allAttributes[ str_replace('attribute_', '', $variationAttribute) ])) {
+            $label = wc_attribute_label($allAttributes[ str_replace('attribute_', '', $variationAttribute) ]['name']);
         } else {
-            $label = wc_attribute_label(str_replace('attribute_', '', $variationAttribute), $variableProduct);
+            $label = $variationAttribute;
         }
+    } else {
+        $label = wc_attribute_label(str_replace('attribute_', '', $variationAttribute), $variableProduct);
+    }
         return $label;
 }
 
@@ -977,9 +1005,10 @@ function quoteupRemoveClassAction($tag, $class_name = '', $method_name = '', $pr
 }
 
 /**
-* Prints the functions hooked by the specific hook name.
-* @param string $hookName Hook name
-*/
+ * Prints the functions hooked by the specific hook name.
+ *
+ * @param string $hookName Hook name
+ */
 function quoteupLogHookedFunctions($hookName)
 {
     global $wp_filter;
@@ -1034,7 +1063,8 @@ function printVariations($product)
  *
  * WordPress stores the locale information in an array with a alphanumeric index, and
  * the datepicker wants a numerical index. This function replaces the index with a number
-  * @param array $ArrayToStrip array of date field 
+ *
+ * @param  array $ArrayToStrip array of date field
  * @return array $NewArray stripped array
  */
 function stripArrayIndices($ArrayToStrip)
@@ -1068,10 +1098,11 @@ function dateFormatTojQueryUIDatePickerFormat($dateFormat)
 }
 
 /**
-* Checks whether the scripts is already enqueued.
-* @param string $handle script handle
-* @return bool true if not enqueued
-*/
+ * Checks whether the scripts is already enqueued.
+ *
+ * @param  string $handle script handle
+ * @return bool true if not enqueued
+ */
 function shouldScriptBeEnqueued($handle)
 {
     if (wp_script_is($handle, 'enqueued') || wp_script_is($handle, 'done')) {
@@ -1082,10 +1113,11 @@ function shouldScriptBeEnqueued($handle)
 }
 
 /**
-* Checks whether the styles is already enqueued.
-* @param string $handle style handle
-* @return bool true if not enqueued
-*/
+ * Checks whether the styles is already enqueued.
+ *
+ * @param  string $handle style handle
+ * @return bool true if not enqueued
+ */
 function shouldStyleBeEnqueued($handle)
 {
     if (wp_style_is($handle, 'enqueued') || wp_style_is($handle, 'done')) {
@@ -1096,23 +1128,27 @@ function shouldStyleBeEnqueued($handle)
 }
 
 /**
-* Prints the error Log in debug log file.
-* @param string $prefixText Prefix titles.
-* @param array $data Error data.
-*/
-function quoteupDebugDataLog($prefixText, $data){
+ * Prints the error Log in debug log file.
+ *
+ * @param string $prefixText Prefix titles.
+ * @param array  $data       Error data.
+ */
+function quoteupDebugDataLog($prefixText, $data)
+{
     error_log(strtoupper($prefixText) . ': ' . print_r($data, true));
 }
 
 /**
-* Gets the debug bulk data and specific the prefixes to the keys.
-* @param array $data Error data.
-*/
-function quoteupDebugBulkData($data){
-    if(is_array($data)){
-        foreach($data as $key => $value){
+ * Gets the debug bulk data and specific the prefixes to the keys.
+ *
+ * @param array $data Error data.
+ */
+function quoteupDebugBulkData($data)
+{
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
             $prefixText = $key;
-            if(is_numeric($key)){
+            if (is_numeric($key)) {
                 $prefixText = 'DATA ' . $key;
             }
             quoteupDebugDataLog($prefixText, $value);
@@ -1121,10 +1157,10 @@ function quoteupDebugBulkData($data){
 }
 
 /**
-* Gets the products selection template.
-* @param array $excludedProducts Products already included 
-*
-*/
+ * Gets the products selection template.
+ *
+ * @param array $excludedProducts Products already included
+ */
 function getProductsSelection($excludedProducts = "")
 {
     ?>
@@ -1149,14 +1185,15 @@ function getProductsSelection($excludedProducts = "")
 }
 
 /**
-* This function is used to get the Variation Dropdown,
-* @param int $count count of Products.
-* @param int $variationID Variation Id
-* @param string $productImage Product image url
-* @param int $id Product Id.
-* @param array $product Product Details.
-* @param array $variationData Variation data of Product.
-*/
+ * This function is used to get the Variation Dropdown,
+ *
+ * @param int    $count         count of Products.
+ * @param int    $variationID   Variation Id
+ * @param string $productImage  Product image url
+ * @param int    $id            Product Id.
+ * @param array  $product       Product Details.
+ * @param array  $variationData Variation data of Product.
+ */
 
 function quoteupVariationDropdown($count, $variationID, $productImage, $id, $product, $variationData)
 {
@@ -1183,10 +1220,11 @@ function quoteupVariationDropdown($count, $variationID, $productImage, $id, $pro
 }
 
 /**
-* Gets the attributes of the Product
-* @param object $product Product details
-* @return array atrributes of product.
-*/
+ * Gets the attributes of the Product
+ *
+ * @param  object $product Product details
+ * @return array atrributes of product.
+ */
 function getAttributes($product)
 {
     $attributes = array_filter((array) maybe_unserialize($product->product_attributes()));
@@ -1203,9 +1241,10 @@ function getAttributes($product)
 }
 
 /**
-* Gets the current site locale.
-* @return string $currentLocale
-*/
+ * Gets the current site locale.
+ *
+ * @return string $currentLocale
+ */
 function getCurrentLocale()
 {
     $currentLocale = get_locale();
@@ -1219,23 +1258,33 @@ function getCurrentLocale()
 }
 
 /**
-* Gets the Product price to be displayed
-* @param array $product product detials
-* @return int price of product
-*/
-function quoteupGetPriceToDisplay($product)
+ * Gets the Product price to be displayed.
+ *
+ * @param Object $product    Product object.
+ * @param int    $quantity   Product quantity.
+ * @param float  $price      Product price.
+ * @param string $user_email User email.
+ *
+ * @return float  Price (CSP price if CSP plugin is active) of the product.
+ */
+function quoteupGetPriceToDisplay($product, $quantity, $price = 0.0, $user_email = '')
 {
-    if (version_compare(WC_VERSION, '3.0.0', '<')) {
-        return $product->get_display_price();
-    } else {
-        return wc_get_price_to_display($product);
+    if (empty($price)) {
+        if (version_compare(WC_VERSION, '3.0.0', '<')) {
+            $price = $product->get_display_price();
+        } else {
+            $price = wc_get_price_to_display($product);
+        }
     }
+
+    return apply_filters('quoteup_alter_product_price', $price, $product->get_id(), $quantity, $user_email);
 }
 
 /**
-* This function gets the array of date localization data for datepicker js.
-* @return array localization data
-*/
+ * This function gets the array of date localization data for datepicker js.
+ *
+ * @return array localization data
+ */
 function getDateLocalizationArray()
 {
     global $wp_locale;
@@ -1259,12 +1308,13 @@ function getDateLocalizationArray()
 }
 
 /**
-* This function return the variation details appended in a string format.
-* @param array $variation_data Variation details
-* @param array $variableProduct Variable product details
-* @param array $product_attributes Product variation attributes
-* @return string $variationToBeSent Variation to be sent.
-*/
+ * This function return the variation details appended in a string format.
+ *
+ * @param  array $variation_data     Variation details
+ * @param  array $variableProduct    Variable product details
+ * @param  array $product_attributes Product variation attributes
+ * @return string $variationToBeSent Variation to be sent.
+ */
 function getVariationString($variation_data, $variableProduct, $product_attributes)
 {
     $variationToBeSent = '';
@@ -1294,9 +1344,9 @@ function getVariationString($variation_data, $variableProduct, $product_attribut
 }
 
 /**
-* This function enqueue the datepicker files for QuoteUp
-* Specifies the localization data for date.
-*/
+ * This function enqueue the datepicker files for QuoteUp
+ * Specifies the localization data for date.
+ */
 function enqueueDatePickerFiles()
 {
     // Datepicker files
@@ -1319,10 +1369,11 @@ function enqueueDatePickerFiles()
 }
 
 /**
-* Return the variation details in specific array format.
-* @param array $variationDetails Variation details array
-* @return array $variationDetailsForArray variation details 
-*/
+ * Return the variation details in specific array format.
+ *
+ * @param  array $variationDetails Variation details array
+ * @return array $variationDetailsForArray variation details
+ */
 function getVariationDetailsForArray($variationDetails)
 {
     $variationDetailsForArray = array();
@@ -1344,10 +1395,10 @@ function getUserDataByEmail($email)
 
 /**
  * This function returns the user ID for the given email ID.
- * 
- * @param   string  $email  User email Id.
- * 
- * @return  int     Returns the user Id if user exists with the given email Id.
+ *
+ * @param string $email User email Id.
+ *
+ * @return int     Returns the user Id if user exists with the given email Id.
  *                  Otherwise, returns 0.
  */
 function quoteupGetUserIdByEmail($email)
@@ -1363,9 +1414,9 @@ function quoteupGetUserIdByEmail($email)
 /**
  * Return the mail data required when sending a quote to the customer.
  *
- * @param   int     $enquiryId  Enquiry Id.
+ * @param int $enquiryId Enquiry Id.
  *
- * @return  array   Return an array containing the mail data required when
+ * @return array   Return an array containing the mail data required when
  *                  sending a quote to the customer.
  */
 function quoteupReturnQuoteSendingMailData($enquiryId)
@@ -1391,11 +1442,29 @@ function quoteupReturnQuoteSendingMailData($enquiryId)
 }
 
 /**
+ * Check whether CSP plugin is active and its version is >= 4.5.0.
+ *
+ * @since 6.4.1
+ *
+ * @return bool    Return true if CSP plugin is active and its vesion
+ *                 is >= 4.5.0, false otherwise.
+ */
+function quoteupIsCSPActive()
+{
+    $isCSPActive = false;
+    if (defined('CSP_VERSION') && version_compare(CSP_VERSION, '4.5.0', '>=')) {
+        $isCSPActive = true;
+    }
+
+    return $isCSPActive;
+}
+
+/**
  * Check whether the captcha version 3 is valid or not.
- * 
- * @param   object   $response   Site verify response to verify the token.
- * 
- * return   bool    True if the captcha v3 is valid, false otherwise. 
+ *
+ * @param object $response Site verify response to verify the token.
+ *                         return   bool    True if the captcha v3
+ *                         is valid, false otherwise.
  */
 function quoteupVerifyCaptchaV3($response)
 {
@@ -1410,7 +1479,7 @@ function quoteupVerifyCaptchaV3($response)
 /**
  * Returns true if current logged in user has 'manage_options' capability.
  *
- * @return  bool    Return true if user is having 'manage_options' capability,
+ * @return bool    Return true if user is having 'manage_options' capability,
  *                  false otheriwse.
  */
 function quoteupIsCurrentUserHavingManageOptionsCap()
@@ -1427,8 +1496,8 @@ function quoteupIsCurrentUserHavingManageOptionsCap()
 /**
  * Returns all product Ids of an author
  *
- * @param   int     $authorId   author id
- * @return  array               Product Ids belonging to an author or empty 
+ * @param  int $authorId author id
+ * @return array               Product Ids belonging to an author or empty
  *                              array if $authorId parameter is not passed and
  *                              user is not logged in.
  */
@@ -1452,10 +1521,10 @@ function getProductIdsByAuthor($authorId = 0)
 
 /**
  * Check whether author emails are same.
- * 
- * @param   array   $authorEmails   Array containing author emails.
- * 
- * @return  bool    Returns true if author emails are same, false otherwise.
+ *
+ * @param array $authorEmails Array containing author emails.
+ *
+ * @return bool    Returns true if author emails are same, false otherwise.
  */
 function quoteupAreAuthorEmailsSame($authorEmails)
 {
@@ -1514,9 +1583,9 @@ function quoteupIsEnquiryCartPage($quoteupSettings = array())
  * be entered in the WPML String Translation.
  *
  * @since 6.3.4
- * @param   string  $translationString  String to be translated.
+ * @param string $translationString String to be translated.
  *
- * @return  string  Translated string.
+ * @return string  Translated string.
  */
 function quoteupReturnWPMLVariableStrTranslation($translationString)
 {
@@ -1525,16 +1594,16 @@ function quoteupReturnWPMLVariableStrTranslation($translationString)
 }
 
 /**
- ******************************************************************************
+ * *****************************************************************************
  * Quoteup settings functions.
- ******************************************************************************
+ * *****************************************************************************
  */
 
 /**
  * Check whether the multi product enquiry is enabled.
  *
  * @param array $quoteupSettings Quoteup setting.
- * 
+ *
  * @return bool Returns true if multi-product enquiry is enabled.
  */
 function quoteupIsMPEEnabled($quoteupSettings)
@@ -1546,7 +1615,7 @@ function quoteupIsMPEEnabled($quoteupSettings)
  * Return the Enquiry Cart Icon position.
  *
  * @param array $quoteupSettings Quoteup settings.
- * 
+ *
  * @return string Returns the string containing the value for Enquiry Cart Icon
  *                Position. Default: 'icon_top_right'.
  */
@@ -1603,9 +1672,9 @@ function quoteupGetEcIconColors($quoteupSettings)
 
 /**
  * Check whether the captcha version is 3 or 2.
- * 
+ *
  * @param array $quoteupSettings Quoteup setting.
- * 
+ *
  * @return bool Returns true if captcha version 3 is selected, false otherwise.
  */
 function quoteupIsCaptchaVersion3($quoteupSettings)
@@ -1615,22 +1684,26 @@ function quoteupIsCaptchaVersion3($quoteupSettings)
 
 /**
  * Check if the 'custom form' is enalbed for an enquiry.
- * 
- * @param   array   $quoteupSettings Quoteup setting.
- * 
- * @return  bool    True if 'custom form' is enabled, false otherwise.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if 'custom form' is enabled, false otherwise.
  */
-function quoteupIsCustomFormEnabled($quoteupSettings)
+function quoteupIsCustomFormEnabled($quoteupSettings = array())
 {
+    if (empty($quoteupSettings)) {
+        $quoteupSettings = quoteupSettings();
+    }
+
     return isset($quoteupSettings['enquiry_form']) && 'custom' == $quoteupSettings['enquiry_form'] ? true : false;
 }
 
 /**
  * Check if 'Disable Price column' setting is enabled.
- * 
- * @param   array   $quoteupSettings Quoteup setting.
- * 
- * @return  bool    True if price column is disabled, false otherwise.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if price column is disabled, false otherwise.
  */
 function quoteupIsPriceColumnDisabled($quoteupSettings)
 {
@@ -1639,10 +1712,10 @@ function quoteupIsPriceColumnDisabled($quoteupSettings)
 
 /**
  * Checks if 'Disable Expected Price or Remarks column' setting is enalbed.
- * 
- * @param   array   $quoteupSettings Quoteup setting.
- * 
- * @return  bool    True if expected price or remarks is disabled, false otherwise.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if expected price or remarks is disabled, false otherwise.
  */
 function quoteupIsRemarksColumnDisabled($quoteupSettings)
 {
@@ -1651,10 +1724,10 @@ function quoteupIsRemarksColumnDisabled($quoteupSettings)
 
 /**
  * Checks if 'Disable Bootstrap' setting is enalbed.
- * 
- * @param   array   $quoteupSettings Quoteup setting.
- * 
- * @return  bool    True if bootstrap is disabled, false otherwise.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if bootstrap is disabled, false otherwise.
  */
 function quoteupIsBootstrapDisabled($quoteupSettings)
 {
@@ -1663,11 +1736,11 @@ function quoteupIsBootstrapDisabled($quoteupSettings)
 
 /**
  * Returns selector for Variation Id based on the setting value.
- * 
- * @since 6.3.4
- * @param   array   $quoteupSettings Quoteup setting.
  *
- * @return  string  Variation Id selector. 
+ * @since 6.3.4
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return string  Variation Id selector.
  */
 function quoteupGetVariationIdSelector($quoteupSettings)
 {
@@ -1689,7 +1762,7 @@ function quoteupGetRemarksThNameEnqCart($quoteupSettings)
 
     if (isset($quoteupSettings['expected_price_remarks_label']) && ! empty($quoteupSettings['expected_price_remarks_label'])) {
         $tableHeadName = $quoteupSettings['expected_price_remarks_label'];
-    } else if (isset($quoteupSettings['enable_disable_quote']) && $quoteupSettings[ 'enable_disable_quote' ] == 0) {
+    } elseif (isset($quoteupSettings['enable_disable_quote']) && $quoteupSettings[ 'enable_disable_quote' ] == 0) {
         $tableHeadName = __('Expected Price', QUOTEUP_TEXT_DOMAIN);
     } else {
         $tableHeadName = __('Remarks', QUOTEUP_TEXT_DOMAIN);
@@ -1714,7 +1787,7 @@ function quoteupGetRemarksFieldPlaceholderEnqCart($quoteupSettings)
 
     if (isset($quoteupSettings['expected_price_remarks_col_phdr']) && ! empty($quoteupSettings['expected_price_remarks_col_phdr'])) {
         $placeholderString = $quoteupSettings['expected_price_remarks_col_phdr'];
-    } else if (isset($quoteupSettings['enable_disable_quote']) && $quoteupSettings['enable_disable_quote'] == 0) {
+    } elseif (isset($quoteupSettings['enable_disable_quote']) && $quoteupSettings['enable_disable_quote'] == 0) {
         $placeholderString = __('Expected price and remarks', QUOTEUP_TEXT_DOMAIN);
     } else {
         $placeholderString = __('Remarks', QUOTEUP_TEXT_DOMAIN);
@@ -1725,10 +1798,10 @@ function quoteupGetRemarksFieldPlaceholderEnqCart($quoteupSettings)
 
 /**
  * Check if quotation module is enabled.
- * 
- * @param   array   $quoteupSettings Quoteup setting.
- * 
- * @return  bool    True if quotation module is enabled, false otherwise.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if quotation module is enabled, false otherwise.
  */
 function isQuotationModuleEnabled($quoteupSettings = array())
 {
@@ -1740,11 +1813,29 @@ function isQuotationModuleEnabled($quoteupSettings = array())
 }
 
 /**
+ * Check if Out of Stock setting is enabled.
+ * If the setting is enabled, then Enquiry button is shown only if product is
+ * out of stock.
+ *
+ * @param array $quoteupSettings Quoteup setting.
+ *
+ * @return bool    True if quotation module is enabled, false otherwise.
+ */
+function quoteupIsOutOfStockSettingEnabled($quoteupSettings = array())
+{
+    if (empty($quoteupSettings)) {
+        $quoteupSettings = quoteupSettings();
+    }
+
+    return isset($quoteupSettings['only_if_out_of_stock']) && 1 == $quoteupSettings['only_if_out_of_stock'] ? true : false;
+}
+
+/**
  * Returns true if vendor compatibility setting is enabled, false otherwise.
  *
- * @param   bool    Check if addon plugin/ addon instance is avaiable.
+ * @param  bool    Check if addon plugin/ addon instance is avaiable.
  *                  Default true.
- * @return  bool    True if vendor compatibility setting is enabled, false
+ * @return bool    True if vendor compatibility setting is enabled, false
  *                  otherwise.
  */
 function quoteupIsVendorCompEnabled($checkAddOnInstance = true)
@@ -1768,7 +1859,7 @@ function quoteupIsVendorCompEnabled($checkAddOnInstance = true)
 /**
  * Check whether 'Enable Export Capability' setting is enabled.
  *
- * @return  bool    Return true if vendor has capablity to export enquiries,
+ * @return bool    Return true if vendor has capablity to export enquiries,
  *                  false otherwise.
  */
 function quoteupVendorHasExportCapability()
@@ -1784,9 +1875,45 @@ function quoteupVendorHasExportCapability()
 }
 
 /**
+ * Check whether 'Enable Vendor Reminder Email' setting is enabled.
+ *
+ * @return bool    Return true if vendor reminder email setting is enabled,
+ *                  false otherwise.
+ */
+function quoteupIsVendorReminderEnabled()
+{
+    $quoteupSettings = quoteupSettings();
+    $isEnabled       = true;
+
+    if (isset($quoteupSettings['enable_vendor_reminder_email']) && 0 == $quoteupSettings['enable_vendor_reminder_email']) {
+        $isEnabled = false;
+    }
+
+    return $isEnabled;
+}
+
+/**
+ * Check whether 'Enable Admin Reminder Email' setting is enabled.
+ *
+ * @return bool    Return true if admin reminder email setting is enabled,
+ *                  false otherwise.
+ */
+function quoteupIsAdminReminderEnabled()
+{
+    $quoteupSettings = quoteupSettings();
+    $isEnabled       = true;
+
+    if (isset($quoteupSettings['enable_admin_reminder_email']) && 0 == $quoteupSettings['enable_admin_reminder_email']) {
+        $isEnabled = false;
+    }
+
+    return $isEnabled;
+}
+
+/**
  * Check whether 'Auto Set Deadline' setting is enabled.
  *
- * @return  bool    Return true if Auto Set Deadline setting is enabled,
+ * @return bool    Return true if Auto Set Deadline setting is enabled,
  *                  false otherwise.
  */
 function quoteupIsAutoSetDeadlineEnabled()
@@ -1804,29 +1931,29 @@ function quoteupIsAutoSetDeadlineEnabled()
 /**
  * Return auto set deadline after hours.
  *
- * @return  string    Return 'auto set deadline after hours'. Return -1 if 'Auto
+ * @return string    Return 'auto set deadline after hours'. Return -1 if 'Auto
  *                    Set Deadline' setting is disabled.
  */
-function quoteupGetAutoSetDlAfterHours()
+function quoteupGetAutoSetDlAfterDays()
 {
     if (!quoteupIsAutoSetDeadlineEnabled()) {
         return -1;
     }
 
     $quoteupSettings = quoteupSettings();
-    $hours           = '96';
+    $days            = '4';
 
-    if (isset($quoteupSettings['set_deadline_after_hours']) && !empty($quoteupSettings['set_deadline_after_hours'])) {
-        $hours = $quoteupSettings['set_deadline_after_hours'];
+    if (isset($quoteupSettings['set_deadline_after_days']) && !empty($quoteupSettings['set_deadline_after_days'])) {
+        $days = $quoteupSettings['set_deadline_after_days'];
     }
 
-    return $hours;
+    return $days;
 }
 
 /**
  * Check whether 'Auto Send Quotation' setting is enabled.
  *
- * @return  bool    Return true if Auto Send Quotation setting is enabled,
+ * @return bool    Return true if Auto Send Quotation setting is enabled,
  *                  false otherwise.
  */
 function quoteupIsAutoSendQuoteEnabled()
@@ -1835,6 +1962,26 @@ function quoteupIsAutoSendQuoteEnabled()
     $quoteupSettings = quoteupSettings();
 
     if (isset($quoteupSettings['enable_auto_send_quotation_vendor']) && 1 == $quoteupSettings['enable_auto_send_quotation_vendor']) {
+        $enabled = true;
+    }
+
+    return $enabled;
+}
+
+/**
+ * Check whether 'Enable Quantity Field' setting is enabled. If this setting is
+ * enabled, the quantity field will be added by PEP plugin on the single
+ * product page even when 'Add to Cart' button is disabled.
+ *
+ * @since  6.4.0
+ * @return bool    Return true if quantity field is enabled, false otherwise.
+ */
+function quoteupIsQuantityFieldEnabled()
+{
+    $enabled         = false;
+    $quoteupSettings = quoteupSettings();
+
+    if (isset($quoteupSettings['enable_qty_field']) && 1 == $quoteupSettings['enable_qty_field']) {
         $enabled = true;
     }
 

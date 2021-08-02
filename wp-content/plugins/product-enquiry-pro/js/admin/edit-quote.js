@@ -107,9 +107,9 @@ jQuery('.button-rply-user').click(function (e) {
     jQuery('.reply-div').attr('data-thred-id',response);
     jQuery('.parent-id').val(response);
     elem.attr('data_thread_id',response);
-    jQuery('.wdm_reply_subject_'+thread_id).addClass('wdm_reply_subject_'+response).removeClass('wdm_reply_subject_'+thread_id);
+    jQuery('.wdm_reply_subject_'+thread_id).removeClass('wdm_reply_subject_'+thread_id).addClass('wdm_reply_subject_'+response);
     jQuery('.wdm_reply_subject_'+response).val(subject);
-    jQuery('.wdm_reply_msg_'+thread_id).addClass('wdm_reply_msg_'+response).removeClass('wdm_reply_msg_'+thread_id);
+    jQuery('.wdm_reply_msg_'+thread_id).removeClass('wdm_reply_msg_'+thread_id).addClass('wdm_reply_msg_'+response);
     division.fadeIn(500);
                           // location.reload();
                         },

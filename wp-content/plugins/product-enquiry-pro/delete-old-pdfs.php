@@ -32,7 +32,7 @@ function quoteupDeletePdfsCallback()
         /* * * cycle through all files in the directory * * */
         foreach ($all_files as $file) {
             /* * * if file is older than an hour, delete it * * */
-            if (filemtime($file) < time() - 3600) {
+            if (filemtime($file) < time() - 3600 && 'mpdf' != basename($file)) {
                 //Update Enquiry table for deleted file enquiry ID
                 $enquiry_id = basename($file, '.pdf');
                 $table_name = getEnquiryDetailsTable();

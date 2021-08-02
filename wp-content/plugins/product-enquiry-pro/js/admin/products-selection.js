@@ -39,13 +39,15 @@ jQuery(document).ready(function ( $ ) {
         var count = 0;
         var totalRows = 0;
         if(typeof globalTaskComplete != 'undefined'){
-          jQuery('.quotetbl-content-row').each(function(){
-            totalRows = parseInt(totalRows)+1;
-          });
+          totalRows = jQuery('.quotetbl-content-row:last input.wdm-prod-price.input-text').data('row-num');
+          if ("undefined" == typeof totalRows) {
+            totalRows = 0;
+          }
         } else {
-          jQuery('.wdmpe-quotation-table .wdmpe-detailtbl-content-row').each(function(){
-            totalRows = parseInt(totalRows)+1;
-          });
+          totalRows = jQuery('.wdmpe-quotation-table .wdmpe-detailtbl-content-row:last').data('row-num');
+          if ("undefined" == typeof totalRows) {
+            totalRows = 0;
+          }
         }
     //Sends the selected products data through ajax
     jQuery.each(selectedProducts, function(key, value){
@@ -53,6 +55,7 @@ jQuery(document).ready(function ( $ ) {
       var variationAttributes = [];
       var rawVariationAttributes = [];
       count = parseInt(count)+1;
+
       $.each(value, function(key, value){
         switch (key) { 
           case 'id':
@@ -67,9 +70,15 @@ jQuery(document).ready(function ( $ ) {
           case 'title': 
           productTitle = value;
           break;      
-          case 'price': 
-          productPrice = value;
-          if(productPrice==''){
+          case 'price':
+          if ('function' === typeof quoteupFetchCSPPrice) {
+            // Fetch CSP price for single quantity.
+            quoteupFetchCSPPrice(productID, false);
+            productPrice = quoteupCSPgetPriceFor(1, csp_prices[productID]['prices']);
+          } else {
+            productPrice = value;
+          }
+          if(productPrice == ''){
             productPrice = 0;                        
           }
           newTotalPrice = parseFloat(value);
@@ -281,20 +290,27 @@ jQuery('#Quotation').delegate('.product', 'change', function(){
      * Check if selected variation was already present in the enquiry and if present, set old price
      * as price available during enquiry
      */
-     var $shouldOriginalPriceBeRetrieved = true;
-     var $rowOfCurrentVariation = jQuery(this).closest('.wdmpe-detailtbl-content-row');
-     var $oldPriceCell = $rowOfCurrentVariation.find('.item-content-old-cost');
-     var $oldPriceData = $oldPriceCell.data('old_price');
+    var $shouldOriginalPriceBeRetrieved = true;
+    var $rowOfCurrentVariation = jQuery(this).closest('.wdmpe-detailtbl-content-row');
+    var $oldPriceCell = $rowOfCurrentVariation.find('.item-content-old-cost');
+    var $oldPriceData = $oldPriceCell.data('old_price');
 
     /**
-     * If value of all variation attributes match with the ones selected during enquiry, then
-     * show old price
+     * If variation is empty, retrieve the new price.
      */
-     for (var variation_attribute in $oldPriceData.variation) {
-      if ( $oldPriceData.variation.hasOwnProperty(variation_attribute) ) {
-        if ( $rowOfCurrentVariation.find(".variations select[name='attribute_" + variation_attribute + "']").val() != $oldPriceData.variation[variation_attribute] ) {
-          $shouldOriginalPriceBeRetrieved = false;
-          break;
+    if (0 == $oldPriceData.variation.length) {
+      $shouldOriginalPriceBeRetrieved = false;
+    } else {
+      /**
+       * If value of all variation attributes match with the ones selected during enquiry, 
+       * then show old price.
+       */
+      for (var variation_attribute in $oldPriceData.variation) {
+        if ( $oldPriceData.variation.hasOwnProperty(variation_attribute) ) {
+          if ( $rowOfCurrentVariation.find(".variations select[name='attribute_" + variation_attribute + "']").val() != $oldPriceData.variation[variation_attribute] ) {
+            $shouldOriginalPriceBeRetrieved = false;
+            break;
+          }
         }
       }
     }

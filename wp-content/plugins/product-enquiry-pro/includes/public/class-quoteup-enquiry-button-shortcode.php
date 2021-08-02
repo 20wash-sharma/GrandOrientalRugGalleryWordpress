@@ -7,30 +7,11 @@ if (!defined('ABSPATH')) {
 }
 
 /**
-* Add the quoteup enquiry button shortcode.
-* Checks if quote button should be dislayed or not.
-*/
+ * Add the quoteup enquiry button shortcode.
+ * Checks if quote button should be dislayed or not.
+ */
 class QuoteupEnquiryButtonShortcode
 {
-    /**
-     * @var Singleton The reference to *Singleton* instance of this class
-     */
-    private static $instance;
-
-    /**
-     * Returns the *Singleton* instance of this class.
-     *
-     * @return Singleton The *Singleton* instance.
-     */
-    public static function getInstance()
-    {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
     protected function __construct()
     {
     }
@@ -39,7 +20,8 @@ class QuoteupEnquiryButtonShortcode
      * Callback for enquiry button shortcode
      * Decides whether Enquiry button added or not.
      * Adds the Enquiry buttons on basis of Enquiry type.
-     * @param array $atts product data
+     *
+     * @param  array $atts product data
      * @return HTML Quote Button
      */
     public static function quoteupEnquiryButtonShortcodeCallback($atts)
@@ -51,7 +33,7 @@ class QuoteupEnquiryButtonShortcode
         $btn_class = 'button wdm_enquiry';
         $pid = $atts['product_id'];
 
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array('after_add_cart' => 1,
             'button_CSS' => 0,
             'pos_radio' => 0,
             'show_powered_by_link' => 0,
@@ -134,6 +116,28 @@ class QuoteupEnquiryButtonShortcode
         
         return $displayButton;
     }
+
+    /**
+     * Callback for 'ENQUIRY_BUTTON_DYNAMIC' shortcode.
+     * Decides whether Enquiry button should be added or not.
+     * This method doesn't require the 'product_id' attribute.
+     * It uses the global $product variable to fetch the product data.
+     * Adds the Enquiry buttons on basis of Enquiry type.
+     *
+     * @return HTML Quote Button
+     */
+    public static function quoteupEnquiryButtonDynamicShortcodeCalback()
+    {
+        global $product;
+        if (!empty($product)) {
+            $productId = $product->get_id();
+            $atts = array(
+                'product_id' => $productId,
+            );
+
+            $data = QuoteupEnquiryButtonShortcode::quoteupEnquiryButtonShortcodeCallback($atts);
+            return $data;
+        }
+    }
 }
 
-QuoteupEnquiryButtonShortcode::getInstance();

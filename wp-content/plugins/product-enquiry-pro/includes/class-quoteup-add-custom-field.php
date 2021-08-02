@@ -5,13 +5,14 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 /**
-* This class is responsible for adding the fields selected by admin in settings on the quote form.
-* Gets the custom fields HTML .
-* $fields array custom fields on form.
-* $temp_fields array temporary field 
-* $meta_key string meta keys from meta table
+ * This class is responsible for adding the fields selected by admin in settings on the quote form.
+ * Gets the custom fields HTML .
+ * $fields array custom fields on form.
+ * $temp_fields array temporary field 
+ * $meta_key string meta keys from meta table
+ *
  * @static instance Object of class
-*/
+ */
 class QuoteUpAddCustomField
 {
     protected static $instance = null;
@@ -20,20 +21,20 @@ class QuoteUpAddCustomField
     public $meta_key;
 
     /**
-    * Action to enqueue scripts on admin and front-end for custom fields.
-    * Action to add custom fields in form
-    * Action to update meta table with keys of fields included.
-    * Action to create the custom fields.
-    * Action to add the fields recursively on form.
-    * Action to include the fields in admin and customer emails.
-    * Action to add fields in MPE form in front-end and dashboard.
-    */
+     * Action to enqueue scripts on admin and front-end for custom fields.
+     * Action to add custom fields in form
+     * Action to update meta table with keys of fields included.
+     * Action to create the custom fields.
+     * Action to add the fields recursively on form.
+     * Action to include the fields in admin and customer emails.
+     * Action to add fields in MPE form in front-end and dashboard.
+     */
     public function __construct()
     {
         add_action('wp_enqueue_scripts', array($this, 'addScripts'));
         add_action('admin_enqueue_scripts', array($this, 'addScripts'));
         add_action('quoteup_add_custom_field_in_form', array($this, 'addCustomFields'));
-        add_action('quoteup_add_custom_field_in_db', array($this, 'addCustomFieldsDb'),10, 2);
+        add_action('quoteup_add_custom_field_in_db', array($this, 'addCustomFieldsDb'), 10, 2);
         add_action('quoteup_add_dashboard_custom_field_in_db', array($this, 'addCustomFieldsDb'), 10, 2); // Used to add custom fields from dashboard in DB
         add_action('quoteup_create_custom_field', array($this, 'createCustomFields'));
         add_action('quoteup_create_dashboard_custom_field', array($this, 'createCustomFields'));
@@ -52,6 +53,7 @@ class QuoteUpAddCustomField
 
     /**
      * Function to create a singleton instance of class and return the same.
+     *
      * @return object -Object of the class
      */
     public static function getInstance()
@@ -63,10 +65,11 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * Add fields for admin email.
-    * @param string $email_content email content
-    * @param array $data Enquiry details
-    */
+     * Add fields for admin email.
+     *
+     * @param string $email_content email content
+     * @param array  $data          Enquiry details
+     */
     public function addCustomFormFieldsAdminEmail($data, $source)
     {
         $email = '';
@@ -74,52 +77,53 @@ class QuoteUpAddCustomField
 
         foreach ($data as $key => $value) {
             switch ($key) {
-                case 'wdmLocale' :
-                case 'product_quant' :
-                case 'submit_value' :
-                case 'product_name' :
-                case 'product_type' :
-                case 'variation' :
-                case 'product_id' :
-                case 'uemail' :
-                case 'product_img' :
-                case 'product_price' :
-                case 'product_url' :
-                case 'site_url' :
-                case 'variation_id' :
-                case 'variation_detail' :
-                case 'action' :
-                case 'quoteProductsData' :
-                case 'show-price' :
-                case 'security' :
-                case 'globalEnquiryID' :
-                case '__iswisdmform' :
-                case '_wp_http_referer' :
-                case 'form_id' :
-                case 'quote_ajax_nonce' :
-                case 'tried' :
-                case 'cc' :
-                    break;
-                case 'custname':
-                    $email .= "<tr>
+            case 'wdmLocale' :
+            case 'product_quant' :
+            case 'submit_value' :
+            case 'product_name' :
+            case 'product_type' :
+            case 'variation' :
+            case 'product_id' :
+            case 'uemail' :
+            case 'product_img' :
+            case 'product_price' :
+            case 'product_url' :
+            case 'site_url' :
+            case 'variation_id' :
+            case 'variation_detail' :
+            case 'action' :
+            case 'quoteProductsData' :
+            case 'show-price' :
+            case 'security' :
+            case 'globalEnquiryID' :
+            case '__iswisdmform' :
+            case '_wp_http_referer' :
+            case 'form_id' :
+            case 'quote_ajax_nonce' :
+            case 'tried' :
+            case 'cc' :
+                break;
+            case 'custname':
+                $email .= "<tr>
                         <th style='width:35%;text-align:left'>".__('Customer Name', QUOTEUP_TEXT_DOMAIN)." </th>
                         <td style='width:65%'>: ".stripslashes($value).'</td>
                         </tr>';
-                    break;
+                break;
 
-                case 'txtemail':
-                    $email .= "<tr>
+            case 'txtemail':
+                $email .= "<tr>
                         <th style='width:35%;text-align:left'>".__('Email', QUOTEUP_TEXT_DOMAIN)." </th>
                         <td style='width:65%'>: ".stripslashes($value).'</td>
                         </tr>';
-                    break;
+                break;
                 
-                default:
-                    $email .= "<tr>
-                        <th style='width:35%;text-align:left'>".$key." </th>
-                        <td style='width:65%'>: ".stripslashes($value).'</td>
+            default:
+                $value  = stripslashes($value);
+                $email .= "<tr>
+                        <th style='width:35%;text-align:left'>".quoteupReturnWPMLVariableStrTranslation($key)." </th>
+                        <td style='width:65%'>: ".quoteupReturnWPMLVariableStrTranslation($value).'</td>
                         </tr>';
-                    break;
+                break;
             }
         }
         echo $email;
@@ -131,8 +135,10 @@ class QuoteUpAddCustomField
     public function addScripts()
     {
         wp_enqueue_style('multipleSelectCss', QUOTEUP_PLUGIN_URL.'/css/public/multiple-select.css');
-        wp_enqueue_script('multipleSelectJs', QUOTEUP_PLUGIN_URL.'/js/public/multiple-select.js', array(
-            'jquery', ), '', true);
+        wp_enqueue_script(
+            'multipleSelectJs', QUOTEUP_PLUGIN_URL.'/js/public/multiple-select.js', array(
+            'jquery', ), '', true
+        );
     }
 
     /**
@@ -154,11 +160,12 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * Gets the template for custom field.
-    * @param string $type type of field
-     * @param array $val        Array to create field
+     * Gets the template for custom field.
+     *
+     * @param  string $type type of field
+     * @param  array  $val  Array to create field
      * @return string html $temp Template for custom field
-    */
+     */
     private function getCustomFieldWrapper($val, $type)
     {
         $temp = '<div class="form_input">';
@@ -249,7 +256,7 @@ class QuoteUpAddCustomField
 
         $temp .= '</textarea>';
         if (isset($val[ 'id' ]) && isset($val[ 'id' ]) == 'txtmsg') {
-            $temp .= "<label class='lbl-char' id='lbl-char'><span class='wdmRemainingCount'>500 </span> ". __('characters remaining',QUOTEUP_TEXT_DOMAIN) ."</label>";
+            $temp .= "<label class='lbl-char' id='lbl-char'><span class='wdmRemainingCount'>500 </span> ". __('characters remaining', QUOTEUP_TEXT_DOMAIN) ."</label>";
         }
 
         return $temp.'</div></div></div>';
@@ -279,12 +286,13 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * For each radio field set the name, value to the selected radio field.
-    * Also find if it is required field or not and add the same to html.
-    * @param array $val Array to create field
-    * @param string $temp HTML for radio
-    * @return string $temp HTML for radio
-    */
+     * For each radio field set the name, value to the selected radio field.
+     * Also find if it is required field or not and add the same to html.
+     *
+     * @param  array  $val  Array to create field
+     * @param  string $temp HTML for radio
+     * @return string $temp HTML for radio
+     */
     private function forEachRadioField($val, $temp)
     {
         foreach ($val[ 'options' ] as $key => $value) {
@@ -362,8 +370,9 @@ class QuoteUpAddCustomField
     /**
      * Add the wrapper field HTML Dom structure for Radio or checkbox field.
      * Adds the options available for radio or checkbox.
-     * @param array $val Array to create field
-     * @param string $type radio or checkbox
+     *
+     * @param  array  $val  Array to create field
+     * @param  string $type radio or checkbox
      * @return string html DOM structure for radio and checkbox
      */
     private function checkboxRadioFieldWrapper($val, $type)
@@ -403,8 +412,9 @@ class QuoteUpAddCustomField
     /**
      * Gets the template of checkbox for the options provided for enquiries.
      * Sets the value for checkbox.
-     * @param array $val options values
-     * @param string $value value for checkbox
+     *
+     * @param  array  $val   options values
+     * @param  string $value value for checkbox
      * @return string $temp template for checkbox
      */
     public function forEachOption($val, $value)
@@ -464,7 +474,8 @@ class QuoteUpAddCustomField
 
     /**
      * Gets the template for custom file upload field.
-     * @param array $val Array to create field
+     *
+     * @param  array $val Array to create field
      * @return string html for file upload field
      */
     public function customFileUploadField($val)
@@ -509,7 +520,8 @@ class QuoteUpAddCustomField
 
     /**
      * Adds custom fields selected in MPE form by admin include in front-end and dashboard.
-     * @param array $v fields selected to be included.
+     *
+     * @param  array $v fields selected to be included.
      * @return string html template of field.
      */
     public function addFieldsInMpeAndDashboard($v, $temp)
@@ -569,7 +581,8 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Text field on MPE form.
-          * @param array $val Array to create field
+     *
+     * @param array $val Array to create field
      */
     public function addTextField($val)
     {
@@ -599,6 +612,7 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Textarea field on MPE form.
+     *
      * @param array $val Array to create field
      */
     public function addTextareaField($val)
@@ -631,7 +645,7 @@ class QuoteUpAddCustomField
         }
         $temp .= '</textarea>';
         if (isset($val[ 'id' ]) && isset($val[ 'id' ]) == 'txtmsg') {
-            $temp .= "<label class='lbl-char' id='lbl-char'><span class='wdmRemainingCount'>500 </span> ".__('characters remaining',QUOTEUP_TEXT_DOMAIN) ."</label>";
+            $temp .= "<label class='lbl-char' id='lbl-char'><span class='wdmRemainingCount'>500 </span> ".__('characters remaining', QUOTEUP_TEXT_DOMAIN) ."</label>";
         }
 
         return $temp.'</div></div></div>';
@@ -639,7 +653,8 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Radio field on MPE form.
-          * @param array $val Array to create field
+     *
+     * @param array $val Array to create field
      */
     public function addRadioField($val)
     {
@@ -648,7 +663,8 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Select field on MPE form.
-          * @param array $val Array to create field
+     *
+     * @param array $val Array to create field
      */
     public function addSelectField($val)
     {
@@ -678,6 +694,7 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Multiple field on MPE form.
+     *
      * @param array $val Array to create field
      */
     public function addMultipleField($val)
@@ -712,6 +729,7 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to add Text field on MPE form.
+     *
      * @param array $val Array to create field
      */
     public function addFileField($val)
@@ -739,6 +757,7 @@ class QuoteUpAddCustomField
 
     /**
      * End of functions adding fields on MPE form
+     *
      * @param array $val Array to create field
      */
 
@@ -754,6 +773,7 @@ class QuoteUpAddCustomField
 
     /**
      * Adds value to custom field
+     *
      * @param array $val Array to create field
      */
     private function addValueToField($val)
@@ -768,6 +788,7 @@ class QuoteUpAddCustomField
 
     /**
      * This function is used to get options of select field in mpe form.
+     *
      * @param array $val Array to create field
      *
      * @return [string html] $temp template for options 
@@ -825,17 +846,17 @@ class QuoteUpAddCustomField
         if($settings['enquiry_form'] != 'custom') {
             foreach ($this->fields as $key => $v) {
                 switch ($v[ 'id' ]) {
-                    case 'custname':
-                    case 'txtemail':
-                    case 'txtphone':
-                    case 'txtsubject':
-                    case 'txtmsg':
-                    case 'txtdate':
-                    case 'wdmFileUpload':
-                        break;
+                case 'custname':
+                case 'txtemail':
+                case 'txtphone':
+                case 'txtsubject':
+                case 'txtmsg':
+                case 'txtdate':
+                case 'wdmFileUpload':
+                    break;
                     
-                    default:
-                        if (isset($_POST['globalEnquiryID']) && $_POST['globalEnquiryID'] != 0) {
+                default:
+                    if (isset($_POST['globalEnquiryID']) && $_POST['globalEnquiryID'] != 0) {
                         $wpdb->update(
                             $tbl,
                             array(
@@ -865,59 +886,59 @@ class QuoteUpAddCustomField
                             )
                         );
                     }
-                        break;
+                    break;
                 }
                 unset($key);
             }
         } else {
             foreach ($data as $key => $value) {
                 switch ($key) {
-                    case 'custname':
-                    case 'txtemail':
-                    case 'wdmLocale':
-                    case 'product_quant':
-                    case 'submit_value':
-                    case 'product_name':
-                    case 'product_type':
-                    case 'variation':
-                    case 'product_id':
-                    case 'uemail':
-                    case 'product_img':
-                    case 'product_price':
-                    case 'product_url':
-                    case 'site_url':
-                    case 'variation_id':
-                    case 'variation_detail':
-                    case 'action':
-                    case 'quoteProductsData':
-                    case 'show-price':
-                    case 'security':
-                    case 'globalEnquiryID':
-                    case '__iswisdmform':
-                    case '_wp_http_referer':
-                    case 'form_id':
-                    case 'quote_ajax_nonce':
-                    case 'tried':
-                    case 'expiration-date':
-                    case 'undefined':
-                    case 'language':  
-                    case 'cc':                    
-                        break;
+                case 'custname':
+                case 'txtemail':
+                case 'wdmLocale':
+                case 'product_quant':
+                case 'submit_value':
+                case 'product_name':
+                case 'product_type':
+                case 'variation':
+                case 'product_id':
+                case 'uemail':
+                case 'product_img':
+                case 'product_price':
+                case 'product_url':
+                case 'site_url':
+                case 'variation_id':
+                case 'variation_detail':
+                case 'action':
+                case 'quoteProductsData':
+                case 'show-price':
+                case 'security':
+                case 'globalEnquiryID':
+                case '__iswisdmform':
+                case '_wp_http_referer':
+                case 'form_id':
+                case 'quote_ajax_nonce':
+                case 'tried':
+                case 'expiration-date':
+                case 'undefined':
+                case 'language':  
+                case 'cc':                    
+                    break;
                     
-                    default:
-                        if (isset($_POST['globalEnquiryID']) && $_POST['globalEnquiryID'] != 0) {
-                            $key = str_replace("_", " ", $key);
-                            $wpdb->update(
-                                $tbl,
-                                array(
-                                'meta_value' => $this->getCustomFormMetaValue($value),
-                                ),
-                                array(
-                                'enquiry_id' => $_POST['globalEnquiryID'],
-                                'meta_key' => stripcslashes($key),
-                                ),
-                                array(
-                                '%s',
+                default:
+                    if (isset($_POST['globalEnquiryID']) && $_POST['globalEnquiryID'] != 0) {
+                        $key = str_replace("_", " ", $key);
+                        $wpdb->update(
+                            $tbl,
+                            array(
+                            'meta_value' => $this->getCustomFormMetaValue($value),
+                            ),
+                            array(
+                            'enquiry_id' => $_POST['globalEnquiryID'],
+                            'meta_key' => stripcslashes($key),
+                            ),
+                            array(
+                            '%s',
                             ),
                             array('%d', '%s')
                         );
@@ -937,7 +958,7 @@ class QuoteUpAddCustomField
                             )
                         );
                     }
-                        break;
+                    break;
                 }
             }
         }  
@@ -1052,7 +1073,7 @@ class QuoteUpAddCustomField
             $dt_req = 'no';
 
             $dt_req = $this->dateMandatory($dt_req, $form_data);
-            $label = isset($form_data[ 'date_field_label' ]) ? $form_data[ 'date_field_label' ] : __('Date', QUOTEUP_TEXT_DOMAIN);
+            $label = isset($form_data[ 'date_field_label' ]) ? quoteupReturnWPMLVariableStrTranslation($form_data[ 'date_field_label' ]) : __('Date', QUOTEUP_TEXT_DOMAIN);
 
             if ($label == "") {
                 $label = __('Date', QUOTEUP_TEXT_DOMAIN);
@@ -1126,11 +1147,12 @@ class QuoteUpAddCustomField
         $attachReq = 'no';
 
         $attachReq = $this->attachMandatory($attachReq, $form_data);
-        $label = isset($form_data[ 'attach_field_label' ]) ? $form_data[ 'attach_field_label' ] : __('Attach File', QUOTEUP_TEXT_DOMAIN);
-        if($label == "")
-        {
+        $label = isset($form_data[ 'attach_field_label' ]) ? quoteupReturnWPMLVariableStrTranslation($form_data['attach_field_label']) : __('Attach File', QUOTEUP_TEXT_DOMAIN);
+
+        if($label == "") {
             $label = __('Attach File', QUOTEUP_TEXT_DOMAIN);
         }
+
         return array_merge(
             $custname,
             array(
@@ -1154,14 +1176,14 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * This function is used to add default and custom fields to the enquiry form.
-    * Provides filters for the user to add any custom field according to his requirement.
-    */
+     * This function is used to add default and custom fields to the enquiry form.
+     * Provides filters for the user to add any custom field according to his requirement.
+     */
     public function createCustomFields()
     {
         $this->fields = array();
         $custname = array();
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array('after_add_cart' => 1,
             'button_CSS' => 0,
             'pos_radio' => 0,
             'show_powered_by_link' => 0,
@@ -1280,11 +1302,12 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * Checks if phone field mandatory
-    * @param string $ph_req phone request
-    * @param array $form_data Settings stored in database
-    * @return string $ph_req phone request
-    */
+     * Checks if phone field mandatory
+     *
+     * @param  string $ph_req    phone request
+     * @param  array  $form_data Settings stored in database
+     * @return string $ph_req phone request
+     */
     public function phoneMandatory($ph_req, $form_data)
     {
         if (isset($form_data[ 'make_phone_mandatory' ])) {
@@ -1297,11 +1320,12 @@ class QuoteUpAddCustomField
         return $ph_req;
     }
     /**
-    * Checks if date field mandatory
-    * @param string $dt_req date request
-    * @param array $form_data Settings stored in database
-    * @return string $dt_req date request
-    */
+     * Checks if date field mandatory
+     *
+     * @param  string $dt_req    date request
+     * @param  array  $form_data Settings stored in database
+     * @return string $dt_req date request
+     */
     public function dateMandatory($dt_req, $form_data)
     {
         if (isset($form_data[ 'make_date_mandatory' ])) {
@@ -1314,12 +1338,13 @@ class QuoteUpAddCustomField
         return $dt_req;
     }
 
-   /**
-    * Checks if attach field mandatory
-    * @param string $attachReq date request
-    * @param array $form_data Settings stored in database
-    * @return string $attachReq date request
-    */
+    /**
+     * Checks if attach field mandatory
+     *
+     * @param  string $attachReq date request
+     * @param  array  $form_data Settings stored in database
+     * @return string $attachReq date request
+     */
     public function attachMandatory($attachReq, $form_data)
     {
         if (isset($form_data[ 'make_attach_mandatory' ])) {
@@ -1339,10 +1364,11 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * Adds fields recursively for the single customer enquiry
-    * @param array $single_custname Fields for enquiry form
-    * @return array Fields for enquiry form
-    */
+     * Adds fields recursively for the single customer enquiry
+     *
+     * @param  array $single_custname Fields for enquiry form
+     * @return array Fields for enquiry form
+     */
     public function addFieldsRecursively($single_custname)
     {
         foreach ($single_custname as $single_array) {
@@ -1361,11 +1387,12 @@ class QuoteUpAddCustomField
     }
 
     /**
-    * Gets the customer name Id 
-    * @param array $val Value to create field
-    * @param array $data Enquiry details
-    * @return string $email HTMl for cust name 
-    */
+     * Gets the customer name Id 
+     *
+     * @param  array $val  Value to create field
+     * @param  array $data Enquiry details
+     * @return string $email HTMl for cust name 
+     */
     public function custnameID($val, $data)
     {
         $email = '';
@@ -1383,32 +1410,33 @@ class QuoteUpAddCustomField
 
     /**
      * Gets the html template and fields included in mails
-     * @param array $val value for create field
-     * @param array $data Enquiry details
+     *
+     * @param  array $val  value for create field
+     * @param  array $data Enquiry details
      * @return string HTML for other fields in email
-    */
+     */
     private function getOtherFields($val,$data)
     {
         $email = '';
         switch ($val[ 'id' ]) {
-            case 'custname':
-            case 'txtemail':
-            case 'txtphone':
-            case 'txtsubject':
-            case 'txtmsg':
-            case 'txtdate':
-            case 'wdmFileUpload':
-                break;
+        case 'custname':
+        case 'txtemail':
+        case 'txtphone':
+        case 'txtsubject':
+        case 'txtmsg':
+        case 'txtdate':
+        case 'wdmFileUpload':
+            break;
             
-            default:
-                if ($val[ 'include_in_admin_mail' ] == 'yes') {
-                    $email .= "
+        default:
+            if ($val[ 'include_in_admin_mail' ] == 'yes') {
+                $email .= "
                 <tr >
                 <th style='width:35%;text-align:left'>".__($val[ 'label' ], QUOTEUP_TEXT_DOMAIN)."</th>
                 <td style='width:65%'>: ".stripslashes($data[ $val[ 'id' ] ]).'</td>
                </tr>';
-                }
-                break;
+            }
+            break;
         }
 
         unset($source);
@@ -1417,8 +1445,9 @@ class QuoteUpAddCustomField
 
     /**
      * Gets the custom field to be included in admin email
-     * @param array $val value for create field
-     * @param array $data Enquiry details
+     *
+     * @param  array $val  value for create field
+     * @param  array $data Enquiry details
      * @return string html html email template
      */
     public function forEachFieldAdminEmail($val, $data)
@@ -1459,8 +1488,9 @@ class QuoteUpAddCustomField
 
     /**
      * Add custom field in admin email
-     * @param string $email_content empty at first
-     * @param array $data Enquiry details
+     *
+     * @param  string $email_content empty at first
+     * @param  array  $data          Enquiry details
      * @return string email fields
      */
     public function addCustomFieldsAdminEmail($data)
@@ -1495,6 +1525,7 @@ class QuoteUpAddCustomField
 
     /**
      * Get the custom fields for MPE Dashborad
+     *
      * @param int $enquiry_id ID of enquiry
      */
     public function mpeCustomFieldDashboard($enquiry_id)
@@ -1541,8 +1572,8 @@ class QuoteUpAddCustomField
     /**
      * Find a value associated with meta key of particular enquiry
      *
-     * @param int $enquiry_id ID of enquiry
-     * @param string $meta_key Meta Key whose value to be found
+     * @param  int    $enquiry_id ID of enquiry
+     * @param  string $meta_key   Meta Key whose value to be found
      * @return mixed If value is found, it is returned. Else NULL is returned.
      */
     public static function quoteupGetCustomFieldData($enquiry_id, $meta_key)
@@ -1554,6 +1585,7 @@ class QuoteUpAddCustomField
 
     /**
      * fetching meta fields data for data table
+     *
      * @param int $enquiryID Enquiry Id
      */
     public function quoteupCustomFieldsData($enquiryID)
@@ -1597,6 +1629,7 @@ class QuoteUpAddCustomField
 
     /**
      * Deleting meta fields data.
+     *
      * @param int $enquiryID Enquiry Id
      */
     public function deleteCustomFields($enquiryID)
@@ -1609,6 +1642,7 @@ class QuoteUpAddCustomField
 
     /**
      * Adds the custom fields in customer email.
+     *
      * @return string html table format for fields to be included in email
      */
     public function addCustomFieldsCustomerEmail($dataObtainedFromForm, $source)
@@ -1623,7 +1657,7 @@ class QuoteUpAddCustomField
             if ($inlcudeField) {
                 $email .= "
            <tr >
-            <th style='width:35%;text-align:left'>".__(pll__($v[ 'label' ]), QUOTEUP_TEXT_DOMAIN)." </th>
+            <th style='width:35%;text-align:left'>".__($v[ 'label' ], QUOTEUP_TEXT_DOMAIN)." </th>
                 <td style='width:65%'>: ".stripslashes($_POST[ $v[ 'id' ] ]).'</td>
            </tr>';
             }

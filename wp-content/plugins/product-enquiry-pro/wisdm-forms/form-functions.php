@@ -1,10 +1,10 @@
 <?php
 
-if(isset($_GET['page']) && $_GET['page'] == "quoteup-create-quote") {
+if (isset($_GET['page']) && $_GET['page'] == "quoteup-create-quote") {
     add_action('wisdmform-showform_before_form_fields', 'addHiddenFieldsBeforeInDashboard');
     add_action('wisdmform-showform_after_form_fields', 'addHiddenFieldsAfterInDashboard');
 } else {
-    add_action('wisdmform-showform_before_form_fields', 'addHiddenFields');    
+    add_action('wisdmform-showform_before_form_fields', 'addHiddenFields');
 }
 
 function addHiddenFieldsBeforeInDashboard()
@@ -13,10 +13,10 @@ function addHiddenFieldsBeforeInDashboard()
         $url = admin_url();
     ?>
     <input type='hidden' name='quote_ajax_nonce' id='quote_ajax_nonce' value='<?php echo $ajax_nonce;
-        ?>'>
+    ?>'>
     <input type='hidden' name='submit_value' id='submit_value'>
     <input type='hidden' name='site_url' id='site_url' value='<?php echo $url;
-?>'>
+    ?>'>
     <input type='hidden' name='tried' id='tried' value='yes' />
     <div id='wdm_nonce_error'>
         <div  class='wdmquoteup-err-display'>
@@ -51,7 +51,7 @@ function addHiddenFields()
         global $sitepress;
         $currentLocale = $sitepress->get_current_language();
     }
-    if((!isset($form_data[ 'enable_disable_mpe' ]) || $form_data[ 'enable_disable_mpe' ] != 1) && $product) {
+    if ((!isset($form_data[ 'enable_disable_mpe' ]) || $form_data[ 'enable_disable_mpe' ] != 1) && $product) {
         global $wpdb;
         $prod_id = $product->get_id();
 
@@ -141,25 +141,36 @@ function getFormConditionalDiv($fieldindex, $field_infos)
 {
     ?>
     <div class='form-group'>
-        <label><input rel='condition-params' class='cond' type='checkbox' name='contact[fieldsinfo][<?php echo $fieldindex ?>][conditioned]' value='1' <?php if (isset($field_infos[$fieldindex]['conditioned'])) echo 'checked="checked"'; ?>/><?php _e('Conditional logic', QUOTEUP_TEXT_DOMAIN) ?></label>
+        <label><input rel='condition-params' class='cond' type='checkbox' name='contact[fieldsinfo][<?php echo $fieldindex ?>][conditioned]' value='1' <?php if (isset($field_infos[$fieldindex]['conditioned'])) {
+            echo 'checked="checked"';
+                                                                                                    } ?>/><?php _e('Conditional logic', QUOTEUP_TEXT_DOMAIN) ?></label>
         <div id="cond_<?php echo $fieldindex ?>" class='cond-params' style='display:none'>
             <div class="form-group">
                 <div class="row row-bottom-buffer">
                     <div class="col-md-12">
                         <select class="select" name="contact[fieldsinfo][<?php echo $fieldindex ?>][condition][action]">
-                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['action'] == 'show') echo 'selected="selected"' ?> value="show"><?php _e('Show', QUOTEUP_TEXT_DOMAIN) ?></option>
-                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['action'] == 'hide') echo 'selected="selected"' ?> value="hide"><?php _e('Hide', QUOTEUP_TEXT_DOMAIN) ?></option>
+                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['action'] == 'show') {
+                                echo 'selected="selected"';
+                                    } ?> value="show"><?php _e('Show', QUOTEUP_TEXT_DOMAIN) ?></option>
+                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['action'] == 'hide') {
+                                echo 'selected="selected"';
+                                    } ?> value="hide"><?php _e('Hide', QUOTEUP_TEXT_DOMAIN) ?></option>
                         </select> 
                         <?php _e('this field if', QUOTEUP_TEXT_DOMAIN) ?>
                         <select class="select" name="contact[fieldsinfo][<?php echo $fieldindex ?>][condition][boolean_op]">
-                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['boolean_op'] == 'all') echo 'selected="selected"' ?> value="all"><?php _e('All', QUOTEUP_TEXT_DOMAIN) ?></option>
-                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['boolean_op'] == 'any') echo 'selected="selected"' ?> value="any"><?php _e('Any', QUOTEUP_TEXT_DOMAIN) ?></option>
+                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['boolean_op'] == 'all') {
+                                echo 'selected="selected"';
+                                    } ?> value="all"><?php _e('All', QUOTEUP_TEXT_DOMAIN) ?></option>
+                            <option <?php if (isset($field_infos[$fieldindex]['condition']) && $field_infos[$fieldindex]['condition']['boolean_op'] == 'any') {
+                                echo 'selected="selected"';
+                                    } ?> value="any"><?php _e('Any', QUOTEUP_TEXT_DOMAIN) ?></option>
                         </select>
                         <?php _e('of these conditions are met', QUOTEUP_TEXT_DOMAIN) ?>
                     </div>
                 </div>
                 <?php $cond_list = isset($field_infos[$fieldindex]['condition']) ? $field_infos[$fieldindex]['condition']['value'] : array(); ?>
-                <?php foreach($cond_list as $key => $value) { ?>
+                <?php
+                foreach ($cond_list as $key => $value) { ?>
                 <div class='row row-bottom-buffer' rel="row">
                     <div class='col-md-4'>
                         <select class='form-control cond-field-selector' data-selection='<?php echo isset($field_infos[$fieldindex]['condition']['field'][$key]) ? $field_infos[$fieldindex]['condition']['field'][$key] : ''  ?>' name='contact[fieldsinfo][<?php echo $fieldindex ?>][condition][field][]'>
@@ -257,11 +268,18 @@ function getFormRequiredDiv($fieldindex, $field_infos)
 {
     ?>
     <div class="form-group">
-        <label><input rel="req-params" class="req" type="checkbox" name="contact[fieldsinfo][<?php echo $fieldindex ?>][required]" value="1" <?php echo (isset($field_infos[$fieldindex]['required']) ? "checked=checked" : "") ?> />
-            <?php _e('Required', QUOTEUP_TEXT_DOMAIN) ?>
+        <label>
+        <?php
+        if (!isset($field_infos[$fieldindex]['primary']) || $field_infos[$fieldindex]['primary'] != 'yes') {
+            ?>
+            <input rel="req-params" class="req" type="checkbox" name="contact[fieldsinfo][<?php echo $fieldindex ?>][required]" value="1" <?php echo (isset($field_infos[$fieldindex]['required']) ? "checked=checked" : "") ?> />
+            <?php
+        }
+            _e('Required', QUOTEUP_TEXT_DOMAIN);
+        ?>
         </label>
         <div class="req-params" <?php echo (!isset($field_infos[$fieldindex]['required']) ? "style='display: none'" : ""); ?> >
-            <input type="text" name="contact[fieldsinfo][<?php echo $fieldindex ?>][reqmsg]" placeholder="<?php _e('Field Required Message', QUOTEUP_TEXT_DOMAIN) ?>" value="<?php echo $field_infos[$fieldindex]['reqmsg'] ?>" class="form-control"/>
+            <input type="text" name="contact[fieldsinfo][<?php echo $fieldindex ?>][reqmsg]" placeholder="<?php _e('Field Required Message', QUOTEUP_TEXT_DOMAIN); ?>" value="<?php echo $field_infos[$fieldindex]['reqmsg'] ?>" class="form-control"/>
         </div>
     </div>
     <?php
@@ -333,7 +351,7 @@ function quoteupEnqueuePhoneFieldsScripts($shouldEnqueueScripts = false)
          * 2. There should be atleast one phone field in the active custom form.
          * 3. If Multi Product Enquiry mode is enabled, then the current page
          *    should be enquiry cart page.
-         */ 
+         */
         $shouldEnqueueScripts = quoteupIsCustomFormEnabled($quoteupSettings) && !empty(quoteupGetCustomFormPhoneFieldsLabel($quoteupSettings)) && (!quoteupIsMPEEnabled($quoteupSettings) || quoteupIsEnquiryCartPage($quoteupSettings)) ? true : false;
     }
 
@@ -365,6 +383,11 @@ function quoteupReturnPreferredCountryCodes()
     $prefCountryCodes = apply_filters('cf_phone_field_pref_countries', $prefCountryCodes);
 
     return $prefCountryCodes;
+}
+
+function quoteupCFFieldsLabel($shouldShowLabel, $field_id)
+{
+    return apply_filters('quoteup_show_cf_fields_label', $shouldShowLabel, $field_id);
 }
 
 /**
@@ -410,4 +433,37 @@ function quoteupReturnAllCountryCodes()
     'VU','VA','VE','VN','WF','EH','YE','ZM','ZW','AX');
 
     return $allCountryCodes;
+}
+
+/**
+ * Localize the script.
+ * These messages are used in custom form error messages.
+ * To change the custom form error messages, use the filter added in the
+ * method.
+ *
+ * https://github.com/jquery-validation/jquery-validation/tree/master/src/localization
+ *
+ * @since   6.4.0
+ */
+function quoteupCustomFormErrorMessages()
+{
+    $messages = array(
+        'name' => __('Please enter valid name.', QUOTEUP_TEXT_DOMAIN),
+        'email' => __('Please enter a valid email address.', QUOTEUP_TEXT_DOMAIN),
+        'url' => __('Please enter a valid URL.', QUOTEUP_TEXT_DOMAIN),
+        'date' => __('Please enter a valid date.', QUOTEUP_TEXT_DOMAIN),
+        'number' => __('Please enter a valid number.', QUOTEUP_TEXT_DOMAIN),
+        'tel_err' => __('Please enter valid telephone no.', QUOTEUP_TEXT_DOMAIN),
+    );
+
+    if (is_admin()) {
+        $messages['validation_err_msg'] = __('Please fill this section properly before proceeding', QUOTEUP_TEXT_DOMAIN);
+        $scriptHandle = 'jquery-validation-plugin';
+    } else {
+        $messages['validation_err_msg'] = __('Validation Error', QUOTEUP_TEXT_DOMAIN);
+        $scriptHandle = 'jquery-validate';
+    }
+    
+    $messages = apply_filters('quoteup_cf_err_messages', $messages);
+    wp_localize_script($scriptHandle, 'quoteup_cf_err_msg', $messages);
 }

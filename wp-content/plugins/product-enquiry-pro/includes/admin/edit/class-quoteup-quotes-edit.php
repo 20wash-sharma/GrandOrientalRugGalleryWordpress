@@ -12,10 +12,11 @@ if (!class_exists('Abstracts\QuoteupEdit')) {
 }
 
 /**
-* Display the quotes edit page with various options.
-  * @static $instance Object of class
-  * $enquiry_details array enquiry details
-*/
+ * Display the quotes edit page with various options.
+ *
+ * @static $instance Object of class
+ * $enquiry_details array enquiry details
+ */
 class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 {
 
@@ -37,17 +38,18 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     }
 
     /**
-    * Get the settings
-    * Checks if quotation system is enabled.
-    * If yes enqueue the scripts
-    * Action for save Quotation ajax callback.
-    * Action for generate Pdf ajax.
-    * Action for send Mail ajax.
-    * Action for Last updated quote history and the version for quotes.
-    * Action for Quote heading with Id and the Product details.
-    * Action for adding metabox for message.
-    * @param array $displayNames
-    */
+     * Get the settings
+     * Checks if quotation system is enabled.
+     * If yes enqueue the scripts
+     * Action for save Quotation ajax callback.
+     * Action for generate Pdf ajax.
+     * Action for send Mail ajax.
+     * Action for Last updated quote history and the version for quotes.
+     * Action for Quote heading with Id and the Product details.
+     * Action for adding metabox for message.
+     *
+     * @param array $displayNames
+     */
     public function __construct($displayNames = array())
     {
         $settings = quoteupSettings();
@@ -66,18 +68,20 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     }
 
     /**
-    * Adds metabox for message.
-    * @param array $enquiry_details Enquiry Details
-    */
+     * Adds metabox for message.
+     *
+     * @param array $enquiry_details Enquiry Details
+     */
     public function addMetaBoxAfterMessage($enquiry_details)
     {
         do_action('quoteup_edit_details', $enquiry_details);
     }
 
     /**
-    * Adds Scripts for specific hook
-    * @param string $hook hook for adding scripts
-    */
+     * Adds Scripts for specific hook
+     *
+     * @param string $hook hook for adding scripts
+     */
     public function addQuotesScript($hook)
     {
         if ('admin_page_quoteup-details-edit' != $hook) {
@@ -86,8 +90,10 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         global $wp_scripts;
 
         $this->includeWooCommerceScripts();
-        wp_enqueue_script('quoteup-ajax', QUOTEUP_PLUGIN_URL.'/js/admin/ajax.js', array(
-                'jquery', 'jquery-ui-core', 'jquery-effects-highlight', ));
+        wp_enqueue_script(
+            'quoteup-ajax', QUOTEUP_PLUGIN_URL.'/js/admin/ajax.js', array(
+            'jquery', 'jquery-ui-core', 'jquery-effects-highlight', )
+        );
 
          // get registered script object for jquery-ui
         $uiVersion = $wp_scripts->query('jquery-ui-core');
@@ -111,6 +117,9 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         $form_data = quoteupSettings();
         $pdfDisplay = isset($form_data['enable_disable_quote_pdf'])?$form_data['enable_disable_quote_pdf']:1;
 
+        $upload_dir     = wp_upload_dir();
+        $quoteupPDFPath = $upload_dir['baseurl'].'/QuoteUp_PDF/';
+
         wp_localize_script(
             'quoteup-ajax',
             'quote_data',
@@ -121,11 +130,13 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                     'price_format' => get_woocommerce_price_format(),
                     'currency_symbol' => get_woocommerce_currency_symbol(),
                     'ajax_url' => admin_url('admin-ajax.php'),
-                    'path' => WP_CONTENT_URL.'/uploads/QuoteUp_PDF/',
+                    'path' => $quoteupPDFPath,
                     'save' => __('Saving Data', QUOTEUP_TEXT_DOMAIN),
                     'generatePDF' => __('Generating PDF', QUOTEUP_TEXT_DOMAIN),
-                    'errorPDF' => sprintf(__(
-                            'Please select the Approval/Rejection page %s here %s to create quote', QUOTEUP_TEXT_DOMAIN),"<a href='admin.php?page=quoteup-for-woocommerce#wdm_quote'>",
+                    'errorPDF' => sprintf(
+                        __(
+                            'Please select the Approval/Rejection page %s here %s to create quote', QUOTEUP_TEXT_DOMAIN
+                        ), "<a href='admin.php?page=quoteup-for-woocommerce#wdm_quote'>",
                         '</a>'
                     ),
                     'generatedPDF' => __('PDF Generated', QUOTEUP_TEXT_DOMAIN),
@@ -160,8 +171,10 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                     )
         );
 
-        wp_enqueue_script('bootstrap-modal', QUOTEUP_PLUGIN_URL.'/js/admin/bootstrap-modal.js', array(
-                'jquery', ), false, true);
+        wp_enqueue_script(
+            'bootstrap-modal', QUOTEUP_PLUGIN_URL.'/js/admin/bootstrap-modal.js', array(
+            'jquery', ), false, true
+        );
         wp_enqueue_style('modal_css1', QUOTEUP_PLUGIN_URL.'/css/wdm-bootstrap.css', false, false);
     }
 
@@ -179,8 +192,10 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     {
         $assets_path = str_replace(array('http:', 'https:'), '', WC()->plugin_url()).'/assets/';
         $frontend_script_path = $assets_path.'js/frontend/';
-        wp_enqueue_script('wc-add-to-cart-variation', $frontend_script_path.'add-to-cart-variation.js', array(
-                'jquery', 'wp-util', ));
+        wp_enqueue_script(
+            'wc-add-to-cart-variation', $frontend_script_path.'add-to-cart-variation.js', array(
+            'jquery', 'wp-util', )
+        );
 
         wp_enqueue_script('jquery-blockui', $frontend_script_path.'../jquery-blockui/jquery.blockUI.js', array('jquery'));
 
@@ -195,28 +210,33 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
             $wc_ajax_url = \WC_AJAX::get_endpoint('%%endpoint%%');
         }
 
-        wp_localize_script('wc-add-to-cart-variation', 'wc_cart_fragments_params', array(
+        wp_localize_script(
+            'wc-add-to-cart-variation', 'wc_cart_fragments_params', array(
                 'ajax_url' => WC()->ajax_url(),
                 'wc_ajax_url' => $wc_ajax_url,
                 'fragment_name' => apply_filters('woocommerce_cart_fragment_name', 'wc_fragments'),
-                ));
+            )
+        );
 
-        wp_localize_script('wc-add-to-cart-variation', 'wc_add_to_cart_variation_params', array(
+        wp_localize_script(
+            'wc-add-to-cart-variation', 'wc_add_to_cart_variation_params', array(
                 'ajax_url' => WC()->ajax_url(),
                 'wc_ajax_url' => $wc_ajax_url,
                 'fragment_name' => apply_filters('woocommerce_cart_fragment_name', 'wc_fragments'),
                 'i18n_no_matching_variations_text' => esc_attr__('Sorry, no products matched your selection. Please choose a different combination.', 'quoteup'),
                 'i18n_make_a_selection_text' => esc_attr__('Please select some product options before adding this product to your cart.', 'quoteup'),
                 'i18n_unavailable_text' => esc_attr__('Sorry, this product is unavailable. Please choose a different combination.', 'quoteup'),
-                ));
+            )
+        );
     }
 
     /**
-    * Displays the quote heading
-    * Gets the status od the quote from the history table.
-    * Appends the status with Quotation heading
-    * @param array $enquiry_details Enquiry Details
-    */
+     * Displays the quote heading
+     * Gets the status od the quote from the history table.
+     * Appends the status with Quotation heading
+     *
+     * @param array $enquiry_details Enquiry Details
+     */
     public function displayQuoteHeading($enquiry_details)
     {
         global $quoteupManageHistory;
@@ -237,46 +257,50 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         );
 
         echo __('Quotation Details', QUOTEUP_TEXT_DOMAIN).' #'.$enquiryId;
-            ?> <span class="quote-status-span"><?php echo empty($quoteStatus) ? 'New' : $statusArray[$quoteStatus];
-            ?></span>
+        ?> <span class="quote-status-span"><?php echo empty($quoteStatus) ? 'New' : $statusArray[$quoteStatus];
+?></span>
             <?php
     }
 
     /**
      * Create Meta box with heading "Product Details".
      *
-    * @param array $enquiryDetailsRecieved Enquiry Details
+     * @param array $enquiryDetailsRecieved Enquiry Details
      */
     public function displayQuoteProductDetails($enquiryDetailsRecieved)
     {
         global $quoteup_admin_menu;
         $this->enquiry_details = $enquiryDetailsRecieved;
+        do_action('quoteup_before_product_details', $this->enquiry_details);
         add_meta_box('editProductDetailsData', __('Product Details', QUOTEUP_TEXT_DOMAIN), array($this, 'productDetailsSection'), $quoteup_admin_menu, 'normal');
         do_action('quoteup_after_product_details', $this->enquiry_details);
     }
 
     /**
-    * Display Product details
-    */
+     * Display Product details
+     */
     public function productDetailsSection()
     {
         ?>
         <div class="wdmpe-detailtbl-wrap">
-        <?php echo $this->quotationTable();
+        <?php 
+            do_action('quoteup_add_csp_price_message');
+            echo $this->quotationTable();
         ?>
         </div>
         <?php
     }
 
     /**
-    * Display the Product details.
-    * Fetches the quote details , take the products
-    * See if the products are available incurrent database for products or not.
-    * Gets the Order Id of the products.
-    * Display accordingly the price and other details of the available products.
-    * Get the attachments for quote.
-    * @return html $currentdata data for the quotes edit page display
-    */
+     * Display the Product details.
+     * Fetches the quote details , take the products
+     * See if the products are available incurrent database for products or not.
+     * Gets the Order Id of the products.
+     * Display accordingly the price and other details of the available products.
+     * Get the attachments for quote.
+     *
+     * @return html $currentdata data for the quotes edit page display
+     */
     public function quotationTable()
     {
         $enquiryId = filter_var($_GET[ 'id' ], FILTER_SANITIZE_NUMBER_INT);
@@ -314,7 +338,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         ?>
         <table class='wdm-tbl-prod wdmpe-detailtbl wdmpe-quotation-table admin-quote-table' id="Quotation">
             <?php $this->getQuoteTableHead();
-        ?>
+            ?>
             <tbody class="wdmpe-detailtbl-content">
         <?php
         $email = $this->enquiry_details['email'];
@@ -391,30 +415,30 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                             ?>
                             <td class="wdmpe-detailtbl-content-item item-content-img">
                                 <img src= '<?php echo $img_url;
-            ?>' class='wdm-prod-img'/>
+                                ?>' class='wdm-prod-img'/>
                             </td>
                             <td class="wdmpe-detailtbl-content-item item-content-link">
                                 <?php echo $ProductTitle;
-            ?>
+                                ?>
                             </td>
                             <?php
                             $singleProduct['variation'] = unserialize($singleProduct['variation']);
                             $this->getQuoteVariationsColumn($count, $productId, $quotationbTN, $singleProduct, $productAvailable, $singleProduct);
                             do_action('quoteup_enquiry_edit_after_variation_td', $singleProduct, $enquiryId);
-            ?>
+                            ?>
                             <td class="wdmpe-detailtbl-content-item item-content-sku">
                                 <p>
                                 <?php echo $sku;
-            ?>
+                                ?>
                                 </p>
                             </td>
                             <?php do_action('quoteup_enquiry_edit_after_sku_td', $singleProduct, $enquiryId); ?>
                             <td class="wdmpe-detailtbl-content-item item-content-old-cost" data-old_price="<?php echo $this->oldPriceData($singleProduct, $count - 1) ?>">
                                     <?php echo wc_price($price);
-            ?>
+                                    ?>
                                 <input type="hidden" id="old-price-<?php echo $count ?>" value="<?php echo $price;
-            ?>" <?php echo $productDisabled;
-            ?> >
+                                ?>" <?php echo $productDisabled;
+?> >
                             </td>
                             <td class="wdmpe-detailtbl-content-item item-content-newcost">
                             <?php
@@ -429,9 +453,9 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                 echo $quotationDisabled.' '.$inputOff;
                                 echo ' '.$productDisabled.' '.$disableInputboxes.' '.$enquiryAnonymizedDisabled;
                                 ?> step="any" >
-                        <?php
+                                <?php
                             }
-            ?>
+                            ?>
                             </td>
                             <?php do_action('quoteup_enquiry_edit_after_new_cost_td', $singleProduct); ?>
                             <td class="wdmpe-detailtbl-content-item item-content-qty" >
@@ -441,7 +465,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                             <td class="wdmpe-detailtbl-content-item item-content-cost" id="content-cost-<?php echo $count ?>">
                                         <?php
                                         $this->printCost($disableInputboxes, $singleProduct, $productDisabled, $total_price);
-            ?>
+                                        ?>
                             </td>
                     <input <?php echo $strike ?> data-row-num="<?php echo $count; ?>" id="content-amount-<?php echo $count ?>" class="amount_database" type="hidden" name="price" value="<?php $this->getDatabaseAmount($productDisabled, $disableInputboxes, $singleProduct); ?>">
                     <input data-row-num="<?php echo $count; ?>" id="content-ID-<?php echo $count ?>" class="id_database" type="hidden" name="id" value="<?php echo $productId; ?>">
@@ -473,12 +497,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
             }
             ?>
                 <td  class='wdmpe-detailtbl-head-item amount-total-label' id="amount_total_label"> <?php _e('Total', QUOTEUP_TEXT_DOMAIN);
-        ?>  </td>
+                ?>  </td>
                 <td class="wdmpe-detailtbl-content-item item-content-cost quote-final-total" id="amount_total"> <?php echo wc_price($total_price);
-        ?>
+                ?>
                 </td>
                     <input type="hidden" name="database-amount" id="database-amount" value=<?php echo $total_price;
-        ?>>
+                    ?>>
             </tr>
         </tfoot>
         </table>
@@ -496,7 +520,8 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * This function is as a flag for quotation status
-     * @param array $quoteProducts Products in quote
+     *
+     * @param  array $quoteProducts Products in quote
      * @return string $quotationDownload style for Download quotation
      */
     public function getQuotationStatus($quoteProducts)
@@ -527,26 +552,26 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
             endif;
             ?>
                 <th class="wdmpe-detailtbl-head-item item-head-img"><img src= '<?php echo $img_url;
-        ?>' class='wdm-prod-img wdm-prod-head-img'/></th>
+                ?>' class='wdm-prod-img wdm-prod-head-img'/></th>
                 <th class="wdmpe-detailtbl-head-item item-head-detail"><?php echo __('Item', QUOTEUP_TEXT_DOMAIN);
-        ?> </th>
+                ?> </th>
                 <th class="wdmpe-detailtbl-head-item item-head-Variations"><?php echo __('Variations', QUOTEUP_TEXT_DOMAIN);
-        ?> </th>
+                ?> </th>
         <?php do_action('quoteup_enquiry_edit_after_variation_th'); ?>
                 <th class="wdmpe-detailtbl-head-item item-head-sku"><?php echo __('SKU', QUOTEUP_TEXT_DOMAIN);
-        ?></th>
+                ?></th>
         <?php do_action('quoteup_enquiry_edit_after_sku_th'); ?>
                 <th class="wdmpe-detailtbl-head-item item-head-old-cost"><?php echo __('Price', QUOTEUP_TEXT_DOMAIN);
-        ?></th>
+                ?></th>
                 <th class="wdmpe-detailtbl-head-item item-head-newcost"><?php echo __('New Price', QUOTEUP_TEXT_DOMAIN);
-        ?></th>
+                ?></th>
         <?php do_action('quoteup_enquiry_edit_after_new_price_th'); ?>
                 <th class="wdmpe-detailtbl-head-item item-head-qty"><?php echo __('Quantity', QUOTEUP_TEXT_DOMAIN);
-        ?></th>
+                ?></th>
         <?php do_action('quoteup_enquiry_edit_after_qty_th'); ?>
                 <th class="wdmpe-detailtbl-head-item item-head-cost"><?php
                 echo sprintf(__('Amount( %s )', QUOTEUP_TEXT_DOMAIN), get_woocommerce_currency_symbol());
-        ?></th>
+                ?></th>
             </tr>
         </thead>
         <?php
@@ -555,12 +580,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     /**
      * This function is used to display Variation column on quote edit page.
      *
-     * @param [int]     $count                [Row number]
-     * @param [int]     $id                   [Product ID]
-     * @param [string]  $quotationbTN         [Used as flag]
-     * @param [array]   $productData          [description]
-     * @param [boolean] $productAvailable     [Used as flag]
-     * @param [array]    $prod                 [Variable Product details]
+     * @param [int]     $count            [Row number]
+     * @param [int]     $id               [Product ID]
+     * @param [string]  $quotationbTN     [Used as flag]
+     * @param [array]   $productData      [description]
+     * @param [boolean] $productAvailable [Used as flag]
+     * @param [array]   $prod             [Variable Product details]
      */
     public function getQuoteVariationsColumn($count, $id, $quotationbTN, $productData, $productAvailable, $prod)
     {
@@ -606,20 +631,20 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                     $get_variations = sizeof($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
                                 $available_variations = $get_variations ? $product->get_available_variations() : false;
                                 $attributes = $product->get_variation_attributes();
-                            /*
-                             *we are using quoteupVariationDropdown() instead of woocommerce_variable_add_to_cart(). quoteupVariationDropdown() is just a copy of woocommerce_variable_add_to_cart() loading our template instead of woocommerce variable.php
-                             *
-                                     * woocommerce_variable_add_to_cart() includes woocommerce/templates/single-product/add-to-cart/variable.php. This file has a form tag and dropdowns are shown in a form tag. Since we are already inside a table, form tag can not be used here and therefore, we are creating a div tag which is very similar to form tag created in variable.php
-                                     */
-                                    ?>
+                                /*
+                                 * we are using quoteupVariationDropdown() instead of woocommerce_variable_add_to_cart(). quoteupVariationDropdown() is just a copy of woocommerce_variable_add_to_cart() loading our template instead of woocommerce variable.php
+                                 *
+                                 * woocommerce_variable_add_to_cart() includes woocommerce/templates/single-product/add-to-cart/variable.php. This file has a form tag and dropdowns are shown in a form tag. Since we are already inside a table, form tag can not be used here and therefore, we are creating a div tag which is very similar to form tag created in variable.php
+                                 */
+                                ?>
                                 <div class="product" <?php echo $quotationbTN; ?>>
                                         <div id="variation-<?php echo $count ?>" class="variations_form cart" data-product_id="<?php echo absint($id);
-                                ?>" data-product_variations="<?php echo htmlspecialchars(json_encode($available_variations)) ?>">
+                                        ?>" data-product_variations="<?php echo htmlspecialchars(json_encode($available_variations)) ?>">
                                     <?php
                                     add_filter('woocommerce_locate_template', array($this, 'changeVariableTemplatePath'), 10, 2);
                                     quoteupVariationDropdown($count, '', '', $id, $product, $productData[ 'variation' ]);
                                     remove_filter('woocommerce_locate_template', array($this, 'changeVariableTemplatePath'), 10);
-                                ?>
+                                    ?>
                                         </div>
                                     </div>
                                     <?php
@@ -668,7 +693,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                 ?>
                                 <div class="product" <?php echo $quotationbTN ?>>
                                     <div id="variation-<?php echo $count ?>" class="variations_form cart" data-product_id="<?php echo absint($id);
-                                ?>" data-product_variations="<?php echo htmlspecialchars(json_encode($available_variations)) ?>">
+                                    ?>" data-product_variations="<?php echo htmlspecialchars(json_encode($available_variations)) ?>">
                                 <?php
                                         quoteupVariationDropdown($count, '', '', $id, $product, $productData[ 'variation' ]);
                                 ?>
@@ -680,11 +705,11 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                             <div>
                                                 <?php
                                                 echo printVariations($productData);
-                                            ?>
+                                                ?>
                                             </div>
                                             <?php
                             }
-     ?>
+                            ?>
                                         <?php
                                         if ($quotationbTN != '' && $productAvailable) {
                                             ?>
@@ -692,27 +717,28 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                             <div>
                                                 <?php
                                                 echo printVariations($productData);
-                                            ?>
+                                                ?>
                                             </div>
                                             <?php
                                         }
- } /*
+} /*
                                  * For Simple products, variation data is not available and hence print
                                  * blank string
                                  */ else {
      echo '-';
- }
-        ?>
+}
+?>
                             </td>
         <?php
     }
 
     /**
      * This function is used to display Total column in products detials
+     *
      * @param string $disableInputboxes disabled when product is not simple or variable.
-     * @param array $singleProduct Product details
-     * @param string $productDisabled if product is not present in current product db
-     * @param int &$total_price Price for quotation
+     * @param array  $singleProduct     Product details
+     * @param string $productDisabled   if product is not present in current product db
+     * @param int    &$total_price      Price for quotation
      */
     public function printCost($disableInputboxes, $singleProduct, $productDisabled, &$total_price)
     {
@@ -729,10 +755,11 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * This function is used to get amount to be stored in database
+     *
      * @param string $disableInputboxes disabled when product is not simple or variable.
-     * @param array $singleProduct Product details
-     * @param string $productDisabled if product is not present in current product db
-     * @param int &$total_price Price for quotation
+     * @param array  $singleProduct     Product details
+     * @param string $productDisabled   if product is not present in current product db
+     * @param int    &$total_price      Price for quotation
      */
     public function getDatabaseAmount($productDisabled, $disableInputboxes, $singleProduct)
     {
@@ -745,11 +772,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     }
 
     /**
-    * Returns the changed template path
-    * @param string $template default template path
-    * @param string $template_name template path inside plugin.
-    * @return string template path
-    */
+     * Returns the changed template path
+     *
+     * @param  string $template      default template path
+     * @param  string $template_name template path inside plugin.
+     * @return string template path
+     */
     public function changeVariableTemplatePath($template, $template_name)
     {
         if ('single-product/add-to-cart/variable.php' == $template_name) {
@@ -832,18 +860,18 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                             $expirationTime = strtotime($this->enquiry_details['expiration_date']);
                             if ($currentTime > $expirationTime) {
                                 $sendQuotationStatus = 'disabled';
-                    ?>
+                                ?>
                                 <p class="save-quote-note send-quotation-button-disabled-note"><em><strong>To resend the quote please set new expiration date.</strong></em>
                                 </p>
                                 <?php
                             }
                         }
-                ?>
+                        ?>
                 </div>
                 <?php
                 $this->displayLanguageDropdown();
                 do_action('quoteup_enquiry_edit_quote_options_end', $this->enquiry_details);            
-            ?>
+                ?>
             </div>
             <?php
         }
@@ -867,18 +895,18 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         do_action('quoteup_after_quote_rel_btns', $enquiryId);
         ?>
             <input type="hidden" id="enquiry_id" value="<?php echo $_GET['id'];
-        ?>">
+            ?>">
             <input type="hidden" id="email" value="<?php echo $email;
-        ?>">
+            ?>">
             <input type="hidden" id="quoteNonce" value="<?php echo wp_create_nonce('quoteup');
-        ?>">
+            ?>">
         <div class="show-hide-details">
             <button type="button" id="showEnquiry" class="button"><?php _e('Show Original Enquiry', QUOTEUP_TEXT_DOMAIN); ?></button>                
         </div>
             <div class="wdm-status-box">
                 <div id="text"></div>
                 <img src="<?php echo admin_url('images/spinner.gif');
-        ?>" id="PdfLoad">
+                ?>" id="PdfLoad">
             </div>
         </div>
         
@@ -912,7 +940,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                         $languageName = $value['native_name'].'('.$value['translated_name'].')';
                         echo "<option value='$code' $selectedLanguage>$languageName</option>";
                     }
-            ?>
+                    ?>
                 </select>
             </div>
             <?php
@@ -948,7 +976,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         <div class="quote-expiration-date">
             <?php
             if (!isset($form_data['enable_disable_quote']) || $form_data['enable_disable_quote'] != 1) {
-            ?>
+                ?>
                 <div class="wdm-user-expiration-date" title="<?php echo $expirationToolTip; ?>">
                     <input type='hidden' name='expiration_date' class="expiration_date_hidden" value='<?php echo $this->enquiry_details['expiration_date']; ?>'>
                     <?php
@@ -972,6 +1000,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
      */
     public function pdfPreviewModal()
     {
+        $pdfReloadString = sprintf(__('If PDF not loaded, click %1$sHere%2$s to reload', QUOTEUP_TEXT_DOMAIN), '<a id="pdf-preview-reload">', '</a>');
         ?>
         <div class="wdm-modal wdm-fade wdm-pdf-preview-modal" id="wdm-pdf-preview" tabindex="-1" role="dialog" style="display: none;">
         <div class="wdm-modal-dialog wdm-pdf-modal-dialog">
@@ -980,11 +1009,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                     <button type="button" class="close" data-dismiss="wdm-modal" aria-hidden="true">&times;</button>
                     <h4 class="wdm-modal-title" style="color: #333;">
                         <span><?php _e('Quote PDF Preview', QUOTEUP_TEXT_DOMAIN);
-        ?></span>
+                        ?></span>
                     </h4>
                 </div>
                 <div class="wdm-modal-body wdm-pdf-modal-body">
                     <div class="wdm-pdf-body" style="text-align: center;">
+                        <p id="pdf-preview-reload-wrapper"><?php echo $pdfReloadString; ?></p>
                         <iframe class="wdm-pdf-iframe" frameborder="0" vspace="0" hspace="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" scrolling="auto"></iframe>
                     </div>
                 </div>
@@ -1036,7 +1066,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                         <label for="subject"><?php _e('Subject', QUOTEUP_TEXT_DOMAIN); ?>:</label>
                                         <div class="form-wrap-inner">
                                             <input type="text" name="mailsubject" id="subject" size="50" value="<?php echo sprintf(__('Quote Request sent from %s', QUOTEUP_TEXT_DOMAIN), $site_name);
-        ?>" required="" placeholder="Subject">
+                                            ?>" required="" placeholder="Subject">
                                         </div>
                                     </div>
                                 </div>
@@ -1055,7 +1085,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                                 <div class="form_input">
                                     <div class="form-wrap">
                                         <button type="button" class="button button-primary" id="btnSendQuote"><?php _e('Send Quote', QUOTEUP_TEXT_DOMAIN);
-        ?></button>
+                                        ?></button>
                                     </div>
                                 </div>
                             </div>
@@ -1063,7 +1093,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                         <div class="row send-row">
                             <div id="txt" style="visibility: hidden;"></div>
                             <img src="<?php echo admin_url('images/spinner.gif');
-        ?>" id="Load">
+                            ?>" id="Load">
                         </div>
                     </div>
                     <!--/modal body-->
@@ -1110,14 +1140,15 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     /**
      * This function is used to display quote related buttons.
      * It displays send button and download button.
-     * @param string $filepath File path for pdf files.
+     *
+     * @param string $filepath            File path for pdf files.
      * @param string $sendQuotationStatus disbaled or enabled
-     * @param string $send_button_text label for button
+     * @param string $send_button_text    label for button
      * @param string $preview_button_text label for preview button
      * @param string $addToQuoteBtnStatus enabled or disbaled
-     * @param string $path path for redirection.
-     * @param string $quotationDownload status for download
-     * @param int    $enquiryId Enquiry Id.
+     * @param string $path                path for redirection.
+     * @param string $quotationDownload   status for download
+     * @param int    $enquiryId           Enquiry Id.
      */
     public function getQuotationRelatedButtons($filepath, $sendQuotationStatus, $send_button_text, $preview_button_text, $addToQuoteBtnStatus, $path, $quotationDownload, $enquiryId)
     {
@@ -1142,18 +1173,18 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         ?>
             <input <?php echo $QuoteCreatedDisplayNone; ?> type="button" id="btnPQuote" class="button" value="<?php echo $preview_button_text ?>" <?php echo $addToQuoteBtnStatus; ?> >
             <input <?php echo $displayNone.$QuoteNotCreatedDisplayNone; ?> id="send" type="button" <?php echo $sendQuotationStatus ?> class="button" value="<?php echo $send_button_text ?>" <?php echo $addToQuoteBtnStatus;
-        ?> >
+            ?> >
             <a href="<?php echo $path;
-        ?>" <?php echo $quotationDownload ?> id="DownloadPDF" download <?php echo $displayNone." ". $QuoteCreatedDisplayNone; ?> ><input id="downloadPDF" type="button" class="button" value="<?php _e('Download PDF', QUOTEUP_TEXT_DOMAIN);
-        ?>" ></a>
+            ?>" <?php echo $quotationDownload ?> id="DownloadPDF" download <?php echo $displayNone." ". $QuoteCreatedDisplayNone; ?> ><input id="downloadPDF" type="button" class="button" value="<?php _e('Download PDF', QUOTEUP_TEXT_DOMAIN);
+?>" ></a>
         <?php
         do_action('quoteup_after_download_pdf_btn', $enquiryId);
 
     }
 
     /**
-    * Returns the Quotation Product details
-    */
+     * Returns the Quotation Product details
+     */
     public function getQuoteCreationStatus()
     {
         global $wpdb;
@@ -1165,15 +1196,20 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * Set price and variation attribute in old price.
+     *
      * @param array $enquiryData enquiry details
-     * @param int $rowNumber Row number
+     * @param int   $rowNumber   Row number
      */
     public function oldPriceData($enquiryData, $rowNumber)
     {
-        return htmlspecialchars(json_encode(array(
-            'price' => isset($enquiryData['oldprice']) ? $enquiryData['oldprice'] : $enquiryData['price'],
-            'variation' => isset($enquiryData['variation']) ? $enquiryData['variation'] : '',
-        )));
+        return htmlspecialchars(
+            json_encode(
+                array(
+                'price' => isset($enquiryData['oldprice']) ? $enquiryData['oldprice'] : $enquiryData['price'],
+                'variation' => isset($enquiryData['variation']) ? $enquiryData['variation'] : '',
+                )
+            )
+        );
     }
 
     /**
@@ -1197,20 +1233,23 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         do_action('quoteup_validate_on_enquiry_quote_creation', $_POST['enquiry_id'], $_POST['quoteProductsData']);
 
         self::saveQuotation($quotationData);
+
+        do_action('quoteup_after_quote_generated', $_POST['enquiry_id']);
         die();
     }
 
     /**
-    * Gets the quotation details
-    * Gets the Product details of enquiry
-    * Check the Product quantity and stock and whether it could be added in quotation or not.
-    * Sets the total Price and Expiry date.
-    * Checks for WPML and sets the locale in meta table
-    * Set Order Id to NULL, so that it opens up a communication channel after rejecting the Quote
-    * Deletes previous quote if exists and also the pdf in uploads directory.
-    * Generates new pdf for the quote.
-    * @param array $quotationData Enquiry details
-    */
+     * Gets the quotation details
+     * Gets the Product details of enquiry
+     * Check the Product quantity and stock and whether it could be added in quotation or not.
+     * Sets the total Price and Expiry date.
+     * Checks for WPML and sets the locale in meta table
+     * Set Order Id to NULL, so that it opens up a communication channel after rejecting the Quote
+     * Deletes previous quote if exists and also the pdf in uploads directory.
+     * Generates new pdf for the quote.
+     *
+     * @param array $quotationData Enquiry details
+     */
     public static function saveQuotation($quotationData)
     {
         global $wpdb,$quoteup;
@@ -1344,8 +1383,8 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     {
         $finalQuant = 0;
         for ($i = 0; $i < $size; ++$i) {
-            if(is_numeric($quantity[ $i ])) {
-            	$finalQuant += $quantity[ $i ];
+            if (is_numeric($quantity[ $i ])) {
+                $finalQuant += $quantity[ $i ];
             }
         }
         if ($finalQuant == 0) {
@@ -1374,17 +1413,17 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                 continue;
             }
 
-        // Get the product
+            // Get the product
             $product_data = wc_get_product($variation_id ? $variation_id : $product_id);
 
-        // Sanity check
+            // Sanity check
             $postStatus = self::getPostStatus($product_data);
 
             if ($quantity <= 0 || !$product_data || 'trash' === $postStatus) {
                 throw new Exception();
             }
 
-        // Stock check - only check if we're managing stock and backorders are not allowed
+            // Stock check - only check if we're managing stock and backorders are not allowed
             if (!$product_data->is_in_stock()) {
                 echo sprintf(__('You cannot add &quot;%s%s&quot; to the quotation because the product is out of stock.', QUOTEUP_TEXT_DOMAIN), $product_data->get_title(), $variationString);
                 die;
@@ -1395,7 +1434,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
                 die;
             }
 
-        // Stock check - this time accounting for whats already in-cart
+            // Stock check - this time accounting for whats already in-cart
             if ($managing_stock = $product_data->managing_stock()) {
                 $products_qty_in_cart = getAllCartItemsTotalQuantity($product_ids, $quantities, $variation_ids);
 
@@ -1414,9 +1453,10 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * This function checks stock based on all products in cart
-     * @param  array $products_qty_in_cart quantity for that product id
-     * @param  object $product_data         Object of product
-     * @param  int $productId         product id of product
+     *
+     * @param array  $products_qty_in_cart quantity for that product id
+     * @param object $product_data         Object of product
+     * @param int    $productId            product id of product
      */
     public static function checkStockBasedOnAllItems($products_qty_in_cart, $product_data, $productId)
     {
@@ -1433,6 +1473,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * This function returns post status
+     *
      * @param  object $product_data product object
      * @return string               product status
      */
@@ -1449,9 +1490,10 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
 
     /**
      * This function returns variation id if product type is variation or returns product id
-     * @param  object $product_data   product object
-     * @param  int $variation_id   variation id
-     * @param  int $product_id     product id
+     *
+     * @param  object  $product_data   product object
+     * @param  int     $variation_id   variation id
+     * @param  int     $product_id     product id
      * @param  boolean $managing_stock if manage stock is enabled
      * @return int                variation id or product id
      */
@@ -1490,7 +1532,7 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
     /**
      * This function is used to set expiration date in database.
      *
-     * @param [int] $enquiry_id [Enquiry id]
+     * @param [int] $enquiry_id    [Enquiry id]
      * @param array $quotationData Quotation details
      */
     public static function setExpiry($enquiry_id, $quotationData)
@@ -1545,10 +1587,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         $quoteup->displayHistory->printSingleRow($history, $enquiryDetails);
         $getContent = ob_get_contents();
         ob_end_clean();
-        echo json_encode(array(
+        echo json_encode(
+            array(
             'status' => $history[ 'status' ],
             'table_row' => $getContent,
-        ));
+            )
+        );
         die();
     }
 
@@ -1573,10 +1617,12 @@ class QuoteupQuotesEdit extends Abstracts\QuoteupEdit
         $quoteup->displayVersions->printVersionRow($version, $versionDetails);
         $getContent = ob_get_contents();
         ob_end_clean();
-        echo json_encode(array(
+        echo json_encode(
+            array(
             'status' => $status,
             'table_row' => $getContent,
-        ));
+            )
+        );
         die();
     }
 }

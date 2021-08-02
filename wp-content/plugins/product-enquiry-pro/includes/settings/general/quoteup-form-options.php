@@ -8,7 +8,8 @@ if (!defined('ABSPATH')) {
 
 /**
  * This function is used to display form option fields
-  * @param [array] $form_data [Settings stored previously in database]
+ *
+ * @param [array] $form_data [Settings stored previously in database]
  */
 function formOptionsSection($form_data)
 {
@@ -42,7 +43,7 @@ function enquiryButtonLabel($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="custom_label">
-                <?php _e(' Enquiry Button Label ', QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e(' Enquiry Button Label ', QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
         <div class='right_div'>
@@ -71,7 +72,7 @@ function replaceEnquiry($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="replace_enquiry">
-                <?php _e(' Alternate word for Enquiry ', QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e(' Alternate word for Enquiry ', QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
         <div class='right_div'>
@@ -79,7 +80,7 @@ function replaceEnquiry($form_data)
             $helptip = __('Alternate word for Enquiry.', QUOTEUP_TEXT_DOMAIN);
             echo \quoteupHelpTip($helptip, true);
             ?>
-            <input type="text" class="wdm_wpi_input wdm_wpi_text" name="wdm_form_data[replace_enquiry]" value="<?php echo empty($form_data[ 'replace_enquiry' ]) ? 'Enquiry' : $form_data[ 'replace_enquiry' ]; ?>" id="replace_enquiry"  />
+            <input type="text" class="wdm_wpi_input wdm_wpi_text" name="wdm_form_data[replace_enquiry]" value="<?php echo empty($form_data[ 'replace_enquiry' ]) ? '' : $form_data[ 'replace_enquiry' ]; ?>" id="replace_enquiry"  />
         </div>
         <div class="clear"></div>
     </div>
@@ -98,7 +99,7 @@ function enquiryButtonLocation($form_data)
     <div class="fd">
         <div class='left_div'>
             <label>
-                <?php _e(' Button Location', QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e(' Button Location', QUOTEUP_TEXT_DOMAIN); ?>
 
             </label>
 
@@ -108,32 +109,41 @@ function enquiryButtonLocation($form_data)
             if (isset($form_data[ 'pos_radio' ])) {
                 $pos = $form_data[ 'pos_radio' ];
             } else {
-                $pos = 'show_after_summary';
+                $pos = 'after_add_cart';
             }
             ?>
 
             <input type="radio" class="wdm_wpi_input wdm_wpi_checkbox input-without-tip" name="wdm_form_data[pos_radio]"
-                   value="show_after_summary" 
+                   value="after_add_cart" 
                     <?php
-                    if ($pos == 'show_after_summary') {
+                    if ($pos == 'after_add_cart') {
                         ?> 
                     checked 
                         <?php
-                    } ?> id="show_after_summary" />
-                    <?php echo '<em>'.__(' After single product summary ', QUOTEUP_TEXT_DOMAIN).'</em>'; ?>
+                    }
+                    ?>
+                     id="after_add_cart" />
+                    <?php echo '<em>' . __(' After Add to cart button ', QUOTEUP_TEXT_DOMAIN) . '</em>'; ?>
 
             <br />
 
-
-            <input type="radio" class="wdm_wpi_input wdm_wpi_checkbox input-without-tip" name="wdm_form_data[pos_radio]" value="show_at_page_end" 
+            <input type="radio" class="wdm_wpi_input wdm_wpi_checkbox input-without-tip" name="wdm_form_data[pos_radio]" value="after_product_summary" 
             <?php
-            if ($pos == 'show_at_page_end') {
+            if ($pos == 'after_product_summary') {
                 ?>
                 checked
                 <?php
-            } ?> id="show_at_page_end" />
+            }
+            ?>
+             id="after_product_summary" />
 
-            <?php echo '<em>'.__(' At the end of single product page ', QUOTEUP_TEXT_DOMAIN).'</em>'; ?>
+            <?php echo '<em>' . __(' After single product summary ', QUOTEUP_TEXT_DOMAIN) . '</em>'; ?>
+
+            <!-- Help link for Enquiry Button shortcode -->
+            <div class="help-doc-link enq-btn-shortcode-link">
+                <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-tips-and-tricks/how-to-add-product-enquiry-pro-button-on-shop-and-single-product-page-i-am-using-page-builder/'); ?>" target="_blank"><i><?php echo esc_html(__('Learn how to: Place Enquiry button using shortcode', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
+            </div>
+            <!-- End of Help link for Enquiry Button shortcode -->
         </div>
         <div class="clear"></div>
     </div>
@@ -156,12 +166,12 @@ function enquiryAsLink($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="link">
-                <?php _e(' Display Enquiry Button As A Link ', QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e(' Display Enquiry Button As A Link ', QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
         <div class='right_div'>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox input-without-tip" value="1" <?php checked(1, $showButtonAsLink); ?> id="show_button_as_link" />
-            <input type="hidden" name="wdm_form_data[show_button_as_link]" value="<?php echo isset($form_data[ 'show_button_as_link' ]) && $form_data[ 'show_button_as_link' ] == 1 ? $form_data[ 'show_button_as_link' ] : 0 ?>" />
+            <input type="hidden" name="wdm_form_data[show_button_as_link]" value="<?php echo isset($form_data['show_button_as_link']) && $form_data['show_button_as_link'] == 1 ? $form_data['show_button_as_link'] : 0; ?>" />
 
         </div>
         <div class="clear"></div>
@@ -189,12 +199,12 @@ function displayWisdmlabs($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="link">
-                <?php _e(" Display 'Powered by WisdmLabs' ", QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e(" Display 'Powered by WisdmLabs' ", QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
         <div class='right_div'>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox input-without-tip" value="1" <?php checked(1, $displayWisdmlabs); ?> id="show_powered_by_link" />
-            <input type="hidden" name="wdm_form_data[show_powered_by_link]" value="<?php echo isset($form_data[ 'show_powered_by_link' ]) && $form_data[ 'show_powered_by_link' ] == 1 ? $form_data[ 'show_powered_by_link' ] : 0 ?>" />
+            <input type="hidden" name="wdm_form_data[show_powered_by_link]" value="<?php echo isset($form_data['show_powered_by_link']) && $form_data['show_powered_by_link'] == 1 ? $form_data['show_powered_by_link'] : 0; ?>" />
 
         </div>
         <div class="clear"></div>
@@ -215,15 +225,18 @@ function quoteupShowVariationIdSetting($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="variation_id_selector">
-                <?php _e('Selector for Variation Id', QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e('Selector for Variation Id', QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
-        <div class='right_div'>
+        <div class='right_div help-doc-link-textbox'>
             <?php
             $helptip = __('Enter the selector for Variation Id if variable products\' attributes are not getting added in an enquiry email or in an enquiry cart. This selector is used only on the variable product page to fetch the variation Id of the variation selected by the user.', QUOTEUP_TEXT_DOMAIN);
             echo \quoteupHelpTip($helptip, true);
             ?>
             <input type="text" class="wdm_wpi_input wdm_wpi_text" name="wdm_form_data[variation_id_selector]" value="<?php echo empty($form_data[ 'variation_id_selector' ]) ? '' : $form_data[ 'variation_id_selector' ]; ?>" id="variation_id_selector"  />
+        </div>
+        <div class="help-doc-link">
+            <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-troubleshooting/pep-is-not-showing-variation-attributes-in-the-enquiry-cart-and-in-the-enquiry-email/'); ?>" target="_blank"><i><?php echo esc_html(__('Help', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
         </div>
         <div class="clear"></div>
     </div>
@@ -238,7 +251,7 @@ function disableNonce($form_data)
     <div class="fd">
         <div class='left_div'>
             <label for="link">
-                <?php _e("Disable Nonce ", QUOTEUP_TEXT_DOMAIN) ?>
+                <?php _e('Disable Nonce', QUOTEUP_TEXT_DOMAIN); ?>
             </label>
         </div>
         <div class='right_div'>
@@ -247,7 +260,7 @@ function disableNonce($form_data)
             echo \quoteupHelpTip($helptip, true);
             ?>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, $disableNonce); ?> id="deactivate_nonce" />
-            <input type="hidden" name="wdm_form_data[deactivate_nonce]" value="<?php echo isset($form_data[ 'deactivate_nonce' ]) && $form_data[ 'deactivate_nonce' ] == 1 ? $form_data[ 'deactivate_nonce' ] : 0 ?>" />
+            <input type="hidden" name="wdm_form_data[deactivate_nonce]" value="<?php echo isset($form_data['deactivate_nonce']) && $form_data['deactivate_nonce'] == 1 ? $form_data['deactivate_nonce'] : 0; ?>" />
 
         </div>
         <div class="clear"></div>

@@ -33,6 +33,11 @@ global $quoteup;
             quoteupGetPublicTemplatePart('enquiry-cart/enquiry-cart-row', '', $args);
         }
 
+        if (!quoteupIsPriceColumnDisabled($form_data)) :
+            //This loads the template for enquiry cart row
+            quoteupGetPublicTemplatePart('enquiry-cart/enquiry-cart-total-row', '', $args);
+        endif;
+
         //This loads the template for enquiry cart row
         quoteupGetPublicTemplatePart('enquiry-cart/enquiry-cart-update-button-row', '', $args);
 

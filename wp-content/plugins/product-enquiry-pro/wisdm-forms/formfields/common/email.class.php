@@ -1,12 +1,14 @@
 <?php
 namespace Wisdmforms;
 
-class Email {
+class Email
+{
 
-    public function control_button() {
+    public function control_button()
+    {
         ob_start();
         ?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" for="Email">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" for="Email">
             <span class="lfi lfi-name"></span> <?php _e('Email', QUOTEUP_TEXT_DOMAIN) ?>
             <a title="<?php _e('Email', QUOTEUP_TEXT_DOMAIN) ?>" rel="Email" class="add" data-template='Email' href="#"><i class="glyphicon glyphicon-plus-sign pull-right ttipf" title=""></i></a>
         </li>
@@ -15,10 +17,11 @@ class Email {
         return ob_get_clean();
     }
 
-    public function field_settings($fieldindex, $fieldid, $field_infos) {
+    public function field_settings($fieldindex, $fieldid, $field_infos)
+    {
         ob_start();
-?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
+        ?>
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
             <input type="hidden" name="contact[fields][<?php echo $fieldindex ?>]" value="<?php echo $fieldid; ?>">
             <span id="label_<?php echo $fieldindex; ?>"><?php echo $field_infos[$fieldindex]['label'] ?>:</span>
             <?php
@@ -50,13 +53,13 @@ class Email {
                         </select>
                     </div> -->
                     <?php
-                    if(!isset($field_infos[$fieldindex]['primary']) || $field_infos[$fieldindex]['primary'] != 'yes') {
+                    // if(!isset($field_infos[$fieldindex]['primary']) || $field_infos[$fieldindex]['primary'] != 'yes') {
                         getFormRequiredDiv($fieldindex, $field_infos);
-                    }
+                    // }
                     ?>
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings",$fieldindex, $fieldid, $field_infos); ?>
-                <?php do_action("form_field_settings",$fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings", $fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_settings", $fieldindex, $fieldid, $field_infos); ?>
             </div>
             <div class="field-preview">
                 <?php     
@@ -71,7 +74,8 @@ class Email {
         return ob_get_clean();
     }
 
-    public function field_preview_html($params = array()) {
+    public function field_preview_html($params = array())
+    {
         ob_start();
         ?>
             <input type='text' disabled="disabled" name='submitform[]' class='form-control' value=''/>
@@ -80,7 +84,8 @@ class Email {
         return ob_get_clean();
     }
 
-    public function field_render_html($params = array()) {
+    public function field_render_html($params = array())
+    {
         ob_start();
         $condition_fields = '';
         $cond_action = '';
@@ -107,13 +112,19 @@ class Email {
                 global $current_user;
                 $value = $current_user->user_email;
             }
-            else if(!$isAdmin && isset($_COOKIE[ 'wdmuseremail' ]))
-            {
+            else if(!$isAdmin && isset($_COOKIE[ 'wdmuseremail' ])) {
                 $value = filter_var($_COOKIE[ 'wdmuseremail' ], FILTER_SANITIZE_EMAIL);
             }
         }
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
+            <?php
+            if (quoteupCFFieldsLabel(false, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <input type='text' name='submitform[<?php echo $name ?>]' class='form-control' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>' id='wdm-email' value='<?php echo $value;?>' <?php echo required($params); ?> data-primary='<?php echo $primary; ?>' data-rule-email="true"/>
             <div>
                 <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>
@@ -124,11 +135,12 @@ class Email {
         return ob_get_clean();
     }
 
-    public function configuration_template() {
+    public function configuration_template()
+    {
         ob_start();
         ?>
     <script type="text/x-mustache" id="template-Email">
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
             {{^event}}
                 <input type="hidden" name="contact[fieldsinfo][{{ID}}][primary]" value="yes">
             {{/event}}
@@ -158,7 +170,7 @@ class Email {
                     {{/event}}
                     
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings_template"); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings_template"); ?>
                 <?php do_action("form_field_settings_template"); ?>
             </div>
             <div class="field-preview">
@@ -171,7 +183,8 @@ class Email {
         return ob_get_clean();
     }
 
-    function process_field() {
+    function process_field()
+    {
         
     }
 

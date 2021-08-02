@@ -45,8 +45,9 @@ class QuoteUpWPMLCompatibility
     */
     public function __construct()
     {
+        // If devs want to change lang, they can call do_action in their code
         add_action('quoteup_change_lang', array($this, 'changeLang'));
-        //If devs want to reset lang, they can call do_action in their code
+        // If devs want to reset lang, they can call do_action in their code
         add_action('quoteup_reset_lang', array($this, 'resetLang'));
         add_action('wdm_before_send_admin_email', array($this, 'wdmBeforeSendAdminEmail'));
         add_action('wdm_before_create_pdf', array($this, 'wdmBeforeQuotePDF'));

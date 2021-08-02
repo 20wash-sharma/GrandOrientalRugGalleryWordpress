@@ -55,6 +55,8 @@ class QuoteupVendorEnquiryList
             // add_filter('quoteup_unread_enquiry_count_query', array($this, 'returnVendorUnreadEnquiryCountQuery'));
             add_filter('wdm_quote_list_columns', array($this, 'modifyListColumns'));
             add_filter('wdm_enquiry_list_columns', array($this, 'modifyListColumns'));
+            add_filter('quote_total_on_enquiry_list', array($this, 'modifyQuoteTotal'), 10, 2);
+            add_filter('order_id_ass_with_quote_on_enq_list', array($this, 'returnVendorSubOrderIdOfQuote'));
             add_action('admin_enqueue_scripts', array($this, 'loadEnquiryListPageScripts'));
             add_filter('quoteup_get_bulk_actions', array($this, 'removeExportBulkActions'), 20);
             add_filter('quoteup_enquiry_actions_cap', array($this, 'removeDeleteActionCap'));
@@ -323,6 +325,43 @@ class QuoteupVendorEnquiryList
         }
 
         return apply_filters('wdm_vendor_enquiry_quote_list_columns', $columns);
+    }
+
+    /**
+     * Return the quote total for a vendor.
+     *
+     * Callback for 'quote_total_on_enquiry_list' filter.
+     *
+     * @param   float|string   $total   Quote total or '-'.
+     * @param   array          $item    Enquiry details.
+     */
+    public function modifyQuoteTotal($total, $item)
+    {
+        if ('-' != $total) {
+            $enquiryId = $item['enquiry_id'];
+            $vendorId  = get_current_user_id();
+            $total     = quoteupGetTotalForVendorByEnquiryId($enquiryId, $vendorId);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Callback function 'order_id_ass_with_quote_on_enq_list' filter hook.
+     *
+     * Return the vendor's sub order Id associated with the quote.
+     *
+     * @param   int     $subOrderId  Parent Order Id.
+     *
+     * @return  int     Return sub orde Id if found, 0 otherwise.
+     */
+    public function returnVendorSubOrderIdOfQuote($subOrderId)
+    {
+        if ('-' != $subOrderId) {
+            $subOrderId = pepAddReturnVendorSubOrderId($subOrderId, get_current_user_id());
+        }
+
+        return $subOrderId;
     }
 
     /**

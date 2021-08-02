@@ -1,12 +1,14 @@
 <?php
 namespace Wisdmforms;
 
-class Date {
+class Date
+{
 
-    public function control_button() {
+    public function control_button()
+    {
         ob_start();
         ?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" for="Date">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" for="Date">
             <span class="lfi lfi-name"></span> <?php _e('Date', QUOTEUP_TEXT_DOMAIN) ?> 
             <a title="<?php _e('Date', QUOTEUP_TEXT_DOMAIN) ?>" rel="Date" class="add" data-template='Date' href="#"><i class="glyphicon glyphicon-plus-sign pull-right ttipf" title=""></i></a>
         </li>
@@ -15,10 +17,11 @@ class Date {
         return ob_get_clean();
     }
 
-    public function field_settings($fieldindex, $fieldid, $field_infos) {
+    public function field_settings($fieldindex, $fieldid, $field_infos)
+    {
         ob_start();
-?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
+        ?>
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
             <input type="hidden" name="contact[fields][<?php echo $fieldindex ?>]" value="<?php echo $fieldid; ?>">
             <span id="label_<?php echo $fieldindex; ?>"><?php echo $field_infos[$fieldindex]['label'] ?>:</span>
             <a href="#" rel="field_<?php echo $fieldindex; ?>" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
@@ -45,8 +48,8 @@ class Date {
                     </div> -->
                     <?php getFormRequiredDiv($fieldindex, $field_infos); ?>
                 </fieldset>
-                <?php do_action("form_field_date_settings",$fieldindex, $fieldid, $field_infos); ?>
-                <?php do_action("form_field_settings",$fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_date_settings", $fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_settings", $fieldindex, $fieldid, $field_infos); ?>
             </div>
             <div class="field-preview">
                 <?php     
@@ -61,7 +64,8 @@ class Date {
         return ob_get_clean();
     }
 
-    public function field_preview_html($params = array()) {
+    public function field_preview_html($params = array())
+    {
         ob_start();
         ?>
         <input class='form-control datepicker' disabled="disabled" type='text' name='submitform[]' />
@@ -70,7 +74,8 @@ class Date {
         return ob_get_clean();
     }
 
-    public function field_render_html($params = array()) {
+    public function field_render_html($params = array())
+    {
         ob_start();
         $date_format = dateFormatTojQueryUIDatePickerFormat(get_option('date_format'));
         $time_format = !isset($params['time-format']) ? "hh:mm" : $params['time-format'];
@@ -95,13 +100,19 @@ class Date {
         $name = $params['label'];
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label style="display:block; clear:both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <input class='form-control datepicker' type='text' name='submitform[<?php echo $name ?>]' id='<?php echo $datepicker_field_id ?>' <?php echo required($params); ?> onfocus="this.blur()" readonly="readonly"/>
             <div>
                 <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>
             </div>
         </div>
-        <?php if (isset($params['input_time']))  { ?>
+        <?php if (isset($params['input_time'])) { ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
                 jQuery('#<?php echo $datepicker_field_id ?>').datetimepicker({
@@ -116,9 +127,9 @@ class Date {
         <script type='text/javascript'>
             jQuery(document).ready(function() {
                 jQuery('#<?php echo $datepicker_field_id ?>').datepicker({
-                    dateFormat: '<?php echo $date_format ?>',
-                    minDate: '<?php echo $params['min_date'] ?>',
-                    maxDate: '<?php echo $params['max_date'] ?>',
+                    dateFormat: '<?php echo $date_format; ?>',
+                    minDate: '<?php echo $min_date; ?>',
+                    maxDate: '<?php echo $max_date; ?>',
                 });
             });
         </script>
@@ -128,11 +139,12 @@ class Date {
         return ob_get_clean();
     }
 
-    public function configuration_template() {
+    public function configuration_template()
+    {
         ob_start();
         ?>
     <script type="text/x-mustache" id="template-Date">
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
             <span id="label_{{ID}}">{{title}}</span>
             <a href="#" rel="field_{{ID}}" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
             <a href="#" class="cog-trigger" rel="#cog_{{ID}}"><i class="glyphicon glyphicon-cog pull-right button-buffer-right"></i></a>
@@ -159,7 +171,7 @@ class Date {
                     </div> -->
                     <?php getConfTempRequiredDiv(); ?>
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings_template"); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings_template"); ?>
                 <?php do_action("form_field_settings_template"); ?>
             </div>
             <div class="field-preview">
@@ -172,7 +184,8 @@ class Date {
         return ob_get_clean();
     }
 
-    function process_field() {
+    function process_field()
+    {
         
     }
 

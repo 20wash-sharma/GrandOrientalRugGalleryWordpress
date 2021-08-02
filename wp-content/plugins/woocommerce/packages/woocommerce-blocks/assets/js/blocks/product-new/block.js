@@ -2,17 +2,16 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { Disabled, PanelBody } from '@wordpress/components';
-import { InspectorControls, ServerSideRender } from '@wordpress/editor';
+import { InspectorControls } from '@wordpress/block-editor';
+import ServerSideRender from '@wordpress/server-side-render';
 import PropTypes from 'prop-types';
-
-/**
- * Internal dependencies
- */
-import GridContentControl from '../../components/grid-content-control';
-import GridLayoutControl from '../../components/grid-layout-control';
-import ProductCategoryControl from '../../components/product-category-control';
+import GridContentControl from '@woocommerce/editor-components/grid-content-control';
+import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
+import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
+import { gridBlockPreview } from '@woocommerce/resource-previews';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Component to handle edit mode of "Newest Products".
@@ -40,6 +39,10 @@ class ProductNewestBlock extends Component {
 						rows={ rows }
 						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
+						minColumns={ getSetting( 'min_columns', 1 ) }
+						maxColumns={ getSetting( 'max_columns', 6 ) }
+						minRows={ getSetting( 'min_rows', 1 ) }
+						maxRows={ getSetting( 'max_rows', 6 ) }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -48,7 +51,9 @@ class ProductNewestBlock extends Component {
 				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
 				<PanelBody
@@ -77,13 +82,20 @@ class ProductNewestBlock extends Component {
 	render() {
 		const { attributes, name } = this.props;
 
+		if ( attributes.isPreview ) {
+			return gridBlockPreview;
+		}
+
 		return (
-			<Fragment>
+			<>
 				{ this.getInspectorControls() }
 				<Disabled>
-					<ServerSideRender block={ name } attributes={ attributes } />
+					<ServerSideRender
+						block={ name }
+						attributes={ attributes }
+					/>
 				</Disabled>
-			</Fragment>
+			</>
 		);
 	}
 }

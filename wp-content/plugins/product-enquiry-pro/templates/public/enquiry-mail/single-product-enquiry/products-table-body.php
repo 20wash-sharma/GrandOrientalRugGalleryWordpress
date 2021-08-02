@@ -29,7 +29,7 @@ if ($variation_id != '') {
     $product = wc_get_product($variation_id);
     $sku = $product->get_sku();
     $variation_detail = $data_obtained_from_form['variation_detail'];
-    $price = quoteupGetPriceToDisplay($product);
+    $price = quoteupGetPriceToDisplay($product, $productQuantity);
     $img = wp_get_attachment_url(get_post_thumbnail_id($variation_id));
     $img_url = getImgUrl($img, $product_id);
 
@@ -38,12 +38,13 @@ if ($variation_id != '') {
     $variationStringToPrint = explode(",", $variationString);
 } else {
     $product = wc_get_product($product_id);
-    $price = quoteupGetPriceToDisplay($product);
+    $price = quoteupGetPriceToDisplay($product, $productQuantity);
 
     $sku = $product->get_sku();
     $img_url = wp_get_attachment_url(get_post_thumbnail_id($product_id));
 }
 //End of Variable Product
+
 if ($price == '') {
     $price = 0;
 }

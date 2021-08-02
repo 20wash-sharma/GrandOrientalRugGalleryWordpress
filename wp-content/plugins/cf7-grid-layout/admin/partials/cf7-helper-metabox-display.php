@@ -1,14 +1,11 @@
-<?php
-//helper snippets
-$post_my_form_only = ' no-post-my-form';
-if(is_plugin_active( 'post-my-contact-form-7/cf7-2-post.php' )){
-  $post_my_form_only='';
-}
-?>
 <p><?=__('Click on a link to copy the helper snippet code and paste it in your <em>functions.php</em> file.','cf7-grid-layout')?></p>
 <div id="helperdiv" class="postbox">
-  <button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text"><?=__('Toggle panel: Helper','cf7-grid-layout')?></span><span class="toggle-indicator" aria-hidden="true"></span></button>
-  <h2 class="hndle ui-sortable-handle"><span><?=__('Pre-form-loading hooks','cf7-grid-layout')?></span></h2>
+  <div class="postbox-header">
+    <h2><span><?=__('Pre-form-loading hooks','cf7-grid-layout')?></span></h2>
+      <div class="handle-actions hide-if-no-js">
+        <button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text"><?=__('Toggle panel: Helper','cf7-grid-layout')?></span><span class="toggle-indicator" aria-hidden="true"></span></button>
+    </div>
+  </div>
   <div class="inside">
     <p><?=__('Hooks fired prior to the form loading','cf7-grid-layout')?></p>
     <ol class="cf7sg-hooks helper-list">
@@ -17,8 +14,12 @@ if(is_plugin_active( 'post-my-contact-form-7/cf7-2-post.php' )){
   </div>
 </div>
 <div id="submithelperdiv" class="postbox">
-  <button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text"><?=__('Toggle panel: Helper','cf7-grid-layout')?></span><span class="toggle-indicator" aria-hidden="true"></span></button>
-  <h2 class="hndle ui-sortable-handle"><span><?=__('Post-form-submit hooks','cf7-grid-layout')?></span></h2>
+  <div class="postbox-header">
+    <h2 class="hndle ui-sortable-handle"><span><?=__('Post-form-submit hooks','cf7-grid-layout')?></span></h2>
+    <div class="handle-actions hide-if-no-js">
+      <button type="button" class="handlediv button-link" aria-expanded="true"><span class="screen-reader-text"><?=__('Toggle panel: Helper','cf7-grid-layout')?></span><span class="toggle-indicator" aria-hidden="true"></span></button>
+    </div>
+  </div>
   <div class="inside">
     <p><?=__('Hooks fired after the form is submitted','cf7-grid-layout')?></p>
     <ol class="cf7sg-hooks helper-list">
@@ -28,10 +29,15 @@ if(is_plugin_active( 'post-my-contact-form-7/cf7-2-post.php' )){
 </div>
 <div id="fieldhelperdiv" class="postbox" style="display:none;">
   <ul class="cf7sg-hooks helper-list">
-    <?php require_once plugin_dir_path( __FILE__ ) .'helpers/cf7sg-form-fields.php'; ?>
+    <?php do_action('cf7sg_ui_grid_helper_hooks') ?>
   </ul>
 </div>
-
+<!-- @since 3.3.0 -->
+<div id="fieldhelperjs" class="postbox" style="display:none;">
+  <ul class="cf7sg-hooks helper-list">
+    <?php do_action('cf7sg_ui_grid_js_helper_hooks') ?>
+  </ul>
+</div>
 <script type="text/javascript">
 (function($){
 	$(document).ready( function(){
@@ -42,7 +48,10 @@ if(is_plugin_active( 'post-my-contact-form-7/cf7-2-post.php' )){
           var text = $target.data('cf72post');
           //get post slug
           var key = $('#post_name').val();
-          return text.replace(/\{\$form_key\}/gi, key);
+          text = text.replace(/\{\$form_key\}/gi, key);
+          text = text.replace(/\{\$form_key_slug\}/gi, key.replace(/\-/g,'_'));
+          text = text.replace(/\[dqt\]/gi, '"');
+          return text;
         }
       });
     });

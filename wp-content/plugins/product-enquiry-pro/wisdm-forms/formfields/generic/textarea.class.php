@@ -82,10 +82,16 @@ class Textarea {
         $name = $params['label'];
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label for='field' style='display: none;clear: both'><?php echo pll__(quoteupReturnCustomFormFieldLabel($params['label'])); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(false, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <textarea  name='submitform[<?php echo $name ?>]' cols='1' rows='1' class='form-control' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>'  <?php echo required($params); ?>  ></textarea>
             <div>
-                <label class="field-note"><?php echo pll__(quoteupReturnCustomFormFieldNote($params['note'])); ?></label>
+                <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>
             </div>
         </div>
         <?php

@@ -13,8 +13,10 @@
  * @author  WisdmLabs
  * @version 6.1.0
  */
+global $quoteup;
 ?>
 <tr>
+    <?php do_action('quoteup_before_product_name', $data_obtained_from_form, $source); ?>
     <td class='product-name'>
         <a href='<?php echo $url; ?>'><?php echo $title; ?></a>
         <?php
@@ -27,23 +29,30 @@
         }
         ?>
     </td>
+    <?php do_action('quoteup_before_sku', $data_obtained_from_form, $source); ?>
     <td class='sku'>
         <?php echo $sku; ?>
     </td>
+    <?php do_action('quoteup_before_qty', $data_obtained_from_form, $source); ?>
     <td class='qty'>
         <?php echo $element['quant']; ?>
     </td>
     <?php
     // Check if 'Price' column disabled.
     if (!quoteupIsPriceColumnDisabled($form_data)) :
+        do_action('quoteup_before_price', $data_obtained_from_form, $source);
         ?>
         <td class='price'>
         <?php
-        if ($enable_price == 'yes'  || $source == 'admin') {
-            echo wc_price($element['price']);
-        } else {
-            echo '-';
+        $price = $quoteup->quoteupEnquiryCart->getTotalPrice($enable_price, $element);
+        if ($source == 'admin') {
+            $price = wc_price(floatval($element['price'])*$element['quant']);
         }
+        echo $price;
+        // if ($enable_price == 'yes'  || $source == 'admin') {
+        // } else {
+            // echo '-';
+        // }
         ?>
         </td>
         <?php
@@ -51,6 +60,7 @@
 
     // Check if 'Remarks' column disabled.
     if (!quoteupIsRemarksColumnDisabled($form_data)) :
+        do_action('quoteup_before_remarks', $data_obtained_from_form, $source);
         ?>
         <td class='remarks'>
             <?php echo $element[ 'remark' ]; ?> 

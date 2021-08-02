@@ -45,19 +45,34 @@
           <th scope="row"><?=__('Dropdown style','cf7-grid-layout')?></th>
           <td>
             <div>
-              <input name="select-style[]" class=" select-type "  type="radio" value="select" checked="checked"/>
-              <label><?=__('HTML Select field','cf7-grid-layout')?></label>
+              <label for="html-select">
+                <input name="select-style[]" id="html-select" class=" select-type "  type="radio" value="select" checked="checked"/>
+                <?=__('HTML Select field','cf7-grid-layout')?>
+              </label>
             </div>
             <div>
-              <input name="select-style[]" class=" select-type "  type="radio" value="nice" />
-              <label><a target="_blank" href="http://hernansartorio.com/jquery-nice-select/"><?=__('jQuery Nice Select','cf7-grid-layout')?></a></label>
+              <label for="nice-select">
+                <input id="nice-select" name="select-style[]" class=" select-type "  type="radio" value="nice" />
+                <a target="_blank" href="http://hernansartorio.com/jquery-nice-select/"><?=__('jQuery Nice Select','cf7-grid-layout')?></a>
+              </label>
             </div>
             <div>
-              <input name="select-style[]" class=" select-type "  type="radio" value="select2" />
-              <label><a target="_blank" href="https://select2.org/getting-started/basic-usage"><?=__('jQuery Select2','cf7-grid-layout')?></a></label>
-              <input name="select2-tags" id="select2-tags" type="checkbox" disabled value="select2tags"/>
-              <label for="select2-tags"><a target="_blank" href="https://select2.org/tagging"><?=__('Enable user options','cf7-grid-layout')?></a></label>
+              <label for="select2-select">
+                <input id="select2-select" name="select-style[]" class=" select-type "  type="radio" value="select2" />
+                <a target="_blank" href="https://select2.org/getting-started/basic-usage"><?=__('jQuery Select2','cf7-grid-layout')?></a>
+              </label>
+              <label for="select2-tags" class="display-none">
+                <input name="select2-tags" id="select2-tags" type="checkbox" disabled value="select2tags"/>
+                <a target="_blank" href="https://select2.org/tagging"><?=__('Enable user options','cf7-grid-layout')?></a>
+              </label>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row"><?=__('Mutliple attribute','cf7-grid-layout')?></th>
+          <td>
+            <input name="select-multiple" id="select-multiple" type="checkbox" value="multiple"/>
+            <a target="_blank" href="https://www.w3schools.com/tags/att_select_multiple.asp"><?=__('Enable multiple selection','cf7-grid-layout')?></a>
           </td>
         </tr>
       </tbody>
@@ -157,6 +172,7 @@
             <option value="post"><?=__('Posts','cf7-grid-layout')?></option>
             <option value="page"><?=__('Pages','cf7-grid-layout')?></option>
           </select>
+          <label><input type="checkbox" id="include-post-links"/><?= __('Include post links','cf7-grid-layout')?></label>
 
   <?php foreach($taxonomy_lists as $type=>$list ):
           if(empty($list)) continue;
@@ -175,16 +191,7 @@
         <article>
           <h4><?=__('Custom source','cf7-grid-layout')?></h4>
           <p class="position-relative">
-            <?= __('Hook the following filter to programmatically load the drodown options', 'cf7-grid-layout');?> <a class="helper init" data-cf72post="add_filter('cf7sg_dynamic_dropdown_custom_options', 'filter_options',10,3);
-function filter_options($options, $field_name, $form_key){
-  if($form_key != 'my-form') return $options; //check this is the correct form.
-  if($field_name != 'custom-dropdown') return $options; //check this is the correct field.
-  $options = array();
-  //load your options programmatically, as $value=>$name pairs.
-  $options['val1']='Value 1';
-  $options['val2']='Value 2';
-  return $options;
-}" href="javascript:void(0);">cf7sg_dynamic_dropdown_custom_options</a>
+            <?= __('Copy the following <a href="javascript:void(0);">filter</a> to your <em>functions.php</em> file.', 'cf7-grid-layout');?>
           </p>
         </article>
       </section>

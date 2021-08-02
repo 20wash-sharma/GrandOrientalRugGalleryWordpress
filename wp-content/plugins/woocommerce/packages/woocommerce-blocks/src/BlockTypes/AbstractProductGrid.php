@@ -1,13 +1,9 @@
 <?php
-/**
- * Class for product grid functionality
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-defined( 'ABSPATH' ) || exit;
+use Automattic\WooCommerce\Blocks\Utils\BlocksWpQuery;
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * AbstractProductGrid class.
@@ -40,11 +36,11 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
-	protected function get_attributes() {
+	protected function get_block_type_attributes() {
 		return array(
 			'className'         => $this->get_schema_string(),
 			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
+			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
 			'categories'        => $this->get_schema_list_ids(),
 			'catOperator'       => array(
 				'type'    => 'string',
@@ -53,6 +49,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'contentVisibility' => $this->get_schema_content_visibility(),
 			'align'             => $this->get_schema_align(),
 			'alignButtons'      => $this->get_schema_boolean( false ),
+			'isPreview'         => $this->get_schema_boolean( false ),
 		);
 	}
 
@@ -63,15 +60,55 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @param string $content    Block content. Default empty string.
 	 * @return string Rendered block type output.
 	 */
-	public function render( $attributes = array(), $content = '' ) {
+	protected function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
 		$this->query_args = $this->parse_query_args();
-		$products         = $this->get_products();
-		$classes          = $this->get_container_classes();
-		$output           = implode( '', array_map( array( $this, 'render_product' ), $products ) );
+		$products         = array_filter( array_map( 'wc_get_product', $this->get_products() ) );
 
-		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
+		if ( ! $products ) {
+			return '';
+		}
+
+		/**
+		 * Product List Render event.
+		 *
+		 * Fires a WP Hook named `experimental__woocommerce_blocks-product-list-render` on render so that the client
+		 * can add event handling when certain products are displayed. This can be used by tracking extensions such
+		 * as Google Analytics to track impressions.
+		 *
+		 * Provides the list of product data (shaped like the Store API responses) and the block name.
+		 */
+		$this->asset_api->add_inline_script(
+			'wp-hooks',
+			'
+			window.addEventListener( "DOMContentLoaded", () => {
+				wp.hooks.doAction(
+					"experimental__woocommerce_blocks-product-list-render",
+					{
+						products: JSON.parse( decodeURIComponent( "' . esc_js(
+				rawurlencode(
+					wp_json_encode(
+						array_map(
+							[ Package::container()->get( SchemaController::class )->get( 'product' ), 'get_item_response' ],
+							$products
+						)
+					)
+				)
+			) . '" ) ),
+						listName: "' . esc_js( $this->block_name ) . '"
+					}
+				);
+			} );
+			',
+			'after'
+		);
+
+		return sprintf(
+			'<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>',
+			esc_attr( $this->get_container_classes() ),
+			implode( '', array_map( array( $this, 'render_product' ), $products ) )
+		);
 	}
 
 	/**
@@ -114,7 +151,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		// These should match what's set in JS `registerBlockType`.
 		$defaults = array(
 			'columns'           => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-			'rows'              => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
+			'rows'              => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
 			'alignButtons'      => false,
 			'categories'        => array(),
 			'catOperator'       => 'any',
@@ -253,25 +290,14 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
-		$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
-		$transient_name    = 'wc_block_' . $query_hash;
-		$transient_value   = get_transient( $transient_name );
+		$is_cacheable      = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 		$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
 
-		if ( isset( $transient_value['value'], $transient_value['version'] ) && $transient_value['version'] === $transient_version ) {
-			$results = $transient_value['value'];
-		} else {
-			$query           = new \WP_Query( $this->query_args );
-			$results         = wp_parse_id_list( $query->posts );
-			$transient_value = array(
-				'version' => $transient_version,
-				'value'   => $results,
-			);
-			set_transient( $transient_name, $transient_value, DAY_IN_SECONDS * 30 );
+		$query   = new BlocksWpQuery( $this->query_args );
+		$results = wp_parse_id_list( $is_cacheable ? $query->get_cached_posts( $transient_version ) : $query->get_posts() );
 
-			// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
-			WC()->query->remove_ordering_args();
-		}
+		// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
+		WC()->query->remove_ordering_args();
 
 		// Prime caches to reduce future queries.
 		if ( is_callable( '_prime_post_caches' ) ) {
@@ -316,16 +342,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	/**
 	 * Render a single products.
 	 *
-	 * @param int $id Product ID.
+	 * @param \WC_Product $product Product object.
 	 * @return string Rendered product output.
 	 */
-	public function render_product( $id ) {
-		$product = wc_get_product( $id );
-
-		if ( ! $product ) {
-			return '';
-		}
-
+	protected function render_product( $product ) {
 		$data = (object) array(
 			'permalink' => esc_url( $product->get_permalink() ),
 			'image'     => $this->get_image_html( $product ),
@@ -360,7 +380,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -373,7 +393,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
 			return '';
 		}
-		return '<div class="wc-block-grid__product-title">' . $product->get_title() . '</div>';
+		return '<div class="wc-block-grid__product-title">' . wp_kses_post( $product->get_title() ) . '</div>';
 	}
 
 	/**
@@ -393,7 +413,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( $rating_count > 0 ) {
 			return sprintf(
 				'<div class="wc-block-grid__product-rating">%s</div>',
-				wc_get_rating_html( $average, $rating_count )
+				wc_get_rating_html( $average, $rating_count ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			);
 		}
 		return '';
@@ -411,7 +431,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 		return sprintf(
 			'<div class="wc-block-grid__product-price price">%s</div>',
-			$product->get_price_html()
+			wp_kses_post( $product->get_price_html() )
 		);
 	}
 
@@ -430,7 +450,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return;
 		}
 
-		return '<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>';
+		return '<div class="wc-block-grid__product-onsale">
+			<span aria-hidden="true">' . esc_html__( 'Sale', 'woocommerce' ) . '</span>
+			<span class="screen-reader-text">' . esc_html__( 'Product on sale', 'woocommerce' ) . '</span>
+		</div>';
 	}
 
 	/**
@@ -462,7 +485,11 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'class'            => 'wp-block-button__link add_to_cart_button',
 		);
 
-		if ( $product->supports( 'ajax_add_to_cart' ) ) {
+		if (
+			$product->supports( 'ajax_add_to_cart' ) &&
+			$product->is_purchasable() &&
+			( $product->is_in_stock() || $product->backorders_allowed() )
+		) {
 			$attributes['class'] .= ' ajax_add_to_cart';
 		}
 
@@ -472,5 +499,22 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			wc_implode_html_attributes( $attributes ),
 			esc_html( $product->add_to_cart_text() )
 		);
+	}
+
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+		$this->asset_data_registry->add( 'min_columns', wc_get_theme_support( 'product_blocks::min_columns', 1 ), true );
+		$this->asset_data_registry->add( 'max_columns', wc_get_theme_support( 'product_blocks::max_columns', 6 ), true );
+		$this->asset_data_registry->add( 'default_columns', wc_get_theme_support( 'product_blocks::default_columns', 3 ), true );
+		$this->asset_data_registry->add( 'min_rows', wc_get_theme_support( 'product_blocks::min_rows', 1 ), true );
+		$this->asset_data_registry->add( 'max_rows', wc_get_theme_support( 'product_blocks::max_rows', 6 ), true );
+		$this->asset_data_registry->add( 'default_rows', wc_get_theme_support( 'product_blocks::default_rows', 3 ), true );
 	}
 }

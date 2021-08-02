@@ -16,20 +16,20 @@ jQuery('#dialog_product_color').wpColorPicker();
     };
     jQuery('.tips, .help_tip, .woocommerce-help-tip').tipTip(tiptip_args);
 
-    jQuery('#manual_css:checked').live("click", function () {
+    jQuery('#wdm_display').on("click", "#manual_css:checked", function () {
         jQuery('#Other_Settings').css('display', 'block');
     });
 
-    jQuery('#theme_css:checked').live("click", function () {
+    jQuery('#wdm_display').on("click", '#theme_css:checked', function () {
         jQuery('#Other_Settings').css('display', 'none');
     });
 
-    jQuery('#default:checked').live("click", function () {
+    jQuery('#wdm_form').on("click", "#default:checked", function () {
         jQuery('#default_Settings').css('display', 'block');
         jQuery('#custom_Settings').css('display', 'none');
     });
 
-    jQuery('#custom:checked').live("click", function () {
+    jQuery('#wdm_form').on("click", "#custom:checked", function () {
         jQuery('#custom_Settings').css('display', 'block');
         jQuery('#default_Settings').css('display', 'none');
     });
@@ -96,13 +96,14 @@ jQuery('#btnMigrate').click(function () {
     });
 });
     // settings tab display
-    jQuery('#tab-container').easytabs();
+    jQuery('#tab-container').easytabs({updateHash: false});
     $selectedTab = jQuery('#tab-container .etabs li.active').find('.active').closest('a').attr("href");
     $url = jQuery('input[name="_wp_http_referer"]').val();
     if ($url.indexOf("#wdm_") !== -1) {
       $url = $url.substr(0, $url.indexOf("#wdm_"));
   }
-  if($selectedTab == '#wdm_other_extensions') {
+  if($selectedTab == '#wdm_other_extensions' || $selectedTab == '#wdm_whats_new') {
+    quoteupWhatsNewTabVisited();
     jQuery('#wdm_ask_button').hide();
 } else {
     jQuery('#wdm_ask_button').show();
@@ -111,8 +112,7 @@ jQuery('#btnMigrate').click(function () {
   jQuery('input[name="_wp_http_referer"]').val($url+$selectedTab)
   jQuery('#tab-container')
   .bind('easytabs:after', function () {
-
-      $selectedTab = jQuery(this).find('.active').closest('a').attr("href");
+          $selectedTab = jQuery(this).find('.active').closest('a').attr("href");
         // jQuery['input[name="_wp_http_referer"']
         $url = jQuery('input[name="_wp_http_referer"]').val();
         if ($url.indexOf("#wdm_") !== -1) {
@@ -120,7 +120,8 @@ jQuery('#btnMigrate').click(function () {
         }
         jQuery('input[name="_wp_http_referer"]').val($url+$selectedTab)
 
-        if($selectedTab == '#wdm_other_extensions') {
+        if($selectedTab == '#wdm_other_extensions' || $selectedTab == '#wdm_whats_new') {
+            quoteupWhatsNewTabVisited();
             jQuery('#wdm_ask_button').hide();
         } else {
             jQuery('#wdm_ask_button').show();
@@ -438,7 +439,7 @@ jQuery("#ask_product_form").submit(function ( e ) {
         }
     }
 
-    // Show and hide 'set_deadline_after_hours' setting.
+    // Show and hide 'set_deadline_after_days' setting.
     function showHideSetDeadlineAfterHours()
     {
         let isVendorCompEnabled  = jQuery("#enable_comp_vendors").is(':checked'),
@@ -449,6 +450,24 @@ jQuery("#ask_product_form").submit(function ( e ) {
         } else {
             jQuery('.enable-auto-set-dl-depended').hide();
         }
+    }
+
+    function quoteupWhatsNewTabVisited()
+    {
+        let ajaxdata = {
+            action: 'wdm_whats_new_visited',
+        };
+        
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: ajaxdata,
+            success: function ( response ) {
+                if (response == 'valid') {
+                    jQuery('.pep-update-dot').hide();
+                }
+            },
+        } );
     }
 
     manipulateEnquiryMailAndCartOptions();

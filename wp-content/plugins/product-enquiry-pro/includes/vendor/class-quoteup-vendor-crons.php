@@ -67,13 +67,22 @@ class QuoteupVendorCrons
      */
     public function setCrons($enquiryId, $deadline)
     {
+        $enquiryId = (int) $enquiryId;
+
         // Reminder cron collections.
-        $remCronColl = array(
-            'quoteup_remind_vendors',
-            'quoteup_remind_admin',
+        $remCronColl = array (
             'quoteup_remind_admin_deadline'
         );
-        // Use the filter to remove any of the reminder crons from getting set.
+
+        if (quoteupIsVendorReminderEnabled()) {
+            $remCronColl[] = 'quoteup_remind_vendors';
+        }
+
+        if (quoteupIsAdminReminderEnabled()) {
+            $remCronColl[] = 'quoteup_remind_admin';
+        }
+
+        // Use the filter to configure the reminder crons.
         $remCronColl = apply_filters('quoteup_admin_vendor_rem_cron_coll', $remCronColl);
 
         // Clear all crons.
@@ -99,8 +108,9 @@ class QuoteupVendorCrons
      * Remove the earlier set crons.
      *
      */
-    public function clearCrons($enquiryId, $deadline)
+    public function clearCrons($enquiryId, $deadline = '')
     {
+        $enquiryId = (int) $enquiryId;
         do_action('quoteup_vendor_before_crons_cleared', $enquiryId, $deadline);
 
         wp_clear_scheduled_hook('quoteup_remind_vendors', array($enquiryId));

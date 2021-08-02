@@ -81,7 +81,6 @@ function quotationApprovalRejectionPage($form_data)
 function approveButtonLabel($form_data)
 {
     ?>
-
     <div class="fd">
         <div class='left_div'>
             <label for="approve_custom_label">
@@ -99,8 +98,6 @@ function approveButtonLabel($form_data)
         </div>
         <div class="clear"></div>
     </div>
-
-
     <?php
 }
 

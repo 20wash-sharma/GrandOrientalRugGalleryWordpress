@@ -19,7 +19,7 @@ global $product;
                 $variations = $variationData;
                 if (is_array($variations)) {
                     foreach ($variations as $key => $value) {
-                        if (strcasecmp(preg_replace('/[^A-Za-z0-9\-_]/', '', $attribute_name), trim($key)) == 0) {
+                        if (strcasecmp(preg_replace('/[^A-Za-z0-9\-_]/', '', sanitize_title($attribute_name)), trim($key)) == 0) {
                             $attribute_value_saved_in_db = stripcslashes($value);
                             break 1;
                         }
@@ -105,3 +105,4 @@ global $product;
 
 <?php
 do_action('woocommerce_after_add_to_cart_form');
+

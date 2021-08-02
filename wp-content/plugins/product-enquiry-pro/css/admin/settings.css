@@ -127,7 +127,7 @@ ul.etabs:after {
     -webkit-border-radius: 0 4px 4px 4px;
 }
 
-#wdm_general, #wdm_email, #wdm_display, #wdm_quote, #wdm_form, #wdm_other_extensions, #wdm_privacy, #wdm_vendor
+#wdm_general, #wdm_email, #wdm_display, #wdm_quote, #wdm_mini_cart, #wdm_form, #wdm_other_extensions, #wdm_privacy, #wdm_vendor
 {
     margin-top: 20px
 }
@@ -170,14 +170,64 @@ ul.etabs:after {
     float:left
 }
 
-.right_div{
+.right_div {
     width:72%;
     float:left
 }
 
-.clear{
+.clear {
     clear:both
 }
+
+/* Help link CSS */
+.help-doc-link-checkbox {
+    width: auto;
+}
+
+.help-doc-link-textbox {
+    width: 36%;
+}
+
+.help-doc-link-textbox input {
+    width: 92%;
+}
+
+.help-doc-link-upload-field {
+    width: 45%;
+}
+
+.help-doc-link-upload-field input {
+    width: 72%;
+}
+
+.help-doc-link-textbox + .help-doc-link a, .help-doc-link-upload-field + .help-doc-link a {
+    vertical-align: sub;
+}
+
+.help-doc-link.legend-wrapper {
+    display: inline-block;
+}
+
+.help-doc-link.legend-wrapper a {
+    display: block;
+    margin-left: 20%;
+}
+
+.help-doc-link {
+    display: inline;
+}
+
+.help-doc-link.enq-btn-shortcode-link {
+    display: block;
+    margin: 1%;
+}
+
+.help-doc-link a {
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 1%;
+}
+/* End of Help link CSS */
 
 .fd{
     width:100%;

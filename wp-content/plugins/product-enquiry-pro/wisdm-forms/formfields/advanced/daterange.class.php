@@ -97,7 +97,13 @@ class Daterange {
         $name = $params['label'];
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label style="display:block; clear:both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <div class='row' >
                 <div class="col-md-6">
                     <input class='form-control datepicker' type='text' name='submitform[<?php echo $name ?> from]' id='<?php echo $datepicker_field1_id ?>' <?php echo required($params); ?> onfocus="this.blur()" readonly="readonly"/>

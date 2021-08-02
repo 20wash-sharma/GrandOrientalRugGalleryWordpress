@@ -1,4 +1,4 @@
-jQuery(window).load(function() {
+jQuery(window).on("load", function() {
 
     /**
      * Function to check if rating is set and is greater than 0

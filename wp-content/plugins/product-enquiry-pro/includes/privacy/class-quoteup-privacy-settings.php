@@ -86,9 +86,9 @@ class QuoteupPrivacySettings
                 <?php
             }
             do_action('quoteup_privacy_settings', $form_data);
-        ?>
+            ?>
         </div>
-    <?php
+        <?php
     }
 
     /**
@@ -161,7 +161,7 @@ class QuoteupPrivacySettings
             }
 
             $this->displayFieldsInAccordion($common_fields_checkboxes, $default_form_fields_checkboxes, $custom_form_fields_checkboxes);
-        ?>
+            ?>
         </fieldset>
         <?php
     }
@@ -245,7 +245,7 @@ class QuoteupPrivacySettings
             <?php
             $this->renderTermsConditions($form_data);
             $this->renderEnquiryPrivacyPolicy($form_data);
-        ?>
+            ?>
         </fieldset>
         <?php
     }
@@ -411,7 +411,7 @@ class QuoteupPrivacySettings
             <?php
             $this->renderCookieConsentCheckbox($form_data);
             $this->renderCookieTextSetting($form_data);
-        ?>
+            ?>
         </fieldset>
         <?php
     }

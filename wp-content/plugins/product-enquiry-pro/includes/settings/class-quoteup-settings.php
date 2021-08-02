@@ -93,13 +93,13 @@ class QuoteupSettings
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
         //Default CSS Of woocommerce
-        wp_enqueue_style('woocommerce_admin_styles', plugin_dir_url(dirname(dirname(dirname(__FILE__)))).'woocommerce/assets/css/admin.css');
-        wp_enqueue_style('quoteup_db_style', QUOTEUP_PLUGIN_URL.'/css/admin/settings.css');
-        wp_enqueue_script('hashchange', QUOTEUP_PLUGIN_URL.'/js/admin/jquery.hashchange.min.js');
-        wp_enqueue_script('tabs', QUOTEUP_PLUGIN_URL.'/js/admin/jquery.easytabs.min.js');
-        wp_enqueue_script('jquery-tiptip', array('jquery'));
-        // wp_enqueue_script('jquery-ui-accordion', array('jquery'));
-        wp_enqueue_script('quoteup-settings', QUOTEUP_PLUGIN_URL.'/js/admin/settings.js', array('jquery', 'wp-color-picker'));
+        wp_enqueue_style('woocommerce_admin_styles', plugin_dir_url(dirname(dirname(dirname(__FILE__)))).'woocommerce/assets/css/admin.css', array(), filemtime(QUOTEUP_WC_PLUGIN_DIR.'/assets/css/admin.css'));
+        wp_enqueue_style('quoteup_db_style', QUOTEUP_PLUGIN_URL.'/css/admin/settings.css', array(), filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/settings.css'));
+        wp_enqueue_style('quoteup-whats-new-tab-css', QUOTEUP_PLUGIN_URL.'/css/admin/whats-new-tab.css', array(), filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/whats-new-tab.css'));
+        wp_enqueue_style('quoteup-feedback-css', QUOTEUP_PLUGIN_URL.'/css/admin/feedback.css', array(), filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/feedback.css'));
+        wp_enqueue_script('tabs', QUOTEUP_PLUGIN_URL.'/js/admin/jquery.easytabs.min.js', array('jquery'), filemtime(QUOTEUP_PLUGIN_DIR.'/js/admin/jquery.easytabs.min.js'));
+        wp_enqueue_script('jquery-tiptip');
+        wp_enqueue_script('quoteup-settings', QUOTEUP_PLUGIN_URL.'/js/admin/settings.js', array('jquery', 'wp-color-picker'), filemtime(QUOTEUP_PLUGIN_DIR.'/js/admin/settings.js'));
 
         wp_localize_script(
             'quoteup-settings',
@@ -127,7 +127,7 @@ class QuoteupSettings
         wp_enqueue_media();
 
         // Register, localize and enqueue our custom JS.
-        wp_register_script('tgm-nmp-media', QUOTEUP_PLUGIN_URL.'/js/admin/media-uploader.js');
+        wp_register_script('tgm-nmp-media', QUOTEUP_PLUGIN_URL.'/js/admin/media-uploader.js', array('jquery'), filemtime(QUOTEUP_PLUGIN_DIR.'/js/admin/media-uploader.js'));
         wp_localize_script(
             'tgm-nmp-media',
             'tgm_nmp_media',
@@ -138,7 +138,7 @@ class QuoteupSettings
         );
         wp_enqueue_script('tgm-nmp-media');
 
-        wp_register_style('extensions-promotion', QUOTEUP_PLUGIN_URL.'/css/admin/extension.css');
+        wp_register_style('extensions-promotion', QUOTEUP_PLUGIN_URL.'/css/admin/extension.css', array(), filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/extension.css'));
 
         // Enqueue admin styles
         wp_enqueue_style('extensions-promotion');
@@ -157,8 +157,11 @@ class QuoteupSettings
         include_once 'quoteup-display.php';
         include_once 'settings-tabs.php';
         include_once 'quoteup-quote.php';
+        include_once 'quoteup-mini-cart.php';
         include_once 'quoteup-form.php';
         include_once 'quoteup-other-extensions.php';
+        include_once 'quoteup-whats-new.php';
+        include_once 'quoteup-feedback.php';
         ?>
         <!--dashboard settings design-->
         <div class='wrap'>
@@ -173,16 +176,16 @@ class QuoteupSettings
             <form name="ask_product_form" id="ask_product_form" class="form-table" method="POST" action="options.php">
                 <?php
                 settings_fields('wdm_form_options');
-                $default_vals = array('show_after_summary' => 1,
+                $default_vals = array('after_add_cart' => 1,
                     'button_CSS' => 'theme_css',
-                    'pos_radio' => 'show_after_summary',
+                    'pos_radio' => 'after_add_cart',
                     'show_powered_by_link' => 0,
                     'enable_send_mail_copy' => 0,
                     'only_if_out_of_stock' => 0,
                 );
                 $form_data = '';
                 $form_data = get_option('wdm_form_data', $default_vals);
-            ?>
+                ?>
                 <div id="tab-container" class="tab-container">
                     <?php
                     settingsTabs($form_data);
@@ -190,11 +193,14 @@ class QuoteupSettings
                     emailSettings($form_data);
                     displaySettings($form_data);
                     quoteSettings($form_data);
+                    miniCartSettings($form_data);
                     formSettings($form_data);
                     otherExtensionsSettings($form_data);
+                    quoteupWhatsNewTab($form_data);
+                    quoteupShowSideBarFeedback($form_data);
                     do_action('quoteup_add_product_enquiry_tab_content', $form_data);
                     do_action('wdm_pep_add_product_enquiry_tab_content', $form_data);
-            ?>
+                    ?>
                 </div>
                 <input type="submit" class="wdm_wpi_input button-primary" value="<?php _e('Save changes', QUOTEUP_TEXT_DOMAIN) ?>" id="wdm_ask_button" />
 

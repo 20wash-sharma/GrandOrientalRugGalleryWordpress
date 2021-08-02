@@ -10,6 +10,7 @@ WC()->mailer();
 /**
  * This class is used to send mail to customer.
  * Mail includes pdf and the unique link by which customer can approve or reject quote.
+ *
  * @static instance Object of class
  * $mailData array Mail data 
  */
@@ -19,9 +20,10 @@ class SendQuoteMail extends \WC_Email
     private static $instance;
     private $mailData;
     /**
-    * Gets Static instance of the Quote Email
-    * @param array $mailPostData Data associated with quote mail
-    */
+     * Gets Static instance of the Quote Email
+     *
+     * @param array $mailPostData Data associated with quote mail
+     */
     public static function getInstance($mailPostData)
     {
         if (null === static::$instance) {
@@ -31,14 +33,15 @@ class SendQuoteMail extends \WC_Email
         return static::$instance;
     }
     /**
-    * Prepares the content for mail and send the mail.
+     * Prepares the content for mail and send the mail.
+     *
      * @param array $mailPostData Data associated with quote mail
-    */
+     */
 
     public function __construct($mailPostData)
     {
         $this->mailData = $mailPostData;
-        add_filter('woocommerce_email_styles', array($this,'addCSS') , 10, 1);
+        add_filter('woocommerce_email_styles', array($this,'addCSS'), 10, 1);
         if ($this->mailData['subject'] == '') {
             $this->mailData['subject'] = __('Quotation', QUOTEUP_TEXT_DOMAIN);
         }
@@ -54,7 +57,7 @@ class SendQuoteMail extends \WC_Email
         $this->template_html  = 'emails/quote.php';
 
         // Triggers for this email
-        add_action( 'quoteup_send_quote_email', array( $this, 'trigger' ), 15, 1 );
+        add_action('quoteup_send_quote_email', array( $this, 'trigger' ), 15, 1);
 
         parent::__construct();
 
@@ -62,9 +65,10 @@ class SendQuoteMail extends \WC_Email
     }
 
     /**
-    * This returns the CSS for pdf 
-    * @return string $css css for pdf
-    */
+     * This returns the CSS for pdf 
+     *
+     * @return string $css css for pdf
+     */
     public function addCSS($css)
     {
         $stylesheet = file_get_contents(QUOTEUP_PLUGIN_DIR.'/css/admin/pdf-generation.css');
@@ -72,8 +76,8 @@ class SendQuoteMail extends \WC_Email
     }
 
     /**
-    * Sends the email with the data to specific recipient.
-    */
+     * Sends the email with the data to specific recipient.
+     */
     public function trigger()
     {
         $this->send($this->recipient, $this->get_subject(), $this->get_content(), $this->get_headers(), $attachments = $this->get_attachments());
@@ -83,18 +87,19 @@ class SendQuoteMail extends \WC_Email
         }
     }
     /**
-    * Gets the contet in HTML for the mail to be sent.
-    * Gets the Products for the enquiry from database.
-    * Generates the PDF.
-    * Updates History table for changing it to Enquiry sent.
-    * @return HTML $message content of email
-    */
+     * Gets the contet in HTML for the mail to be sent.
+     * Gets the Products for the enquiry from database.
+     * Generates the PDF.
+     * Updates History table for changing it to Enquiry sent.
+     *
+     * @return HTML $message content of email
+     */
     public function get_content_html()
     {
         global $wpdb;
         $language         = isset($this->mailData['language']) ? $this->mailData['language'] : 'all';
         $enquiry_id       = filter_var($this->mailData['enquiry_id'], FILTER_SANITIZE_NUMBER_INT);
-        $original_message = wp_kses($this->mailData['message'], array());
+        $original_message = wp_kses_post(wpautop(wptexturize($this->mailData['message'])));
         $table_name       = getEnquiryDetailsTable();
         $quote_table_name = getQuotationProductsTable();
         $sql2             = $wpdb->prepare("SELECT show_price FROM $quote_table_name WHERE enquiry_id=%d", $enquiry_id);
@@ -132,17 +137,19 @@ class SendQuoteMail extends \WC_Email
         return $message;
     }
     /**
-    * Gets the Header for email
-    * @return string $header Email header
-    */
+     * Gets the Header for email
+     *
+     * @return string $header Email header
+     */
     public function get_headers()
     {
-        return apply_filters('quoteup_quote_mail_header', '' ,$this->mailData);
+        return apply_filters('quoteup_quote_mail_header', '', $this->mailData);
     }
     /**
-    * Gets the generated pdf from the uploads directory to set in the attachments for mail.
-    * @return array $attachments 
-    */
+     * Gets the generated pdf from the uploads directory to set in the attachments for mail.
+     *
+     * @return array $attachments 
+     */
     public function get_attachments()
     {
         global $wpdb;
@@ -158,9 +165,15 @@ class SendQuoteMail extends \WC_Email
         }
         $attachments = "";
         if ($form_data['enable_disable_quote_pdf']) {
-            copy($upload_dir['basedir'].'/QuoteUp_PDF/'.$enquiry_id.'.pdf', $upload_dir['basedir'].'/QuoteUp_PDF/Quotation '.$hash['name'].'.pdf');
-            $attachments = array($upload_dir['basedir'].'/QuoteUp_PDF/Quotation '.$hash['name'].'.pdf');
+            do_action('quoteup_change_lang', isset($this->mailData['language']) ? $this->mailData['language'] : 'all');
+            $fileName = __('Quotation', QUOTEUP_TEXT_DOMAIN);
+            do_action('quoteup_reset_lang');
+
+            $fileName = apply_filters('quoteup_pdf_file_name', $fileName);
+            copy($upload_dir['basedir'].'/QuoteUp_PDF/'.$enquiry_id.'.pdf', $upload_dir['basedir'].'/QuoteUp_PDF/'.$fileName.' '.$hash['name'].'.pdf');
+            $attachments = array($upload_dir['basedir'].'/QuoteUp_PDF/'.$fileName.' '.$hash['name'].'.pdf');
         }
+
         return $attachments;
     }
     /**
@@ -173,11 +186,12 @@ class SendQuoteMail extends \WC_Email
         die;
     }
     /**
-    * Send the Email 
-    * Checks the language set by user.
-    * Gets the instance for sending quote mail.
-    * @param array $mailPostData Details for mail from the form.
-    */
+     * Send the Email 
+     * Checks the language set by user.
+     * Gets the instance for sending quote mail.
+     *
+     * @param array $mailPostData Details for mail from the form.
+     */
     public static function sendMail($mailPostData)
     {
         $language = isset($mailPostData['language']) ? $mailPostData['language'] : 'all';

@@ -101,7 +101,13 @@ class Rating {
         $rating_div_field_id = $params['id'].rand();
         ?>
         <div id="<?php echo $rating_field_id ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label style="display:block; clear:both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>            
             <input type='hidden' name='submitform[<?php echo $name ?>]' id='<?php echo $rating_div_field_id ?>_rating_field' <?php echo required($params); ?>/>
             <div class='form-group'>
                 <div id='<?php echo $rating_div_field_id?>_rating_div'></div>

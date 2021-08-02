@@ -23,17 +23,14 @@ $enquiryButtonDisabled = $product->is_type('variable') ? 'disabled' : '';
     <?php
     if (isset($form_data[ 'show_button_as_link' ]) && $form_data[ 'show_button_as_link' ] == 1) {
         ?>
-        <a id="wdm-quoteup-trigger-<?php echo $prod_id ?>" data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal" href='#' style='font-weight: bold;<?php echo $button_text_color ?>'>
-            <?php echo $instance->returnButtonText($form_data); ?>
+        <a id="wdm-quoteup-trigger-<?php echo esc_attr($prod_id); ?>" data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal" href='#' style='font-weight: bold;<?php echo esc_attr($button_text_color); ?>'>
+            <?php echo esc_html($instance->returnButtonText($form_data)); ?>
         </a>
         <?php
     } else {
         ?>
-        <button type="button" class="<?php echo $btn_class ?>" id="wdm-quoteup-trigger-<?php echo $prod_id ?>" data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal"  <?php
-            echo $enquiryButtonDisabled;
-            echo ($manual_css == 1) ? getManualCSS($form_data) : '';
-        ?>>
-            <?php echo $instance->returnButtonText($form_data); ?>
+        <button type="button" class="<?php echo esc_attr($btn_class); ?>" id="wdm-quoteup-trigger-<?php echo esc_attr($prod_id); ?>" data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal" <?php echo esc_attr($enquiryButtonDisabled); ?> <?php echo (1 == $manual_css) ? getManualCSS($form_data) : ''; ?>>
+            <?php echo esc_html($instance->returnButtonText($form_data)); ?>
         </button>
         <?php
     } ?>

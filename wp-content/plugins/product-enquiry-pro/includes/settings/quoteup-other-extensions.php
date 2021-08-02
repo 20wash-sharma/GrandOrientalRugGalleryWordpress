@@ -12,11 +12,11 @@ if (!defined('ABSPATH')) {
 function otherExtensionsSettings($form_data)
 {
     ?>
-<div id="wdm_other_extensions">
-            <?php
-            require_once 'other-extensions/quoteup-other-extensions-options.php';
-            do_action('quoteup_other_extensions_settings', $form_data);
-    ?>
-</div>
-            <?php
+    <div id="wdm_other_extensions">
+        <?php
+        require_once 'other-extensions/quoteup-other-extensions-options.php';
+        do_action('quoteup_other_extensions_settings', $form_data);
+        ?>
+    </div>
+    <?php
 }

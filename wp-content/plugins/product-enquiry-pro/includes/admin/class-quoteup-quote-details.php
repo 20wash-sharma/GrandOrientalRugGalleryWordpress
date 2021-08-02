@@ -52,9 +52,9 @@ class QuoteupQuoteDetails
             $status = 'all';
         }
         if ('toplevel_page_quoteup-details-new' == $hook) {
-            wp_enqueue_style('table_css', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-quotes-listing.css', '', '4.3.1');
-            wp_enqueue_style('table_css_responsive', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-quotes-listing-responsive.css', '', '4.3.1');
-            wp_enqueue_script('dashboard-quotes-listing-bulk-actions', QUOTEUP_PLUGIN_URL.'/js/admin/dashboard-quotes-listing-bulk-actions.js', array('jquery'));
+            wp_enqueue_style('table_css', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-quotes-listing.css', '', filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/dashboard-quotes-listing.css'));
+            wp_enqueue_style('table_css_responsive', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-quotes-listing-responsive.css', '', filemtime(QUOTEUP_PLUGIN_DIR.'/css/admin/dashboard-quotes-listing-responsive.css'));
+            wp_enqueue_script('dashboard-quotes-listing-bulk-actions', QUOTEUP_PLUGIN_URL.'/js/admin/dashboard-quotes-listing-bulk-actions.js', array('jquery'), filemtime(QUOTEUP_PLUGIN_DIR.'/js/admin/dashboard-quotes-listing-bulk-actions.js'));
 
             // in JavaScript, object properties are accessed as ajax_object.ajax_url, ajax_object.we_value
             wp_localize_script(
@@ -89,7 +89,7 @@ class QuoteupQuoteDetails
         <div class="wrap">
         <h2>
         <?php
-        if (isset($optionData['enable_disable_quote']) && $optionData['enable_disable_quote'] == 1) {
+        if (isset($optionData['enable_disable_quote']) && 1 == $optionData['enable_disable_quote']) {
             _e('Enquiry Details', QUOTEUP_TEXT_DOMAIN);
         } else {
             _e('Enquiry & Quote Details', QUOTEUP_TEXT_DOMAIN);
@@ -112,10 +112,12 @@ class QuoteupQuoteDetails
                                 if (isset($optionData['enable_disable_quote']) && $optionData['enable_disable_quote'] == 1) {
                                     $quoteupEnquiriesList->prepare_items();
                                     $quoteupEnquiriesList->search_box(__('Search', QUOTEUP_TEXT_DOMAIN), 'search');
+                                    $quoteupEnquiriesList->renderEnqSearchByParamDropdown();
                                     $quoteupEnquiriesList->display();
                                 } else {
                                     $quoteupQuotesList->prepare_items();
                                     $quoteupQuotesList->search_box(__('Search', QUOTEUP_TEXT_DOMAIN), 'search');
+                                    $quoteupQuotesList->renderEnqSearchByParamDropdown();
                                     $quoteupQuotesList->display();
                                 }
                                 ?>

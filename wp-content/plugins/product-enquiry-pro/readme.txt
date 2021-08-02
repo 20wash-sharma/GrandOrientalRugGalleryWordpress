@@ -2,9 +2,9 @@
 Contributors: WisdmLabs
 Tags: Enquiry for WooCommerce, Product Enquiry WooCommerce, WooCommerce Add-On
 Requires at least: 4.4.0
-Tested up to: 5.3
-Woocommerce tested up to : 3.8.0
-Stable tag: 6.3.4
+Tested up to: 5.7
+Woocommerce tested up to : 5.0.0
+Stable tag: 6.4.5
 License: GPL2
 
 The Product Enquiry Pro for WooCommerce adds a 'Make an enquiry' or a 'Request a Quote' button to every WooCommerce Product Page, allowing a potential customer to make an enquiry or request a quote for one or multiple products. You can view these enquiries and quote requests made right in your dashboard, and filter enquiry and quotation records to analyse product demands.
@@ -113,6 +113,66 @@ A. When ‘Save and Preview’ button is clicked for the first time after instal
 A. when you disable or enable price for all products make sure you check global settings to apply those changes on all products.
 
 == Changelog ==
+
+= 6.4.5 =
+* Feature: Compatibility with PHP v8.0.
+
+= 6.4.4 =
+* Feature: Added ability to change the search functionality for variable products on the enquiry edit page. #64486
+* Feature: Added the ability to search enquiries using enquiry Id, product name on enquiry list page. #64487
+* Feature: Added 'Help' section on backend to quickly access tips/tricks, troubleshooting guides. #64475
+* Fix: Fatal error on activation without WooCommerce. #62163
+* Fix: JS error with Custom Form on IE11. #64218
+* Fix: Enquiry cart table structure. #64176
+* Fix: Licensing error. #62164
+* Fix: Changes in price and quantity columns are not reflecting in Amount column on enquiry edit page. #63976
+* Fix: Variations are not pre-selected on enquiry edit page for which customer has made enquiry. #63975
+* Fix: Manual CSS not getting applied on variable product page. #63686
+* Fix: jQuery Migration issues after WordPress 5.5 update. #63680
+* Fix: colspan property issue for enquiry cart total price. #61952
+* Fix: Duplicate logo issue in an enquiry email. #60950
+* Tweak: Added a filter to show or hide the form fields label. #61802
+* Tweak: Added a filter to change manual CSS. #64483
+* Tweak: Changed 'After Single Product Summary' to 'After Add to Cart'. #64485
+
+= 6.4.3 - 17/08/2020 =
+* Fix: Issues on the Admin Settings page after wordpress 5.5 update.
+
+= 6.4.2 - 14/07/2020 =
+* Feature: Made admin side Quote Email message field HTML tags compatible. #60467
+* Fix: Continuous update notice on the plugins page. #60466
+* Tweak: Ability to include 'Request a button' on the shop page on Ajax Request. #60468
+
+= 6.4.1 - 01/07/2020 =
+* Feature: Compatibility with WISDM Customer Specific Pricing plugin (4.5.0+). #59094
+* Fix: PEP menu and License menu is not visible on the Multi site. #59767
+* Fix: Enquiry button is not visible when 'Out of stock' setting is enabled and variable product is out of stock. #59770
+* Tweak: Added filter to change the terms and conditions text in the enquiry email. #59766 
+
+= 6.4.0 - 26/05/2020 =
+* Fix: Enquiry button not getting enabled if WooCommerce uses Ajax to fetch variation details when user selects the variation. #63692
+* Fix: Enquiry button not getting enabled when default variation is configured on a variable product. #63693
+* Fix: Enquiry button is still enabled after clicking on 'Clear' button on single variable product page. #63694
+* Fix: PDF Preview not working on multisite.
+* Fix: File name of Quote PDF not translatable. #57197
+* Fix: Enquiry form font weight fixes.
+* Fix: Other minor fixes.
+* Tweak: Moved dashboard PEP menu below WooCommerce (Products) menu.
+* Tweak: Added cart total in enquiry cart.
+* Tweak: Added filters to add custom columns in Enquiry cart and in Enquiry email.
+* Tweak: License code is required only for updates and support.
+* Tweak: Removed 'WisdmAdPackage' module.
+* Feature: Added ability to modify and translate custom form error messages. #57294
+* Feature: Added a setting 'Enable Quantity Field' in 'General' tab.
+* Feature: Implemented compatibility with Elementor page builder.
+* Feature: Implemented compatibility with multi site. #63966
+* Feature: Added mini enquiry cart support to let user view cart on same page.
+* Feature: Support to add logo in email.
+
+= 6.3.6 =
+* Fix: Total Price issue on enquiry list page on vendor dashboard. #60297
+* Fix: Order Id issue on enquiry list page on vendor dashboard. #61026
+* Fix: Escaped 'Expected Price' field value in mutliproduct enquiry mode. #60986
 
 = 6.3.5 =
 * Feature: Added functionalities for vendors when add on is active.

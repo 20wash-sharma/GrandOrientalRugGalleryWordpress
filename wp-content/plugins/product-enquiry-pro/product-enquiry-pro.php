@@ -5,14 +5,14 @@ namespace Quoteup;
 /*
 * Plugin Name:    Product Enquiry Pro for WooCommerce (A.K.A QuoteUp)
 * Description:    Allows prospective customers to make enquiry about a WooCommerce product.        Analyze product demands right from your dashboard.
-* Version:        6.3.5
+* Version:        6.4.5
 * Author:         WisdmLabs
 * Author URI:     https://wisdmlabs.com/
-* Plugin URI:     https://wisdmlabs.com/
+* Plugin URI:     https://wisdmlabs.com/woocommerce-product-enquiry-pro/
 * License:        GPL
 * Text Domain:    quoteup
 * WC requires at least: 3.0.0
-* WC tested up to: 3.8.0
+* WC tested up to: 5.0.0
 */
 
 /**
@@ -33,13 +33,17 @@ require_once 'quoteup-functions.php';
  * file is required for the general settings to be fetched which is set by the user.
  * checks if the WPML is active to get current lamguage and change it if required by user.
  * This is done with help of WPML.
- **/
+ */
 // add_action('init', function(){
 //     load_plugin_textdomain('quoteup', false, dirname(plugin_basename(__FILE__)).'/languages/');
 // });
 
 if (!defined('QUOTEUP_PLUGIN_DIR')) {
     define('QUOTEUP_PLUGIN_DIR', quoteupPluginDir());
+}
+
+if (!defined('PEP_PLUGIN_BASENAME')) {
+    define('PEP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 }
 
 if (!defined('QUOTEUP_WC_PLUGIN_DIR')) {
@@ -59,7 +63,7 @@ if (!defined('MPDF_ALL_FONTS_URL')) {
 }
 
 if (!defined('QUOTEUP_VERSION')) {
-    define('QUOTEUP_VERSION', '6.3.5');
+    define('QUOTEUP_VERSION', '6.4.5');
 }
 
 if (!defined('EDD_WPEP_STORE_URL')) {
@@ -91,7 +95,7 @@ $quoteup_plugin_data = array();
 
 /*
 *create the necessary tables required.
-*first checks if the table already exists or not and then creates the database in the wordpress.
+*first checks if the table already exists or not and then creates the database in the WordPress.
 *provides an option (through filters)for adding custom columns for the quoteup db tables and create the tables accordingly.
 *provides a do_action with some hooks so that some action can be added before and after creating tables if required in future.
 *sets the transient for the licensing of the Plugin with a definite expiration time.
@@ -171,15 +175,15 @@ if (!class_exists('QuoteUp')) {
             return self::$instance;
         }
         /**
-        * This function checks the dependancies for PEP Plugin.
-        * If fulfilled triggers installation.
-        * checks the license and checks the update of PEP.
-        * Loads the WPML Compatability ,text domain.
-        * Includes the files needed.
-        * Destroys session if logout
-        * Enqueue styles for dashboard.
-        * Deactivates the free plugin for woocommerce enquiry.
-        */
+         * This function checks the dependancies for PEP Plugin.
+         * If fulfilled triggers installation.
+         * checks the license and checks the update of PEP.
+         * Loads the WPML Compatability ,text domain.
+         * Includes the files needed.
+         * Destroys session if logout
+         * Enqueue styles for dashboard.
+         * Deactivates the free plugin for woocommerce enquiry.
+         */
         private function __construct()
         {
             $this->dependenciesFullfilled = $this->checkDependencies();
@@ -202,15 +206,15 @@ if (!class_exists('QuoteUp')) {
         public function loadLicense()
         {
             global $quoteup_plugin_data;
-            $quoteup_plugin_data = include_once('license.config.php');
+            $quoteup_plugin_data = include_once 'license.config.php';
             require_once QUOTEUP_PLUGIN_DIR.'/licensing/class-wdm-license.php';
             $wdmLicense = new \Licensing\WdmLicense($quoteup_plugin_data);
             unset($wdmLicense);
         }
 
         /**
-        * Enqueue styles for dashboard menu
-        */
+         * Enqueue styles for dashboard menu
+         */
         public function adminMenuStyles()
         {
             wp_enqueue_style('pep-menu-css', QUOTEUP_PLUGIN_URL.'/css/menu.css');
@@ -221,12 +225,15 @@ if (!class_exists('QuoteUp')) {
          * This function is used to check dependencies
          * Dependencies : Woocommerce active or not.
          * : Php Version more than 5.3.0
+         *
          * @return boolean true if dependancies fulfilled.
          */
         private function checkDependencies()
         {
-            if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-                return false;
+            $dependenciesFullfilled = true;
+
+            if (!function_exists('is_plugin_active')) {
+                require_once(ABSPATH . 'wp-admin/includes/plugin.php');
             }
 
             if (function_exists('phpversion')) {
@@ -236,10 +243,14 @@ if (!class_exists('QuoteUp')) {
             }
 
             if (version_compare($phpVersion, '5.3.0', '<')) {
-                return false;
+                $dependenciesFullfilled = false;
             }
 
-            return true;
+            if (!is_plugin_active('woocommerce/woocommerce.php')) {
+                $dependenciesFullfilled = false;
+            }
+
+            return $dependenciesFullfilled;
         }
 
         private function triggerInstallation()
@@ -342,9 +353,13 @@ if (!class_exists('QuoteUp')) {
                 deactivate_plugins(plugin_basename(__FILE__));
                 unset($_GET['activate']);
                 //Display notice that plugin is deactivated because WooCommerce is not activated.
-                add_action('admin_notices', array(
+                add_action(
+                    'admin_notices',
+                    array(
                     $this,
-                    'wcNotActiveNotice', ));
+                        'wcNotActiveNotice',
+                    )
+                );
 
                 return;
             }
@@ -394,61 +409,36 @@ $GLOBALS['quoteup'] = QuoteUp::getInstance();
 add_action('admin_enqueue_scripts', 'quoteup\quoteupEnqueueScriptsStyles', 10, 1);
 
 /**
-* This function Enqueue styles and scripts on individual product create/edit screen
-* Js file is to check If enable price is checked then only provide option of Add to Cart.
-* @param string $hook specific hook for enqueueing script
-*/
+ * This function Enqueue styles and scripts on individual product create/edit screen
+ * Js file is to check If enable price is checked then only provide option of Add to Cart.
+ *
+ * @param string $hook specific hook for enqueueing script
+ */
 function quoteupEnqueueScriptsStyles($hook)
 {
     $screen = get_current_screen();
     if (($hook == 'post.php' || $hook == 'post-new.php') && $screen->id == 'product') {
-        wp_enqueue_script('price-add-to-cart-relation', QUOTEUP_PLUGIN_URL.'/js/admin/single-product.js', array(
-            'jquery', ));
-        wp_enqueue_style('wdm_style_for_individual_product_screen', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-single-product.css', false, false, false);
+        wp_enqueue_script(
+            'price-add-to-cart-relation',
+            QUOTEUP_PLUGIN_URL . '/js/admin/single-product.js',
+            array(
+                'jquery',
+            ),
+            filemtime(QUOTEUP_PLUGIN_DIR . '/js/admin/single-product.js')
+        );
+        wp_enqueue_style('wdm_style_for_individual_product_screen', QUOTEUP_PLUGIN_URL.'/css/admin/dashboard-single-product.css', array(), filemtime(QUOTEUP_PLUGIN_DIR . '/css/admin/dashboard-single-product.css'), false);
     }
 }
-$quoteup_lic_stat = get_option('edd_pep_license_status');
-if ($quoteup_lic_stat == 'valid' || $quoteup_lic_stat == 'expired') {
-    add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'Quoteup\pluginSettingsLink');
-}
 
-/**
-* This function returns the links Applied to the list of links to display on the plugins page.
-* @param array $links activate and deactivate links.
-* @return array $links apart from activate and deactivate links append the settings link in the array.
-*/
-function pluginSettingsLink($links)
-{
-    $url = get_admin_url().'admin.php?page=quoteup-for-woocommerce';
-    $settings_link = '<a href="'.$url.'">'.__('Settings', QUOTEUP_TEXT_DOMAIN).'</a>';
-    array_unshift($links, $settings_link);
-
-    return $links;
-}
 //Action when user do not have admin access.
-add_action('admin_page_access_denied', 'Quoteup\pluginSettingsLinkError');
-/**
-* This function displays the error if User does not have access to the Settings of the PEP.
-* Displays the message to indicate to enter license key to activate PEP.
-*/
-function pluginSettingsLinkError()
-{
-    if (isset($_GET['page']) && $_GET['page'] == 'quoteup-for-woocommerce') {
-        $message = '<div class="error">';
-        $message .= '<p>';
-        $message .= sprintf(__('Please enter license key %s here %s to activate Product Enquiry Pro.', QUOTEUP_TEXT_DOMAIN), '<a href="plugins.php?page=wisdmlabs-licenses">', '</a>');
-        $message .= '</p>';
-        $message .= '</div><!-- /.error -->';
-        wp_die($message, 403);
-    }
-}
+// add_action('admin_page_access_denied', 'Quoteup\pluginSettingsLinkError');
 
 // Display the admin notification
-add_action('admin_notices', 'Quoteup\showNoticePEPActivation');
+// add_action('admin_notices', 'Quoteup\showNoticePEPActivation');
 /**
-* This function is to check License when PEP is activated.
-* If license is not valid or expired then give the error message.
-*/
+ * This function is to check License when PEP is activated.
+ * If license is not valid or expired then give the error message.
+ */
 function showNoticePEPActivation()
 {
     $activeFlag = is_plugin_active('product-enquiry-pro/product-enquiry-pro.php');
@@ -460,7 +450,7 @@ function showNoticePEPActivation()
     if ($quoteup_lic_stat != 'valid' && $quoteup_lic_stat != 'expired') {
             $message = '<div class="error">';
             $message .= '<p>';
-            $message .= sprintf(__('Please enter license key %s here %s to activate Product Enquiry Pro.', QUOTEUP_TEXT_DOMAIN), '<a href="admin.php?page=wisdmlabs-licenses">', '</a>');
+            $message .= sprintf(__('Please enter license key %1$s here %2$s to activate Product Enquiry Pro.', QUOTEUP_TEXT_DOMAIN), '<a href="admin.php?page=wisdmlabs-licenses">', '</a>');
             $message .= '</p>';
             $message .= '</div><!-- /.error -->';
             echo $message;
@@ -471,10 +461,4 @@ function showNoticePEPActivation()
     if ($quoteup_lic_stat != 'valid' && $quoteup_lic_stat != 'expired') {
         return;
     }
-}
-
-// Include WisdmAdPackage
-if (is_admin() || defined('DOING_CRON')) {
-    include_once('WisdmAdPackage.php');
-    $WisdmAdPackage = \WisdmAd\WisdmAdPackage::getInstance();
 }

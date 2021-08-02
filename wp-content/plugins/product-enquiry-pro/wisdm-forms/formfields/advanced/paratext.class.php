@@ -79,7 +79,13 @@ class Paratext {
         }
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo isset($condition_fields) ? $condition_fields : '' ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label style="display:block; clear:both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <div class='form-group'>
                 <?php echo isset($params['paragraph_text_value']) ? __($params['paragraph_text_value'], QUOTEUP_TEXT_DOMAIN) : __('[Your paragraph will be here]', QUOTEUP_TEXT_DOMAIN); ?>
                 <div>

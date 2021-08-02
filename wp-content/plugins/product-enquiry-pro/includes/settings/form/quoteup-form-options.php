@@ -173,8 +173,13 @@ function quoteupDisplayCaptchaSettings($form_data)
 {
     ?>
     <fieldset >
+        <legend>
+            <?php echo __('Captcha Pre-Requisite', QUOTEUP_TEXT_DOMAIN); ?>
+            <div class="help-doc-link legend-wrapper">
+                <a class="help-doc-link-legend-wrapper" href="<?php echo esc_url('https://wisdmlabs.com/docs/?s=captcha+pep&ht-kb-search=1'); ?>" target="_blank"><i><?php echo esc_html(__('Help', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
+            </div>
+        </legend>
         <?php
-        echo '<legend>'.__('Captcha Pre-Requisite', QUOTEUP_TEXT_DOMAIN).'</legend>';
         googleSiteKey($form_data);
         googleSecretKey($form_data);
         quoteupIsCaptchaVersion3($form_data);

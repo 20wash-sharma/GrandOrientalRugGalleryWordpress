@@ -15,6 +15,7 @@
  */
 ?>
 <tr>
+    <?php do_action('quoteup_before_product_name', $data_obtained_from_form, $source); ?>
     <td class='product-name'>
         <a href='<?php echo esc_url($prod_permalink); ?>'><?php echo $title; ?></a>
         <?php
@@ -31,20 +32,23 @@
         }
         ?>
     </td>
+    <?php do_action('quoteup_before_sku', $data_obtained_from_form, $source); ?>
     <td class='sku'>
         <?php echo $sku; ?>
     </td>
+    <?php do_action('quoteup_before_qty', $data_obtained_from_form, $source); ?>
     <td class='qty'>
         <?php echo $productQuantity; ?>
     </td>
     <?php
     // Check if 'Price' column disabled.
     if (!quoteupIsPriceColumnDisabled($form_data)) :
+        do_action('quoteup_before_price', $data_obtained_from_form, $source);
         ?>
         <td class='price'>
         <?php
         if ($enable_price == 'yes'  || $source == 'admin') {
-            echo $price;
+            echo wc_price($price*$productQuantity);
         } else {
             echo '-';
         }

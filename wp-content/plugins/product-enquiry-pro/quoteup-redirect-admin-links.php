@@ -6,8 +6,11 @@
 */
 function quoteupGetAddress()
 {
+	if (isset($_SERVER[ 'HTTP_HOST' ]) && isset($_SERVER[ 'REQUEST_URI' ])) {
     // return the full address
     return quoteupGetProtocol().'://'.$_SERVER[ 'HTTP_HOST' ].$_SERVER[ 'REQUEST_URI' ];
+    }
+    return '';
 }
 
 /**

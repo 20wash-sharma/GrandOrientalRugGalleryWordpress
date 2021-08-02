@@ -292,9 +292,9 @@ class QuoteupVendorEmails
                author email.
              */
             if ('admin' == $source) {
-                $autoSetDeadlineHours = quoteupGetAutoSetDlAfterHours();
-                $autoSetDeadlineHours = '+' . $autoSetDeadlineHours. ' hours';
-                $deadline  = date('Y-m-d', strtotime($autoSetDeadlineHours));
+                $autoSetDeadlineDays = quoteupGetAutoSetDlAfterDays();
+                $autoSetDeadlineDays = '+' . $autoSetDeadlineDays. ' days';
+                $deadline  = date('Y-m-d', strtotime($autoSetDeadlineDays));
                 $deadline  = apply_filters('quoteup_dt_for_auto_set_deadline', $deadline, $enquiryId);
                 \Includes\Admin\Vendor\QuoteupVendorCrons::getInstance()->setCrons($enquiryId, $deadline);
     

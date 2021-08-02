@@ -63,6 +63,7 @@ class QuoteupVendorEnquiryEdit
             add_action('quoteup_after_quote_send_deadline_set', array($this, 'sendInitialQuoteDlEmail'), 20, 2);
             add_action('quoteup_before_gen_quote_btn', array($this, 'displaySaveButton'));
             add_action('wp_ajax_quoteup_save_admin_products_data', array($this, 'quoteupSaveAdminProductsData'));
+            add_action('quoteup_after_quote_generated', array($this, 'removeReminderCrons'));
             // add_filter('quoteup_json_search_found_products', array($this, 'addVendorStatusElem'));
             add_action('quoteup_enquiry_edit_tmpl_after_sku_th', array($this, 'vendorStatusSecInQuoteEditTmpl'));
         } else if (quoteupIsCurrentLoggedInUserVendor()) {
@@ -180,6 +181,17 @@ class QuoteupVendorEnquiryEdit
 
         self::saveProductsDataInQuotationTbl($quotationData, false);
         die();
+    }
+
+    /**
+     * Callback for 'quoteup_after_quote_generated' action hook.
+     *
+     * Remove vendor reminder cron and admin reminder crons.
+     */
+    public function removeReminderCrons($enquiryId)
+    {
+        $quoteupCron = QuoteupVendorCrons::getInstance();
+        $quoteupCron->clearCrons($enquiryId);
     }
 
     /**

@@ -1,11 +1,13 @@
 <?php
 namespace Wisdmforms;
 
-class Captcha {
-    public function control_button() {
+class Captcha
+{
+    public function control_button()
+    {
         ob_start();
         ?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" for="Captcha">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" for="Captcha">
             <span class="lfi lfi-name"></span> <?php _e('Captcha', QUOTEUP_TEXT_DOMAIN) ?> 
             <a title="<?php _e('Captcha', QUOTEUP_TEXT_DOMAIN) ?>" rel="Captcha" class="add" data-template='Captcha' href="#"><i class="glyphicon glyphicon-plus-sign pull-right ttipf" title=""></i></a>
     </li>
@@ -14,10 +16,11 @@ class Captcha {
         return ob_get_clean();
     }
 
-    public function field_settings($fieldindex, $fieldid, $field_infos) {
+    public function field_settings($fieldindex, $fieldid, $field_infos)
+    {
         ob_start();
-?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>"  id="field_<?php echo $fieldindex; ?>">
+        ?>
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>"  id="field_<?php echo $fieldindex; ?>">
             <input type="hidden" name="contact[fields][<?php echo $fieldindex ?>]" value="<?php echo $fieldid; ?>">
             <span id="label_<?php echo $fieldindex; ?>"><?php echo $field_infos[$fieldindex]['label'] ?>:</span>
             <a href="#" rel="field_<?php echo $fieldindex; ?>" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
@@ -28,8 +31,8 @@ class Captcha {
                     <?php getFormLabelDiv($fieldindex, $field_infos); ?>
                     <?php getFormNoteDiv($fieldindex, $field_infos); ?>
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings",$fieldindex, $fieldid, $field_infos); ?>
-                <?php do_action("form_field_settings",$fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings", $fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_settings", $fieldindex, $fieldid, $field_infos); ?>
             </div>
             <div class="field-preview">
                 <?php
@@ -44,7 +47,8 @@ class Captcha {
         return ob_get_clean();
     }
 
-    public function field_preview_html($params = array()) {
+    public function field_preview_html($params = array())
+    {
         ob_start();
         
         ?>
@@ -66,24 +70,29 @@ class Captcha {
         return ob_get_clean();
     }
 
-    public function field_render_html($params = array()) {
+    public function field_render_html($params = array())
+    {
         if (isset($_GET['page']) && $_GET['page'] =='quoteup-create-quote') {
             return;
         }
+
         static $isCaptcha3DataLocalized = false;
-        $formSetting = quoteupSettings();
-        $siteKey = $formSetting['google_site_key'];
+        $formSetting                    = quoteupSettings();
+        $siteKey                        = $formSetting['google_site_key'];
+        $lang_query_var                 = quoteupIsWpmlActive() ? '&hl='.ICL_LANGUAGE_CODE : '';
 
         // If captcha version 3.
         if (quoteupIsCaptchaVersion3($formSetting)) {
             if ($isCaptcha3DataLocalized) {
                 return;
             }
-            wp_enqueue_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey, array(), QUOTEUP_VERSION, true);
-            wp_localize_script('quoteup-google-captcha', 'quoteup_captcha_data', array(
+            wp_enqueue_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey.$lang_query_var, array(), QUOTEUP_VERSION, true);
+            wp_localize_script(
+                'quoteup-google-captcha', 'quoteup_captcha_data', array(
                 'captcha_version'   => 'v3',
                 'site_key'          =>  $siteKey,
-            ));
+                )
+            );
             $isCaptcha3DataLocalized = true;
             return;
         }
@@ -106,10 +115,16 @@ class Captcha {
         $captcha_field_id = "test_{$params['id']}".rand();
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label style="display: block; clear: both"><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <?php 
-            $wdm_lang = pll_current_language();
-            echo '<script src="https://www.google.com/recaptcha/api.js?hl=' . $wdm_lang . '&render=explicit" async defer></script>';
+            $scriptvar = '<script src="https://www.google.com/recaptcha/api.js?render=explicit'.$lang_query_var.'" async defer></script>';
+            echo $scriptvar;
             self::loadCaptchaJs($params, $siteKey);
             ?>
             <div class='form-group' >
@@ -125,7 +140,8 @@ class Captcha {
         return ob_get_clean();
     }
 
-    public static function loadCaptchaJs($params, $siteKey) {
+    public static function loadCaptchaJs($params, $siteKey)
+    {
         ?>
         <script type='text/javascript'>
             var CaptchaCallback = function() {
@@ -147,11 +163,12 @@ class Captcha {
         <?php
     }
 
-    public function configuration_template() {
+    public function configuration_template()
+    {
         ob_start();
         ?>
     <script type="text/x-mustache" id="template-Captcha">
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
             <span id="label_{{ID}}">{{title}}</span>
             <a href="#" rel="field_{{ID}}" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
             <a href="#" class="cog-trigger" rel="#cog_{{ID}}"><i class="glyphicon glyphicon-cog pull-right button-buffer-right"></i></a>
@@ -163,7 +180,7 @@ class Captcha {
                     <?php getConfTempLabelDiv(); ?>
                     <?php getConfTempNoteDiv(); ?>                    
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings_template"); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings_template"); ?>
                 <?php do_action("form_field_settings_template"); ?>
             </div>
             <div class="field-preview">
@@ -176,7 +193,8 @@ class Captcha {
         return ob_get_clean();
     }
 
-    function process_field() {
+    function process_field()
+    {
         
     }
 

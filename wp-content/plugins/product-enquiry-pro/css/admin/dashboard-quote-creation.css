@@ -313,3 +313,10 @@ and also iPads specifically.
 #mpeSendCustom {
     display: none;
 }
+
+/* PDF preview CSS */
+#pdf-preview-reload {
+    cursor: pointer;
+}
+
+/* End for PDF preview CSS */

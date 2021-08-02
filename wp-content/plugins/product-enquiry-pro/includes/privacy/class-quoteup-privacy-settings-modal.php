@@ -397,7 +397,7 @@ class QuoteupPrivacySettingsModal extends QuoteupPrivacySettings
                 unset($value);
             }
             $this->localizeScript();
-        ?>
+            ?>
         <?php
     }
 
@@ -440,9 +440,9 @@ class QuoteupPrivacySettingsModal extends QuoteupPrivacySettings
                 <input type="checkbox" class="checkbox" name="wdm_privacy_anonymize_data[enquiry-detail][<?php echo esc_html($enquiryField); ?>]" <?php checked(1, $isSelected); ?> value="1" id="primary_<?php echo esc_html($enquiryField); ?>">
                 <?php
             } else {
-            ?>
+                ?>
                 <input type="checkbox" class="checkbox" name="wdm_privacy_anonymize_data[enquiry-meta][<?php echo esc_html($enquiryField); ?>]" <?php checked(1, $isSelected); ?> value="1" id="<?php echo esc_html($enquiryField); ?>">
-            <?php
+                <?php
             }
             ?>
             </div>

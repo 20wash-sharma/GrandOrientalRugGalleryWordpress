@@ -20,7 +20,8 @@ function enableDisableQuoteUpSection($form_data)
         enquiryOutofStock($form_data);
         enquiryButtonShopPage($form_data);
         enquiryButtonOnlyLoggedinUser($form_data);
-    ?>
+        quoteupShowEnqBtnForSelProductsHelpLink();
+        ?>
     </fieldset>
     <?php
 }
@@ -39,9 +40,9 @@ function quotemoduleEnableDisable($form_data)
         <?php
         $helptip = __('Disable quote management system', QUOTEUP_TEXT_DOMAIN);
         echo \quoteupHelpTip($helptip, true);
-    ?>
+        ?>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'enable_disable_quote' ]) ? $form_data[ 'enable_disable_quote' ] : 0);
-    ?> id="quote-enable-disable" /> 
+            ?> id="quote-enable-disable" /> 
             <input type="hidden" name="wdm_form_data[enable_disable_quote]" value="<?php echo isset($form_data[ 'enable_disable_quote' ]) && $form_data[ 'enable_disable_quote' ] == 1 ? $form_data[ 'enable_disable_quote' ] : 0?>" /> 
     
         </div>
@@ -69,9 +70,9 @@ function enquiryOutofStock($form_data)
         <?php
         $helptip = __('Display enquiry and quote button only after the product runs out of stock', QUOTEUP_TEXT_DOMAIN);
         echo \quoteupHelpTip($helptip, true);
-    ?>
+        ?>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'only_if_out_of_stock' ]) ? $form_data[ 'only_if_out_of_stock' ] : 0);
-    ?> id="only_if_out_of_stock" /> 
+            ?> id="only_if_out_of_stock" /> 
             <input type="hidden" name="wdm_form_data[only_if_out_of_stock]" value="<?php echo isset($form_data[ 'only_if_out_of_stock' ]) && $form_data[ 'only_if_out_of_stock' ] == 1 ? $form_data[ 'only_if_out_of_stock' ] : 0?>" />
         </div>
         <div class="clear"></div>
@@ -98,11 +99,11 @@ function enquiryButtonShopPage($form_data)
         <?php
         $helptip = __('Display enquiry and quote button on Archive (Shop, Categories) Page', QUOTEUP_TEXT_DOMAIN);
         echo \quoteupHelpTip($helptip, true);
-    ?>
+        ?>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'show_enquiry_on_shop' ]) ? $form_data[ 'show_enquiry_on_shop' ] : 0);
-    ?> id="show_enquiry_on_shop" />
+            ?> id="show_enquiry_on_shop" />
             <input type="hidden" name="wdm_form_data[show_enquiry_on_shop]" value="<?php echo isset($form_data[ 'show_enquiry_on_shop' ]) && $form_data[ 'show_enquiry_on_shop' ] == 1 ? $form_data[ 'show_enquiry_on_shop' ] : 0;
-    ?>" />
+            ?>" />
 
         </div>
         <div class="clear"></div>
@@ -128,11 +129,11 @@ function enquiryButtonOnlyLoggedinUser($form_data)
         <?php
         $helptip = __('Display enquiry and quote button only to users who are logged in', QUOTEUP_TEXT_DOMAIN);
         echo \quoteupHelpTip($helptip, true);
-    ?>
+        ?>
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'show_enquiry_only_loggedin' ]) ? $form_data[ 'show_enquiry_only_loggedin' ] : 0);
-    ?> id="show_enquiry_only_loggedin" />
+            ?> id="show_enquiry_only_loggedin" />
             <input type="hidden" name="wdm_form_data[show_enquiry_only_loggedin]" value="<?php echo isset($form_data[ 'show_enquiry_only_loggedin' ]) && $form_data[ 'show_enquiry_only_loggedin' ] == 1 ? $form_data[ 'show_enquiry_only_loggedin' ] : 0;
-    ?>" />
+            ?>" />
 
         </div>
         <div class="clear"></div>
@@ -140,4 +141,22 @@ function enquiryButtonOnlyLoggedinUser($form_data)
 
     <?php
 }
+
+/**
+ * Display the help link 'Learn how to: Show/ hide Enquiry or Quote button
+ * for selective products' under the 'Enquiry & Quote Options' section.
+ *
+ * @since 6.4.4
+ *
+ * @return void
+ */
+function quoteupShowEnqBtnForSelProductsHelpLink()
+{
+    ?>
+    <div class="help-doc-link enq-btn-for-sel-products-link">
+        <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-features/enable-disable-price-add-to-cart-button-enquiry-button-for-a-particular-product/'); ?>" target="_blank"><i><?php echo esc_html(__('Learn how to: Show/ hide Enquiry or Quote button for selective products', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
+    </div>
+    <?php
+}
+
 enableDisableQuoteUpSection($form_data);

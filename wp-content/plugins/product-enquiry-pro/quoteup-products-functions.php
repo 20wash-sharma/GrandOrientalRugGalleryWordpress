@@ -2,8 +2,9 @@
 
 /**
  * This function generates hash products
- * @param  int $productID     Product ID of product
- * @param  int $variationID   Variation ID of product(if variable product)
+ *
+ * @param  int   $productID     Product ID of product
+ * @param  int   $variationID   Variation ID of product(if variable product)
  * @param  array $variationData Variation data of product (if variable product)
  * @return [string] Product hash value
  */
@@ -18,8 +19,9 @@ function generateProductHash($productID, $variationID = 0, $variationData = arra
 
 /**
  * This function is used to add attribute_ prefix to the label of variations.
- * @param  int $variation_id Variation_id of the Variable product.
- * @param  string $variation   attribute of the variation
+ *
+ * @param  int    $variation_id Variation_id of the Variable product.
+ * @param  string $variation    attribute of the variation
  * @return array $variationData Variation data of the product corresponding to the Variation.
  */
 function sanitizeVariationLabel($variation_id, $variation)
@@ -42,7 +44,8 @@ function sanitizeVariationLabel($variation_id, $variation)
 
 /**
  * This function returns enquiry data of particular enquiry or array of enquiry id
- * @param mixed $enquiryId Enquiry id's
+ *
+ * @param  mixed $enquiryId Enquiry id's
  * @return [array] $results [enquiry details from wp_enquiry_detail_new]
  */
 function getEnquiryData($enquiryId = 0)
@@ -66,7 +69,8 @@ function getEnquiryData($enquiryId = 0)
 
 /**
  * This function returns enquiry products of particular enquiry or array of enquiry id
- * @param mixed $enquiryId Enquiry id's
+ *
+ * @param  mixed $enquiryId Enquiry id's
  * @return [array] product data associated with the enquiry_id of enquiry created on the
  * frontend.
  */
@@ -78,7 +82,8 @@ function getEnquiryProducts($enquiryId)
 
 /**
  * This function returns enquiry products of particular enquiry or array of enquiry id
-  * @param int|array $enquiryId Enquiry id's
+ *
+ * @param  int|array $enquiryId Enquiry id's
  * @return [array] product data associate with the enquiry_id of quote created on admin side.
  */
 function getQuoteProducts($enquiryId)
@@ -89,8 +94,9 @@ function getQuoteProducts($enquiryId)
 
 /**
  * This function returns the products data associated with the quotes.
- * @param [int/array] $enquiryId [Enquiry Id/s]
- * @param [string] $tableName [Table Name]
+ *
+ * @param  [int/array] $enquiryId [Enquiry Id/s]
+ * @param  [string]    $tableName [Table Name]
  * @return [array] $results [Product Details]
  */
 function quoteupGetProducts($enquiryId, $tableName)
@@ -112,10 +118,11 @@ function quoteupGetProducts($enquiryId, $tableName)
 }
 
 /**
-* Gets meta value for meta keys from database.
-* @param int $enquiryId Enquiry Id
-* @param string $metaKey meta keys
-*/
+ * Gets meta value for meta keys from database.
+ *
+ * @param int    $enquiryId Enquiry Id
+ * @param string $metaKey   meta keys
+ */
 function getEnquiryMeta($enquiryId, $metaKey)
 {
     global $wpdb;
@@ -125,11 +132,12 @@ function getEnquiryMeta($enquiryId, $metaKey)
 }
 
 /**
-* Updated meta value for meta keys in database.
-* @param int $enquiryId Enquiry Id
-* @param string $metaKey meta key
-* @param string $metaValue meta value
-*/
+ * Updated meta value for meta keys in database.
+ *
+ * @param int    $enquiryId Enquiry Id
+ * @param string $metaKey   meta key
+ * @param string $metaValue meta value
+ */
 function updateEnquiryMeta($enquiryId, $metaKey, $metaValue)
 {
     global $wpdb;
@@ -153,26 +161,33 @@ function updateEnquiryMeta($enquiryId, $metaKey, $metaValue)
 }
 
 /**
-* Updates the enquiry product table with product details
-* @param int $enquiryID Enquiry Id
-* @param array $product_details Product Details
-*/
-function updateProductDetails($enquiryID, $product_details)
+ * Updates the enquiry product table with product details
+ *
+ * @param int   $enquiryID       Enquiry Id.
+ * @param array $product_details Multidimensional array containing product data.
+ * @param array $postData        $_POST data.
+ */
+function updateProductDetails($enquiryID, $product_details, $postData = array())
 {
     global $wpdb;
     $enquiryProductsTable = getEnquiryProductsTable();
     foreach ($product_details as $singleProduct) {
-        $productID = $singleProduct['id'];
-        $title = $singleProduct['title'];
-        $price = $singleProduct['price'];
-        $quantity = $singleProduct['quant'];
-        $remark = $singleProduct['remark'];
-        $variation_id = $singleProduct['variation_id'];
-        $variation = $singleProduct['variation'];
-    // function to sanitize variations with prefix attribute_ for generating hash
-        $variationData = sanitizeVariationLabel($variation_id, $variation);
-        $product_hash = GenerateProductHash($productID, $variation_id, $variationData);
+        $productID      = $singleProduct['id'];
+        $variation_id   = $singleProduct['variation_id'];
+        $variation      = $singleProduct['variation'];
+        $product        = empty($variation_id) ? wc_get_product($productID) : wc_get_product($variation_id);
+        $title          = $singleProduct['title'];
+        $price          = $singleProduct['price'];
+        $quantity       = $singleProduct['quant'];
+        $remark         = $singleProduct['remark'];
+        // function to sanitize variations with prefix attribute_ for generating hash
+        $variationData  = sanitizeVariationLabel($variation_id, $variation);
+        $product_hash   = GenerateProductHash($productID, $variation_id, $variationData);
 
+        if (isset($postData[ 'txtemail' ])) {
+            $customerEmail = filter_var($postData[ 'txtemail' ], FILTER_SANITIZE_EMAIL);
+            $price = quoteupGetPriceToDisplay($product, $quantity, $price, $customerEmail);
+        }
         if (empty($price) || '' == $price) {
             $price = 0;
         }
@@ -207,9 +222,10 @@ function updateProductDetails($enquiryID, $product_details)
     }
 }
 /**
-* This function returns name of the Enquiry Details Table i.e,wp_enquiry_detail_new.
-* @return [string] table name: wp_enquiry_detail_new.
-*/
+ * This function returns name of the Enquiry Details Table i.e,wp_enquiry_detail_new.
+ *
+ * @return [string] table name: wp_enquiry_detail_new.
+ */
 function getEnquiryDetailsTable()
 {
     global $wpdb;
@@ -217,9 +233,10 @@ function getEnquiryDetailsTable()
 }
 
 /**
-* This function returns name of the Enquiry History Table i.e,wp_enquiry_history.
-* @return [string] table name: wp_enquiry_history.
-*/
+ * This function returns name of the Enquiry History Table i.e,wp_enquiry_history.
+ *
+ * @return [string] table name: wp_enquiry_history.
+ */
 
 function getEnquiryHistoryTable()
 {
@@ -227,9 +244,10 @@ function getEnquiryHistoryTable()
     return $wpdb->prefix.'enquiry_history';
 }
 /**
-* This function returns name of the Enquiry Meta Table i.e,wp_enquiry_meta.
-* @return [string] table name: wp_enquiry_meta.
-*/
+ * This function returns name of the Enquiry Meta Table i.e,wp_enquiry_meta.
+ *
+ * @return [string] table name: wp_enquiry_meta.
+ */
 
 function getEnquiryMetaTable()
 {
@@ -237,18 +255,20 @@ function getEnquiryMetaTable()
     return $wpdb->prefix.'enquiry_meta';
 }
 /**
-* This function returns name of the Enquiry Products Table i.e,wp_enquiry_products.
-* @return [string] table name: wp_enquiry_products.
-*/
+ * This function returns name of the Enquiry Products Table i.e,wp_enquiry_products.
+ *
+ * @return [string] table name: wp_enquiry_products.
+ */
 function getEnquiryProductsTable()
 {
     global $wpdb;
     return $wpdb->prefix.'enquiry_products';
 }
 /**
-* This function returns name of the Enquiry Quotation Products Table i.e,wp_enquiry_quotation.
-* @return [string] table name: wp_enquiry_quotation.
-*/
+ * This function returns name of the Enquiry Quotation Products Table i.e,wp_enquiry_quotation.
+ *
+ * @return [string] table name: wp_enquiry_quotation.
+ */
 function getQuotationProductsTable()
 {
     global $wpdb;
@@ -256,18 +276,20 @@ function getQuotationProductsTable()
 }
 
 /**
-* This function returns name of the Quotation Version Table i.e,wp_enquiry_quotation_version.
-* @return [string] table name: wp_enquiry_quotation_version.
-*/
+ * This function returns name of the Quotation Version Table i.e,wp_enquiry_quotation_version.
+ *
+ * @return [string] table name: wp_enquiry_quotation_version.
+ */
 function getVersionTable()
 {
     global $wpdb;
     return $wpdb->prefix.'enquiry_quotation_version';
 }
 /**
-* This function returns name of the Enquiry Thread Table i.e,wp_enquiry_thread.
-* @return [string] table name: wp_enquiry_thread.
-*/
+ * This function returns name of the Enquiry Thread Table i.e,wp_enquiry_thread.
+ *
+ * @return [string] table name: wp_enquiry_thread.
+ */
 
 function getEnquiryThreadTable()
 {

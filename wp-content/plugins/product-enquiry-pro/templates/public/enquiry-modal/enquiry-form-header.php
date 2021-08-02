@@ -26,7 +26,7 @@
             ?>
         </span>
         <span class='pr_name' <?php echo $dialogue_product_color; ?>>
-            <?php echo $title ?>
+            <?php echo $title; ?>
         </span>
     </h4>
 </div>

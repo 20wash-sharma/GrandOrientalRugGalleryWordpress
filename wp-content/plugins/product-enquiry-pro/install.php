@@ -941,6 +941,7 @@ function quoteupSetDefaultSettings()
         'enable_disable_quote' => '0',
         'only_if_out_of_stock' => '0',
         'show_enquiry_on_shop' => '1',
+        'show_enquiry_only_loggedin' => '0',
         'enable_disable_mpe' => '0',
         'custom_label' => 'Request a Quote',
         'cart_custom_label' => 'View Enquiry Cart',
@@ -948,7 +949,7 @@ function quoteupSetDefaultSettings()
         'disable_remarks_col' => '0', // @since 6.3.4
         'expected_price_remarks_label' => '', // @since 6.3.4
         'expected_price_remarks_col_phdr' => '', // @since 6.3.4
-        'pos_radio' => 'show_after_summary',
+        'pos_radio' => 'after_add_cart',
         'show_button_as_link' => '0',
         'variation_id_selector' => '', // @since 6.3.4
         'enable_send_mail_copy' => '1',

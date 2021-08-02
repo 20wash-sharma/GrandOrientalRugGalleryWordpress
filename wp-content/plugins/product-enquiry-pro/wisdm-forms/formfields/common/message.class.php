@@ -91,11 +91,17 @@ class Message {
         }
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <!-- <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label> -->
-            <textarea name='submitform[<?php echo $name ?>]' rows= '<?php echo $msgFieldNoRows; ?>' cols= '1' id='wdm-message' placeholder='<?php echo pll__(quoteupReturnCustomFormFieldPlaceholder($params['label'])); ?>' <?php echo $maxLengthAttr; ?> class='form-control'  <?php echo required($params); ?> ></textarea>
+            <?php
+            if (quoteupCFFieldsLabel(false, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>        
+            <textarea name='submitform[<?php echo $name ?>]' rows= '<?php echo $msgFieldNoRows; ?>' cols= '1' id='wdm-message' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>' <?php echo $maxLengthAttr; ?> class='form-control'  <?php echo required($params); ?> ></textarea>
             <?php echo $maxLengthElements; ?>
             <div>
-                <label class="field-note"><?php echo pll__(quoteupReturnCustomFormFieldNote($params['note'])); ?></label>
+                <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>
             </div>
         </div>
         <?php

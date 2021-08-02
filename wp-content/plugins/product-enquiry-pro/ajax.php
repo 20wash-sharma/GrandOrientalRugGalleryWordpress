@@ -8,6 +8,10 @@ if (!defined('DOING_AJAX')) {
 }
 //Ajax for CSV Generation
 add_action('wp_ajax_wdm_return_rows', 'quoteupReturnRows');
+
+// Ajax to remove red dot ('pep-update-dot') from menu, Settings sub menu and What's New tab.
+add_action('wp_ajax_wdm_whats_new_visited', 'quoteup_whats_new_tab_visited');
+
 //Ajax to add products in enquiry cart no longer in use.
 add_action('wp_ajax_wdm_add_product_in_enq_cart', 'quoteupAddProductInEnqCart');
 add_action('wp_ajax_nopriv_wdm_add_product_in_enq_cart', 'quoteupAddProductInEnqCart');
@@ -75,12 +79,11 @@ function wdmTriggerAddToEnqCart()
 }
 
 /**
-* This function gets the Variation details of the Variable product in the search bar of the product in create quotation through admin side.
-* creates global variable for variable product.
-* we are using quoteupVariationDropdown() instead of woocommerce_variable_add_to_cart(). quoteupVariationDropdown() is just a copy of woocommerce_variable_add_to_cart() loading our template instead of woocommerce variable.php
-* woocommerce_variable_add_to_cart() includes woocommerce/templates/single-product/add-to-cart/variable.php. This file has a form tag and dropdowns are shown in a form tag. Since we are already inside a table, form tag can not be used here and therefore, we are creating a div tag which is very similar to form tag created in variable.php
-*
-*/
+ * This function gets the Variation details of the Variable product in the search bar of the product in create quotation through admin side.
+ * creates global variable for variable product.
+ * we are using quoteupVariationDropdown() instead of woocommerce_variable_add_to_cart(). quoteupVariationDropdown() is just a copy of woocommerce_variable_add_to_cart() loading our template instead of woocommerce variable.php
+ * woocommerce_variable_add_to_cart() includes woocommerce/templates/single-product/add-to-cart/variable.php. This file has a form tag and dropdowns are shown in a form tag. Since we are already inside a table, form tag can not be used here and therefore, we are creating a div tag which is very similar to form tag created in variable.php
+ */
 function getVariationsDropdown()
 {
     $variationData = $_POST['perProductDetail'];
@@ -156,8 +159,9 @@ function checkSecurity()
  * enquiry_lang_code,quotation_lang_code,_unread_enquiry.
  * Also disable quotation is set by User in the settings then the admin_quote_created meta
  * keys are not sent.
- * @param string $metaTable Meta table name
- * @param array $form quoteUp Settings
+ *
+ * @param  string $metaTable Meta table name
+ * @param  array  $form      quoteUp Settings
  * @return array  $metaHeadings meta keys from the meta table depending upon the
  * conditions
  */
@@ -195,10 +199,11 @@ function getMetaColumns($metaTable, $form)
  * This function sets products to be included in CSV and string to get price from array
  * Gets the Product details of the Enquiry created at both admin and frontend sides to
  * include in the CSV.
- * @param  string &$csvProducts      blank string which will be set as products array
- * @param  string &$price            blank string which will be set as string to get price
- * @param  array $form              settings of product
- * @param  array $individualEnquiry enquiry data
+ *
+ * @param string &$csvProducts      blank string which will be set as products array
+ * @param string &$price            blank string which will be set as string to get price
+ * @param array  $form              settings of product
+ * @param array  $individualEnquiry enquiry data
  */
 function getCsvProducts(&$csvProducts, &$price, $form, $individualEnquiry)
 {
@@ -216,6 +221,7 @@ function getCsvProducts(&$csvProducts, &$price, $form, $individualEnquiry)
 
 /**
  * This function returns title of product
+ *
  * @param  array $data product details
  * @return string       product title
  */
@@ -244,10 +250,11 @@ function getProductTitle($data)
  * First it fetches all meta_values in the entries of the specified meta_keys.
  * Checks if the meta_value is admin_quote_created.
  * It sets the Admin Created Quote key of $csvData array to 'yes'.
- * @param  array $csvData      values of other csv columns
- * @param  array $metaHeadings Meta columns
- * @param  int $enquriyID    enquiry ID
- * @param string $metaTable metaTbale name.
+ *
+ * @param  array  $csvData      values of other csv columns
+ * @param  array  $metaHeadings Meta columns
+ * @param  int    $enquriyID    enquiry ID
+ * @param  string $metaTable    metaTbale name.
  * @return array               values of CSV columns with meta columns values
  */
 function getMetaColumnsValues($csvData, $metaHeadings, $enquriyID, $metaTable)
@@ -273,8 +280,8 @@ function getMetaColumnsValues($csvData, $metaHeadings, $enquriyID, $metaTable)
     return $csvData;
 }
 /**
-* This function gets the status of telephone and date fields from the Quoteup settings.
-*/
+ * This function gets the status of telephone and date fields from the Quoteup settings.
+ */
 function getTelephoneAndDateFieldStatus($individualEnquiry, $form, &$csvData)
 {
     if (isset($form[ 'enable_telephone_no_txtbox' ]) && $form[ 'enable_telephone_no_txtbox' ]) {
@@ -415,6 +422,13 @@ if (!function_exists('quoteupReturnRows')) {
     }
 }
 
+function quoteup_whats_new_tab_visited()
+{
+    update_option('is_whats_new_tab_visited', 'yes');
+    echo 'valid';
+    die();
+}
+
 /**
  * This function is used to append the where clause in query depending upon condition.
  *
@@ -422,6 +436,7 @@ if (!function_exists('quoteupReturnRows')) {
  * the query
  * If the status is set it gets the ids with the same status and for those enquiry ids it
  * creates the where clause.
+ *
  * @param [string] $arr [enquiry ids appended in a single string]
  *
  * @return [string] $qry [where clause query according to the condition]
@@ -448,7 +463,8 @@ function appendConditionInQUery($arr)
  * This function gives sql query as per status.
  *
  * Gets the rows from the wp_enquiry_history table with the specific status.
- * @param [string] $filter [Enquiry Status]
+ *
+ * @param  [string] $filter [Enquiry Status]
  * @return [string] $resultSet  [enquiry Ids of the required status all appended in single   * string]
  */
 function getSqlStatus($filter)
@@ -472,6 +488,7 @@ function getSqlStatus($filter)
 /**
  * get all ids in array for CSV generation.
  * returns them appended in a single string.
+ *
  * @param [array] $ids [enquiry ids]
  *
  * @return [string] $arr [all the enquiry ids appended to a string]
@@ -554,9 +571,10 @@ function getNewVariation($variation_detail)
 }
 
 /**
-* This function returns author_email field.
-* @return [string] Author Email.
-*/
+ * This function returns author_email field.
+ *
+ * @return [string] Author Email.
+ */
 function getAuthorMail()
 {
     return isset($_POST['author_email']) ? filter_var($_POST['author_email'], FILTER_SANITIZE_EMAIL) : "";
@@ -580,30 +598,30 @@ function quoteupAddProductInEnqCart()
     $prod = $quoteup->wcCartSession->get('wdm_product_info') != null ? $quoteup->wcCartSession->get('wdm_product_info') : array();
     //$prod = isset($_SESSION['wdm_product_info']) ? $_SESSION['wdm_product_info'] : array();
 
-    $product_id = filter_var($_POST[ 'product_id' ], FILTER_SANITIZE_NUMBER_INT);
-    $prod_quant = filter_var($_POST[ 'product_quant' ], FILTER_SANITIZE_NUMBER_INT);
-    $title = get_the_title($product_id);
-    $remark = isset($_POST[ 'remark' ]) ? $_POST[ 'remark' ] : '';
-    $id_flag = 0;
-    $counter = 0;
-    $authorEmail = getAuthorMail();
-    $variation_id = $_POST['variation'];
+    $product_id       = filter_var($_POST[ 'product_id' ], FILTER_SANITIZE_NUMBER_INT);
+    $prod_quant       = filter_var($_POST[ 'product_quant' ], FILTER_SANITIZE_NUMBER_INT);
+    $title            = get_the_title($product_id);
+    $remark           = isset($_POST['remark']) ? filter_var($_POST['remark'], FILTER_SANITIZE_STRING) : '';
+    $id_flag          = 0;
+    $counter          = 0;
+    $authorEmail      = getAuthorMail();
+    $variation_id     = filter_var($_POST['variation'], FILTER_SANITIZE_NUMBER_INT);
     $variation_detail = '';
 
     //Variable Product
     if ($variation_id != '' && $variation_id != 0) {
         $product = wc_get_product($variation_id);
-        $variation_detail = $_POST['variation_detail'];
+        $variation_detail = array_map('sanitize_text_field', $_POST['variation_detail']);
         $variation_detail = getNewVariation($variation_detail);
-        $price = quoteupGetPriceToDisplay($product);
     } else {
         $product = wc_get_product($product_id);
-        $price = quoteupGetPriceToDisplay($product);
     }
+    $price = quoteupGetPriceToDisplay($product, $prod_quant);
+
     //End of Variable Product
     if ($quoteup->wcCartSession->get('wdm_product_info') != null) {
     //if (isset($_SESSION[ 'wdm_product_info' ]) && !empty($_SESSION[ 'wdm_product_info' ])) {
-        $flag_counter = setFlag($product_id, $id_flag, $counter, $variation_detail, $variation_id);
+        $flag_counter = quoteupGetFlag($product_id, $id_flag, $counter, $variation_detail, $variation_id);
         $id_flag = $flag_counter[ 'id_flag' ];
         $counter = $flag_counter[ 'counter' ];
     }
@@ -694,14 +712,16 @@ function setProductInfo($counter, $remark, $prod_quant, $price)
 /**
  * Checks whether product has already been added to Enquiry/Quote cart.
  *
- * If product is already there in the Enquiry cart, returns id_flag as 1, else returns id_flag as 0
- * @param [int] $product_id [Product Id]
- * @param [int] $id_flag [0 or 1 depending upon product present in cart or not.]
- * @param [array] $variation_detail [Details of Variable Products]
- * @param variation_id array or single variation id.
- * @return [array] [containing id_flag and $counter].
+ * If product is already there in the Enquiry cart, returns id_flag as 1, else returns id_flag as 0.
+ *
+ * @param  int  $product_id     Product Id.
+ * @param  int  $id_flag        0 or 1 depending upon product present in cart or not.
+ * @param  array    $variation_detail   Numeric array containing variation attributes.
+ * @param  int  $variation_id   Single variation id.
+ *
+ * @return array Return array containing id_flag and $counter.
  */
-function setFlag($product_id, $id_flag, $counter, $variation_detail, $variation_id)
+function quoteupGetFlag($product_id, $id_flag, $counter, $variation_detail, $variation_id)
 {
     global $quoteup;
     $prod = $quoteup->wcCartSession->get('wdm_product_info');
@@ -784,7 +804,7 @@ function quoteupUpdateEnqCartSession()
     $quant = getQuantity();
     $remark = getRemark();
     $product = getProduct($pid, $vid);
-    $pri = quoteupGetPriceToDisplay($product);
+    $pri = quoteupGetPriceToDisplay($product, $quant);
     $priceStatus = get_post_meta($pid, '_enable_price', true);
     $countProductInfo = isset($prod) ? count($prod) : 0;
     //$countProductInfo = isset($_SESSION[ 'wdm_product_info' ]) ? count($_SESSION[ 'wdm_product_info' ]) : 0;
@@ -803,10 +823,6 @@ function quoteupUpdateEnqCartSession()
                 $prodCount = $prodCount - 1;
                 //$_SESSION['wdm_product_count'] = $_SESSION['wdm_product_count'] - 1;
             } else {
-                $price = getPriceToSend($priceStatus, $pri, $quant);
-
-                echo json_encode(array('product_id' => $pid, 'variation_id' => $vid, 'variation_detail' => $variation_detail, 'price' => $price));
-
                 $prod[$search]['quant'] = $quant;
                 //$_SESSION['wdm_product_info'][$search]['quant'] = $quant;
                 $prod[ $search ][ 'price' ] = $pri;
@@ -824,6 +840,18 @@ function quoteupUpdateEnqCartSession()
 
             $quoteup->wcCartSession->set('wdm_product_info', $prod);
             $quoteup->wcCartSession->set('wdm_product_count', $prodCount);
+            $price       = getPriceToSend($priceStatus, $pri, $quant);
+            $total       = $quoteup->quoteupEnquiryCart->getEnquiryCartTotal();
+            $totalString = $quoteup->quoteupEnquiryCart->getMiniCartTotalText($total);
+
+            echo json_encode(array('product_id' => $pid, 'variation_id' => $vid, 'variation_detail' => $variation_detail, 'price' => $price, 'status'     => 'COMPLETED', 'count'    => $prodCount, 'total' => $total, 'totalString' => $totalString));
+            /* echo json_encode(
+                array(
+                'status'     => 'COMPLETED',
+                'count'    => $prodCount,
+                'total' => $total,
+                )
+            ); */
             die();
         }
     }
@@ -978,11 +1006,12 @@ function quoteupValidateNonce()
 }
 
 /**
-* This function adds the current language (locale) value for the meta keys of languages in the meta table of the enquiry.
-* @param int $enquiryId Current enquiry id
-* @param string $metaKey meta keys for language (enquiry_lang_code,quotation_lang_code)
-* @param string $currentLoacle Locale for currently selected language.
-*/
+ * This function adds the current language (locale) value for the meta keys of languages in the meta table of the enquiry.
+ *
+ * @param int    $enquiryId     Current enquiry id
+ * @param string $metaKey       meta keys for language (enquiry_lang_code,quotation_lang_code)
+ * @param string $currentLoacle Locale for currently selected language.
+ */
 function addLanguageToEnquiryMeta($enquiryID, $metaKey, $currentLocale)
 {
     global $wpdb;
@@ -1021,12 +1050,12 @@ function addLanguageToEnquiryMeta($enquiryID, $metaKey, $currentLocale)
 }
 
 /**
-* This function adds the Meta details of the Product in the Enquiry Meta table.
-* @param [int] $enquiryID enquiry Id
-* @param [string] $metaKey key value
-* @param [string] $metaValue Value associated with it
-
-*/
+ * This function adds the Meta details of the Product in the Enquiry Meta table.
+ *
+ * @param [int]    $enquiryID enquiry Id
+ * @param [string] $metaKey   key value
+ * @param [string] $metaValue Value associated with it
+ */
 function addEnquiryMeta($enquiryID, $metaKey, $metaValue)
 {
     global $wpdb;
@@ -1156,7 +1185,7 @@ function quoteupVerifyCaptcha($form_data)
         $response           = isset($_POST["captcha"])?$_POST["captcha"] : '';
         $verify             = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$response}");
         $captcha_success    = json_decode($verify);
-        $errorMsg           = isset($form_data['google_captcha_err_msg']) && !empty($form_data['google_captcha_err_msg']) ? $form_data['google_captcha_err_msg'] : __('Captcha could not be verified.', QUOTEUP_TEXT_DOMAIN);
+        $errorMsg           = isset($form_data['google_captcha_err_msg']) && !empty($form_data['google_captcha_err_msg']) ? quoteupReturnWPMLVariableStrTranslation($form_data['google_captcha_err_msg']) : __('Captcha could not be verified.', QUOTEUP_TEXT_DOMAIN);
         $errorMsgHTML       = '<li class="error-list-item">'.$errorMsg.'</li>';
         $quoteupSettings    = quoteupSettings();
         if (!$captcha_success->success || (quoteupIsCaptchaVersion3($quoteupSettings) && !quoteupVerifyCaptchaV3($captcha_success))) {
@@ -1176,7 +1205,7 @@ function processEnquiryAfterInsertion($enquiryID, $product_details, $quoteup, $v
 {
     global $quoteup;
 
-    updateProductDetails($enquiryID, $product_details);
+    updateProductDetails($enquiryID, $product_details, $data);
     do_action('mpe_form_entry_added_in_db', $enquiryID);
     do_action('quoteup_form_entry_added_in_db', $enquiryID);
     do_action('pep_form_entry_added_in_db', $enquiryID, $data, $product_details);
@@ -1229,8 +1258,9 @@ function sendAutoSenderEmailSettings($data)
 
 /**
  * This function is used to validate files if attach field is activated.
- * @param  global variable object  $quoteup contains details of quoteup settings, expiration,session, attached file constraints,dependancies.
-  * @return boolean $validMedia true if valid otherwise gives an error.
+ *
+ * @param  global variable object $quoteup contains details of quoteup settings, expiration,session, attached file constraints,dependancies.
+ * @return boolean $validMedia true if valid otherwise gives an error.
  */
 function validateAttachField($quoteup)
 {
@@ -1243,7 +1273,8 @@ function validateAttachField($quoteup)
 
 /**
  * This function is used to delete existing folder of files if exists
- * @param  int $enquiryID enquiry id of current enquiry
+ *
+ * @param int $enquiryID enquiry id of current enquiry
  */
 function deleteDirectoryIfExists($enquiryID)
 {
@@ -1259,9 +1290,10 @@ function deleteDirectoryIfExists($enquiryID)
 
 /**
  * This function is used to upload files if attach field is activated
- * @param  object $quoteup    Global object for classes
+ *
+ * @param  object  $quoteup    Global object for classes
  * @param  boolean $validMedia true if media is valid
- * @param  int $enquiryID  enquiry id of current enquiry
+ * @param  int     $enquiryID  enquiry id of current enquiry
  * @return true if succesful file upload
  */
 function uploadAttachedFile($quoteup, $validMedia, $enquiryID)
@@ -1373,8 +1405,8 @@ function quoteupSubject()
 /**
  * This function is used to get img url of product.
  *
- * @param [string] $img [image url]
- * @param [int] $product_id Product Id
+ * @param [string] $img        [image url]
+ * @param [int]    $product_id Product Id
  *
  * @return [string]$img_url [image url]
  */
@@ -1413,8 +1445,9 @@ function getVariationDetails($variation_detail)
  * or not.
  * If yes then fetch the data of products in the cart.
  * If no fetch the product details of single product.
+ *
  * @param [array] $form_data     [settings stored by admin]
- * @param [type]  $product_table [description]
+ * @param [array]  $productData   [$_POST data]
  */
 function getEmailAndDbDataOfProducts($form_data, $productData)
 {
@@ -1425,7 +1458,7 @@ function getEmailAndDbDataOfProducts($form_data, $productData)
     $authorEmail = array();
     //if multiproduct enquiry is set
     if (isset($form_data[ 'enable_disable_mpe' ]) && $form_data[ 'enable_disable_mpe' ] == 1) {
-        $product_details = getEnquirySessionProductsDetails($gaProducts);
+        $product_details = getEnquirySessionProductsDetails($gaProducts, $productData);
         $prod = $quoteup->wcCartSession->get('wdm_product_info');
         foreach ($prod as $arr) {
             array_push($authorEmail, $arr['author_email']);
@@ -1458,6 +1491,10 @@ function getEmailAndDbDataOfProducts($form_data, $productData)
             $sku = $product->get_sku();
             $img_url = wp_get_attachment_url(get_post_thumbnail_id($product_id));
         }
+
+        $customerEmail = filter_var($productData[ 'txtemail' ], FILTER_SANITIZE_EMAIL);
+        $price = quoteupGetPriceToDisplay($product, $prod_quant, $price, $customerEmail);
+
         // End of Variable Product
         $prod[] = array('id' => $product_id,
             'title' => $title,
@@ -1480,26 +1517,44 @@ function getEmailAndDbDataOfProducts($form_data, $productData)
 }
 
 /**
-* This function get Enquiry Session Products Details
-* get the Product details of both the Variable and simple products whatever is in the cart.
-* @return [array] $data [product details in the cart]
-*/
-function getEnquirySessionProductsDetails(&$gaProducts)
+ * This function get Enquiry Session Products Details
+ * get the Product details of both the Variable and simple products whatever is in the cart.
+ *
+ * @return [array] $data [product details in the cart]
+ */
+function getEnquirySessionProductsDetails(&$gaProducts, $productData)
 {
     global $quoteup;
     // @session_start();
     $data = array();
     $prod = $quoteup->wcCartSession->get('wdm_product_info');
     foreach ($prod as $key => $value) {
-    //foreach ($_SESSION[ 'wdm_product_info' ] as $key => $value) {
-        if ($value['variation_id'] != '') {
-            $product = wc_get_product($value['variation_id']);
-            $price = $product->get_price();
+        //foreach ($_SESSION[ 'wdm_product_info' ] as $key => $value) {
+        $productId   = intval($value['id']);
+        $title       = sanitize_text_field($value['title']);
+        $quantity    = intval($value['quant']);
+        $remark      = filter_var($value['remark'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $variationId = intval($value['variation_id']);
+        $variation   = empty($value['variation']) ? '' : filter_var_array($value['variation'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $customerEmail = filter_var($productData[ 'txtemail' ], FILTER_SANITIZE_EMAIL);        
+
+        if (!empty($variationId)) {
+            $product = wc_get_product($variationId);
+            $price   = $product->get_price();
         } else {
-            $product = wc_get_product($value['id']);
-            $price = $product->get_price();
+            $product = wc_get_product($productId);
+            $price   = $product->get_price();
         }
-        array_push($gaProducts, get_the_title($value['id']));
+
+        $price = quoteupGetPriceToDisplay($product, $quantity, $price, $customerEmail);
+
+        array_push($gaProducts, get_the_title($productId));
+        $value['id'] = $productId;
+        $value['title'] = $title;
+        $value['quant'] = $quantity;
+        $value['remark'] = $remark;
+        $value['variation_id'] = $variationId;
+        $value['variation'] = $variation;
         $value['price'] = $price;
         array_push($data, $value);
         unset($key);
@@ -1510,7 +1565,7 @@ function getEnquirySessionProductsDetails(&$gaProducts)
 /**
  * Set product details from an array.
  *
- * @param array $product_table_and_details product details of the enquiry.
+ * @param  array $product_table_and_details product details of the enquiry.
  * @return array $product_details product details of the enquiry.
  */
 function setProductDetails($product_table_and_details)
@@ -1664,6 +1719,7 @@ if (!function_exists('quoteupModifyUserQuoteData')) {
  * When admin/ vendor sends a reply on any quote from customer , on send button click this function is called through ajax.
  * In the enquiry Thread table, put the details of reply sent by admin/ vendor.
  * Send an email to the customer on whose enquiry reply is sent.
+ *
  * @global $wpdb wordpress database global
  * @global object $quoteupEmail Email object for quoteup
  */

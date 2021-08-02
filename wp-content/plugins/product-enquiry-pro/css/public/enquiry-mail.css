@@ -30,6 +30,10 @@ table {
     text-align: center;
 }
 
+.mail-total {
+    text-align: center;
+}
+
 .remarks-head, .remarks {
     width: 40%;
     word-wrap: break-word;

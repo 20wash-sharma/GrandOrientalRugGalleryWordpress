@@ -92,12 +92,23 @@ class QuoteupGeneratePdf
 
         self::createFontsDirectory();
 
-        require_once 'mpdf/mpdf.php';
-        $stylesheet = file_get_contents(QUOTEUP_PLUGIN_DIR.'/css/admin/pdf-generation.css');
-        $stylesheet = apply_filters('quoteup_pdf_style', $stylesheet);
-        $upload_dir = wp_upload_dir();
-        $path = $upload_dir[ 'basedir' ].'/QuoteUp_PDF/';
-        $mpdf = new \mPDF();
+        require_once __DIR__ . '/mpdf/vendor/autoload.php';
+
+        $stylesheet  = file_get_contents(QUOTEUP_PLUGIN_DIR.'/css/admin/pdf-generation.css');
+        $stylesheet  = apply_filters('quoteup_pdf_style', $stylesheet);
+        $upload_dir  = wp_upload_dir();
+        $path        = $upload_dir[ 'basedir' ].'/QuoteUp_PDF/';
+        $mpdfTempDir = $path . 'mpdf/tmp';
+        if (!file_exists($mpdfTempDir)) {
+            // Create 'tmp' directory required to mPDF to generate PDF files
+            $success = wp_mkdir_p($mpdfTempDir);
+            if (!$success) {
+                echo __('Could not create mpdf/tmp directory required to generate PDF files. Please provide the correct permission to wp-content/uploads/QuoteUp_PDF directory.', 'quoteup');
+                die;
+            }
+        }
+
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => $mpdfTempDir]);
         $mpdf->useAdobeCJK = true;
         $mpdf->autoScriptToLang = true;
         $mpdf->autoLangToFont = true;
@@ -136,6 +147,23 @@ class QuoteupGeneratePdf
             <?php
             do_action('woocommerce_email_footer');
             $mailData = ob_get_clean();
+            /**
+             * Use this filter to decide whether to include the company logo in an
+             * quotation email.
+             *
+             * @since 6.4.4
+             *
+             * @param   bool    Boolean value indicating whether to include the company logo
+             *                  in quotation email.
+             *
+             */
+            $should_add_logo = apply_filters('quoteup_should_add_comp_logo_in_quote_email', true);
+            if (isset($pdfSetting['company_logo']) && !empty($pdfSetting['company_logo']) && $should_add_logo) {
+                $img = '<div id="template_header_image"><p style="margin-top:0;"><img src="' . esc_url($pdfSetting['company_logo']) . '" alt="' . esc_attr(get_bloginfo('name', 'display')) . '" /></p></div>';
+
+                $mailData = preg_replace('/<div id="template_header_image">[\s\S]*?(<\/div>)/', $img, $mailData);
+            }
+
             do_action('wdm_after_create_pdf');
             return $mailData;
         }

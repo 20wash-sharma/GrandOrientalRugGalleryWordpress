@@ -55,36 +55,42 @@ class QuoteUpDashboardMenu
         global $quoteup;
         require_once QUOTEUP_PLUGIN_DIR.'/includes/admin/listing/class-quoteup-quotes-list.php';
         require_once QUOTEUP_PLUGIN_DIR.'/includes/admin/listing/class-quoteup-enquiries-list.php';
-        $getDataFromDb = \Licensing\WdmLicense::checkLicenseAvailiblity('pep', false);
+        // $getDataFromDb = \Licensing\WdmLicense::checkLicenseAvailiblity('pep', false);
         $optionData = quoteupSettings();
         $cap_manage_woocommerce = 'manage_woocommerce';
         $capablity = apply_filters('quoteup_quote_enquiry_capablity', $cap_manage_woocommerce);
         $unreadEnquiryCount = $this->getUnreadEnquiryCount();
-        if ($getDataFromDb == 'available') {
-            if ($unreadEnquiryCount > 0) {
-                $menuName = sprintf(__('Product Enquiry Pro %s %s %s', QUOTEUP_TEXT_DOMAIN), '<span class="unread-enquiry-count update-plugins"><span class="enquiry-count">', $unreadEnquiryCount, '</span></span>');
-            } else {
-                $menuName = __('Product Enquiry Pro', QUOTEUP_TEXT_DOMAIN);
-            }
-            add_menu_page(__('QuoteUp', QUOTEUP_TEXT_DOMAIN), $menuName, $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'), QUOTEUP_PLUGIN_URL.'/images/pep.png');
-            add_submenu_page('admin.php?page=quoteup-details-edit', __('Edit Enquiry', QUOTEUP_TEXT_DOMAIN), __('Quote Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-edit', array($quoteup->quoteDetailsEdit, 'editQuoteDetails'));
-            if (isset($optionData['enable_disable_quote']) && $optionData['enable_disable_quote'] == 1) {
-                $menu = add_submenu_page('quoteup-details-new', __('Enquiry Details', QUOTEUP_TEXT_DOMAIN), __('Enquiry Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'));
-            } else {
-                $menu = add_submenu_page('quoteup-details-new', __('Enquiry & Quote Details', QUOTEUP_TEXT_DOMAIN), __('Enquiry & Quote Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'));
-                $capablity = apply_filters('quoteup_create_new_quote_capabilities', $cap_manage_woocommerce);
-                add_submenu_page('quoteup-details-new', __('Create New Quote', QUOTEUP_TEXT_DOMAIN), __('Create New Quote', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-create-quote', array($quoteup->quoteCreateQuotation, 'createDashboardQuotation'));
-            }
 
-            $capablity = apply_filters('quoteup_form_capabilities', $cap_manage_woocommerce);
-            add_submenu_page('quoteup-details-new', __('Forms', QUOTEUP_TEXT_DOMAIN), __('Forms', QUOTEUP_TEXT_DOMAIN), $capablity, 'edit.php?post_type=form', null);
-            add_action("load-{$menu}", array($this, 'menuActionLoadHook'));
-            do_action('quoteup_dashboard_menu');
-
-            $capablity = apply_filters('quoteup_settings_capabilities', $cap_manage_woocommerce);
-            add_submenu_page('quoteup-details-new', __('QuoteUp Settings', QUOTEUP_TEXT_DOMAIN), __('Settings', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-for-woocommerce', array($quoteup->displaySettingsPage, 'displaySettings'));
-            add_action('admin_enqueue_scripts', array($quoteup->displaySettingsPage, 'enqueueScripts'));
+        if ($unreadEnquiryCount > 0) {
+            $menuName = sprintf(__('Product Enquiry Pro %s %s %s', QUOTEUP_TEXT_DOMAIN), '<span class="unread-enquiry-count update-plugins"><span class="enquiry-count">', $unreadEnquiryCount, '</span></span>');
+        } else {
+            $menuName = __('Product Enquiry Pro', QUOTEUP_TEXT_DOMAIN);
+            if (!$this->isWhatsNewTabVisited()) {
+                $menuName .= '<span class="pep-update-dot"></span>';
+            }
         }
+        add_menu_page(__('QuoteUp', QUOTEUP_TEXT_DOMAIN), $menuName, $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'), QUOTEUP_PLUGIN_URL.'/images/pep.png', '56');
+        add_submenu_page('admin.php?page=quoteup-details-edit', __('Edit Enquiry', QUOTEUP_TEXT_DOMAIN), __('Quote Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-edit', array($quoteup->quoteDetailsEdit, 'editQuoteDetails'));
+        if (isset($optionData['enable_disable_quote']) && $optionData['enable_disable_quote'] == 1) {
+            $menu = add_submenu_page('quoteup-details-new', __('Enquiry Details', QUOTEUP_TEXT_DOMAIN), __('Enquiry Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'));
+        } else {
+            $menu = add_submenu_page('quoteup-details-new', __('Enquiry & Quote Details', QUOTEUP_TEXT_DOMAIN), __('Enquiry & Quote Details', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-details-new', array($quoteup->quoteDetails, 'displayQuoteDetails'));
+            $capablity = apply_filters('quoteup_create_new_quote_capabilities', $cap_manage_woocommerce);
+            add_submenu_page('quoteup-details-new', __('Create New Quote', QUOTEUP_TEXT_DOMAIN), __('Create New Quote', QUOTEUP_TEXT_DOMAIN), $capablity, 'quoteup-create-quote', array($quoteup->quoteCreateQuotation, 'createDashboardQuotation'));
+        }
+
+        $capablity = apply_filters('quoteup_form_capabilities', $cap_manage_woocommerce);
+        add_submenu_page('quoteup-details-new', __('Forms', QUOTEUP_TEXT_DOMAIN), __('Forms', QUOTEUP_TEXT_DOMAIN), $capablity, 'edit.php?post_type=form', null);
+        add_action("load-{$menu}", array($this, 'menuActionLoadHook'));
+        do_action('quoteup_dashboard_menu');
+
+        $capablity = apply_filters('quoteup_settings_capabilities', $cap_manage_woocommerce);
+        $settingsMenu = __('Settings', QUOTEUP_TEXT_DOMAIN);
+        if (!$this->isWhatsNewTabVisited()) {
+            $settingsMenu .= '<span class="pep-update-dot"></span>';
+        }
+        add_submenu_page('quoteup-details-new', __('QuoteUp Settings', QUOTEUP_TEXT_DOMAIN), $settingsMenu, $capablity, 'quoteup-for-woocommerce', array($quoteup->displaySettingsPage, 'displaySettings'));
+        add_action('admin_enqueue_scripts', array($quoteup->displaySettingsPage, 'enqueueScripts'));
     }
     /**
     * This function gets the unread enquiry count from meta table.
@@ -139,6 +145,28 @@ class QuoteUpDashboardMenu
         }
      
         return $status;
+    }
+
+    /**
+     * Check whether What's New tab has been visited or not.
+     * Return true if What's New tab has been visited, false otherwise.
+     *
+     * @return bool     Return true if What's New tab has been visited,
+     *                  false otherwise.
+     */
+    public function isWhatsNewTabVisited()
+    {
+        $isWhatsNewTabVisited = false;
+        $get_plugin_version   = get_option('wdm_quoteup_version', false);
+
+        if (false == $get_plugin_version || QUOTEUP_VERSION != $get_plugin_version) {
+            $isWhatsNewTabVisited = false;
+            delete_option('is_whats_new_tab_visited');
+        } elseif ('yes' == get_option('is_whats_new_tab_visited', false)) {
+            $isWhatsNewTabVisited = true;
+        }
+
+        return $isWhatsNewTabVisited;
     }
 }
 QuoteUpDashboardMenu::getInstance();

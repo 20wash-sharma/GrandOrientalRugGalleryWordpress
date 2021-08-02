@@ -12,11 +12,11 @@ if (!defined('ABSPATH')) {
 function formSettings($form_data)
 {
     ?>
-<div id="wdm_form">
-            <?php
-            require_once 'form/quoteup-form-options.php';
-            do_action('quoteup_form_settings', $form_data);
-    ?>
-</div>
-            <?php
+    <div id="wdm_form">
+        <?php
+        require_once 'form/quoteup-form-options.php';
+        do_action('quoteup_form_settings', $form_data);
+        ?>
+    </div>
+    <?php
 }

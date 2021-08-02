@@ -10,9 +10,10 @@ WC()->mailer();
 /**
  * This class is used to send mail to customer.
  * Mail includes pdf and the unique link by which customer can approve or reject quote.
+ *
  * @static instance Object of class
- * @var $enquiryID Enquiry Id 
- * @var $source source of email
+ * @var    $enquiryID Enquiry Id
+ * @var    $source source of email
  */
 class SendEnquiryMail extends \WC_Email
 {
@@ -22,30 +23,32 @@ class SendEnquiryMail extends \WC_Email
     protected $data;
 
     /**
-    * This function sends the Singleton emailObject.
-    * @param int $enquiryId current enquiry id.
-    * @param int $authorEmail Author Email
-    * @param string $subject subject to be sent in email.
-    * @return static instance of Email Object
-    */
-    public static function getInstance($enquiryID,$authorEmail,$subject,$data)
+     * This function sends the Singleton emailObject.
+     *
+     * @param  int    $enquiryId   current enquiry id.
+     * @param  int    $authorEmail Author Email
+     * @param  string $subject     subject to be sent in email.
+     * @return static instance of Email Object
+     */
+    public static function getInstance($enquiryID, $authorEmail, $subject, $data)
     {
         if (null === static::$instance) {
-            static::$instance = new static($enquiryID,$authorEmail,$subject, $data);
+            static::$instance = new static($enquiryID, $authorEmail, $subject, $data);
         }
 
         return static::$instance;
     }
 
     /**
-    * Constructor for calling various functions for sending enquiry mail.
-    * @param int $enquiryId Id of enquiry
-    * @param array array of author emails
-    * @param string subject for mail
-    */
-    public function __construct($enquiryID,$authorEmail,$subject,$data)
+     * Constructor for calling various functions for sending enquiry mail.
+     *
+     * @param int   $enquiryId Id of enquiry
+     * @param array array of author emails
+     * @param string subject for mail
+     */
+    public function __construct($enquiryID, $authorEmail, $subject, $data)
     {
-        add_filter('woocommerce_email_styles', array($this,'addCSS') , 10, 1);
+        add_filter('woocommerce_email_styles', array($this,'addCSS'), 10, 1);
         $this->enquiryID = $enquiryID;
         $this->data = $data;
         $admin_emails = array();
@@ -81,9 +84,10 @@ class SendEnquiryMail extends \WC_Email
     }
 
      /**
-    * This returns the CSS for Email 
-    * @return string $css css for email
-    */
+      * This returns the CSS for Email.
+      *
+      * @return string $css css for email
+      */
     public function addCSS($css)
     {
         $stylesheet = file_get_contents(QUOTEUP_PLUGIN_DIR.'/css/public/enquiry-mail.css');
@@ -91,8 +95,8 @@ class SendEnquiryMail extends \WC_Email
     }
 
     /**
-    * Sends the email after getting all the required details.
-    */
+     * Sends the email after getting all the required details.
+     */
     public function trigger()
     {
         $this->source = 'admin';
@@ -102,7 +106,7 @@ class SendEnquiryMail extends \WC_Email
         $attachments = $this->get_attachments();
         $this->recipient = apply_filters('quoteup_update_admin_mail_recipient', $this->recipient, $this->data);
         if (!empty($this->recipient)) {
-            $this->send($this->recipient, $subject, $message, $headers, $attachments);            
+            $this->send($this->recipient, $subject, $message, $headers, $attachments);
         }
 
         // Send Email to authors if vendor compatibility is enabled.
@@ -113,19 +117,21 @@ class SendEnquiryMail extends \WC_Email
             $this->source = 'cc';
             $message = $this->get_content();
             $headers = "Reply-to: " . get_option('admin_email') . "\r\n";
-            $headers=apply_filters('quoteup_send_copy_mail_header',$headers);
+            $headers =apply_filters('quoteup_send_copy_mail_header', $headers);
             $this->recipient = filter_var($this->data[ 'txtemail' ], FILTER_SANITIZE_EMAIL);
             $this->recipient = apply_filters('quoteup_update_customer_mail_recipient', $this->recipient, $this->data);
+            
             $this->send($this->recipient, $subject, $message, $headers, $attachments);
         }
     }
 
      /**
-    * Gets the content in HTML for the mail to be sent.
-    * Template for customer details.
-    * Gets the Products for the enquiry from database.
-    * @return HTML $message content of email
-    */
+      * Gets the content in HTML for the mail to be sent.
+      * Template for customer details.
+      * Gets the Products for the enquiry from database.
+      *
+      * @return HTML $message content of email
+      */
     public function get_content_html()
     {
         $optionData = quoteupSettings();
@@ -154,6 +160,24 @@ class SendEnquiryMail extends \WC_Email
 
         do_action('quoteup_reset_lang');
         $message = ob_get_clean();
+        $email_data = quoteupSettings();
+
+        /**
+         * Use this filter to decide whether to include the company logo in an
+         * enquiry email or not.
+         *
+         * @since 6.4.4
+         *
+         * @param   bool    Boolean value indicating whether to include the company logo in enquiry email.
+         *
+         */
+        $should_add_logo = apply_filters('quoteup_should_add_comp_logo_in_enq_email', true);
+        if (isset($email_data['company_logo']) && !empty($email_data['company_logo']) && $should_add_logo) {
+            $img = '<div id="template_header_image"><p style="margin-top:0;"><img src="' . esc_url($email_data['company_logo']) . '" alt="' . esc_attr(get_bloginfo('name', 'display')) . '" /></p></div>';
+
+            $message = preg_replace('/<div id="template_header_image">[\s\S]*?(<\/div>)/', $img, $message);
+        }
+
         return wp_specialchars_decode($message, ENT_QUOTES);
     }
 
@@ -163,16 +187,18 @@ class SendEnquiryMail extends \WC_Email
      * @access public
      * @return string email headers
      */
-    public function get_admin_headers() {
+    public function get_admin_headers()
+    {
         $email = filter_var($this->data[ 'txtemail' ], FILTER_SANITIZE_EMAIL);
         $header = "Reply-to: " . $email . "\r\n";
         return apply_filters('quoteup_admin_mail_headers', $header);
     }
 
-  /**
-    * Gets the generated pdf from the uploads directory to set in the attachments for mail.
-    * @return array $attachments 
-    */
+    /**
+     * Gets the generated pdf from the uploads directory to set in the attachments for mail.
+     *
+     * @return array $attachments
+     */
     public function get_attachments()
     {
         $upload_dir = wp_upload_dir();
@@ -281,9 +307,9 @@ class SendEnquiryMail extends \WC_Email
     /**
      * This function is used to add author mail in admin_emails.
      *
-     * @param [array]  $email_data   [Settings stored in database]
-     * @param [string] $authorEmail  [Author email id]
-     * @param [array]  $admin_emails [Total mail ids on which mail needs to be sent]
+     * @param  [array]  $email_data   [Settings stored in database]
+     * @param  [string] $authorEmail  [Author email id]
+     * @param  [array]  $admin_emails [Total mail ids on which mail needs to be sent]
      * @return array $admin_emails Admin emails specified in backend
      */
     private function addAuthorMail($email_data, $authorEmail, $admin_emails)
@@ -300,7 +326,7 @@ class SendEnquiryMail extends \WC_Email
      * or set the subject entered by customer.
      *
      * @param [string] $subject      [subject for mail]
-     * @param [array] $email_data   [Seetings of Quoteup]
+     * @param [array]  $email_data   [Seetings of Quoteup]
      * @param [string] $wdm_sitename [Site name]
      *
      * @return [string] $admin_subject admin subject for mail
@@ -322,8 +348,8 @@ class SendEnquiryMail extends \WC_Email
     /**
      * THis function is used to get variation string.
      *
-     * @param [array] $variation_detail [Variation details]
-     * @param int $variation_id Variation id
+     * @param  [array] $variation_detail [Variation details]
+     * @param  int     $variation_id     Variation id
      * @return string $variationString string appended variation details
      */
     public static function getVatiationString($variation_detail, $variation_id)

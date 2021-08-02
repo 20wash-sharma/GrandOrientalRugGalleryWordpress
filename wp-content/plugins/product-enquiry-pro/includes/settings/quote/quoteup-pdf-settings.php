@@ -26,6 +26,7 @@ function pdfSettingsSection($form_data)
     if (!isset($form_data[ 'company_logo' ])) {
         $form_data[ 'company_logo' ] = '';
     }
+
     if (!isset($form_data[ 'company_address' ])) {
         $form_data[ 'company_address' ] = '';
     }
@@ -39,21 +40,22 @@ function pdfSettingsSection($form_data)
          $helptip = __('These settings will add details to the generated quote when the Quotation System is enabled.', QUOTEUP_TEXT_DOMAIN);
         $tip = \quoteupHelpTip($helptip, true);
         echo '<legend>'.__('PDF Settings ', QUOTEUP_TEXT_DOMAIN).$tip.'</legend>';
-
-    ?>
-
+        ?>
         <div class="fd">
             <div class='left_div'>
                 <label for="enable_disable_quote_pdf"> <?php _e('Enable PDF', QUOTEUP_TEXT_DOMAIN) ?> </label>
             </div>
-            <div class='right_div'>
+            <div class='right_div help-doc-link-checkbox'>
                 <?php
                 $helptip = __('You can enable/disable PDF.', QUOTEUP_TEXT_DOMAIN);
                 echo \quoteupHelpTip($helptip, true);
-        ?>          
+                ?>          
                 <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'enable_disable_quote_pdf' ]) ? $form_data[ 'enable_disable_quote_pdf' ] : 0);
-        ?> id="enable-disable-pdf" /> 
+                ?> id="enable-disable-pdf" /> 
                 <input type="hidden" name="wdm_form_data[enable_disable_quote_pdf]" value="<?php echo isset($form_data[ 'enable_disable_quote_pdf' ]) && $form_data[ 'enable_disable_quote_pdf' ] == 1 ? $form_data[ 'enable_disable_quote_pdf' ] : 0 ?>" />
+            </div>
+            <div class="help-doc-link">
+                <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-tips-and-tricks/can-i-create-a-new-design-for-the-quote-pdf-that-is-being-generated/'); ?>" target="_blank"><i><?php echo esc_html(__('Help', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
             </div>
             <div class='clear'></div>
         </div>
@@ -84,19 +86,6 @@ function pdfSettingsSection($form_data)
             </div>
             <div class='right_div'>
                 <textarea class="wdm_wpi_text input-without-tip"  name="wdm_form_data[company_address]" rows="5"><?php echo $form_data[ 'company_address' ] ?></textarea>
-            </div>
-            <div class='clear'></div>
-        </div >
-
-        <div class="fd toggle-pdf">
-            <div class='left_div'>
-            <br>
-                <label for="wdm_company_logo"> <?php _e('Logo for PDF', QUOTEUP_TEXT_DOMAIN) ?> </label>
-            </div>
-            <div class='right_div'>
-                <div id="tgm-new-media-settings">
-                    <p><input class="wdm_wpi_text input-without-tip" type="text" id="tgm-new-media-image" size="70" value="<?php echo $form_data[ 'company_logo' ] ?>" name="wdm_form_data[company_logo]" /><a href="#" class="tgm-open-media button button-primary wdm-media-upload-button" title="Upload Logo"><?php _e('Upload Image', QUOTEUP_TEXT_DOMAIN) ?> </a> 
-                </div>
             </div>
             <div class='clear'></div>
         </div >

@@ -14,9 +14,9 @@ if (!class_exists('QuoteUpEnableDisableQuoteUpButton')) {
     class QuoteUpEnableDisableQuoteUpButton
     {
         /**
-        * Action to enable Quoteup button
-        * Action to add enable enquiry for individual product in backend.
-        */
+         * Action to enable Quoteup button
+         * Action to add enable enquiry for individual product in backend.
+         */
         public function __construct()
         {
             add_action('woocommerce_process_product_meta', array($this, 'woocommerceSaveMetaFields'));
@@ -25,6 +25,7 @@ if (!class_exists('QuoteUpEnableDisableQuoteUpButton')) {
 
         /**
          * Process disable_QuoteUp attribute of individual post and save it in database
+         *
          * @param int $post_id Post Id
          */
         public function woocommerceSaveMetaFields($post_id)
@@ -76,7 +77,7 @@ if (!class_exists('QuoteUpEnableDisableQuoteUpButton')) {
                 <div class="wdm_div_right">
                     <span>
                         <input type="checkbox" name="_enable_pep" value="yes" <?php checked('yes', $current_status, true);
-            ?>>
+                        ?>>
                     </span>
                 </div>
                 <div class="clear"></div>

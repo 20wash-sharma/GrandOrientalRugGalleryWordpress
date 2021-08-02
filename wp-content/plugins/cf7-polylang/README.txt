@@ -4,8 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: polylang, contact form 7, multisite, contact form 7 extension, contact form 7 module, multilingual contact form 7, multilingual form, cf7 smart grid extension
 Requires at least: 4.7
 Requires PHP: 5.6
-Tested up to: 5.3
-Requires PHP: 5.6
+Tested up to: 5.5.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -27,7 +26,7 @@ This plugin allows multilingual contact form 7 management using the polylang plu
 
 Please follow the [Installation](https://wordpress.org/plugins/cf7-polylang/installation/) instructions carefully, especially the part about saving your Polylang settings after you have activated this plugin.
 
-English subtitled video on youtube, [Spanish](https://www.youtube.com/embed/0IJsPGSpYog?cc_load_policy=1&amp;rel=0&amp;showinfo=0&amp;hl=es&cc_lang_pref=es) & [French](https://www.youtube.com/embed/0IJsPGSpYog?cc_load_policy=1&amp;rel=0&amp;showinfo=0&amp;hl=fr&cc_lang_pref=fr) subtitles available in the caption settings.
+English subtitled video on youtube, [Spanish](https://www.youtube.com/embed/0IJsPGSpYog?cc_load_policy=1&amp;rel=0&amp;showinfo=0&amp;hl=es) & [French](https://www.youtube.com/embed/0IJsPGSpYog?cc_load_policy=1&amp;rel=0&amp;showinfo=0&amp;hl=fr) subtitles available in the caption settings.
 
 [youtube https://www.youtube.com/watch?v=0IJsPGSpYog&t=83s?cc_load_policy=1&rel=0&showinfo=0]
 
@@ -126,6 +125,19 @@ function my_cf7_mail_tag($output, $name, $html ) {
   return $output;
 }
 `
+
+= 7. How to load a plugin's translation resources? =
+If you have a plugin which has specific translation strings used in CF7 forms, you need to tell the CF7 Polylang plugin to load the resources for the required locale.  To do this use the following filter hook,
+
+`add_filter('cf7pll_load_plugin_translation_resource', 'add_translation_resource');
+function add_translation_resource($plugin_translation){
+  //the $plugin_translation is an array into which you need to add your plugin slug and version number.
+  $plugin_translation['my-plugin-slug']=$version.
+  return $plugin_translation;
+}`
+
+this filter should be used by plugin developers to ensure their plugin translation resources are loaded.
+ 
 == Screenshots ==
 1. If you don't see the polylang links in your contact table list, head to the Polylang settings and save the existing post content to the default language. (Step 6 in the installation instructions)
 2. Contact form table list with Polylang language columns, a dropdown of available languages next to the 'Add New' button allows you to create new forms in any language, note also the portable cf7 shortcodes.
@@ -133,6 +145,13 @@ function my_cf7_mail_tag($output, $name, $html ) {
 4. Ensure you enable translations for Contact Forms in your Polyland settings.
 
 == Changelog ==
+= 2.4.0 =
+* enable other plugins to add their translation files.
+* added 'cf7pll_load_plugin_translation_resource' filter.
+= 2.3.4 =
+* fix broken translations of new form templates.
+= 2.3.3 =
+* fix ZipArchive class missing Fatal error for PHP 7.3 onwards.
 = 2.3.2 =
 * fix continue warning.
 = 2.3.1 =

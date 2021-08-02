@@ -139,8 +139,13 @@ class Text {
         if(isset($params['icon-pos']['op']) && isset($params['icon-code']) && $params['icon-pos']['op'] != 'no icon'):
         ?>
             <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?> input-group' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>">
-                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
-                    
+                <?php
+                if (quoteupCFFieldsLabel(true, $params['id'])) {
+                    ?>
+                    <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                    <?php 
+                }
+                ?>                    
                 <?php if($params['icon-pos']['op'] == 'before'):?>
                 <span class="input-group-addon" id=""><i class='<?php echo isset($params['icon-code']) ? $params['icon-code'] : ''; ?>'></i></span>
                 <?php endif; ?>
@@ -154,7 +159,13 @@ class Text {
             </div>
         <?php else:?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label for='field' style='display: none;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' style='display: block;clear: both'><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <input type='text'  name='submitform[<?php echo $name ?>]' class='form-control' placeholder='<?php echo quoteupReturnCustomFormFieldPlaceholder($params['label']); ?>' value='' <?php echo required($params)?> />
             <div>
                 <label class="field-note"><?php echo quoteupReturnCustomFormFieldNote($params['note']); ?></label>

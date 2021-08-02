@@ -37,8 +37,7 @@ class QuoteupQuotesList extends Abstracts\QuoteupList
         $tableName  = getEnquiryHistoryTable();
         $columnName = 's1.enquiry_id';
  
-        if (isset($filter) && $filter == 'admin-created') {
-
+        if (isset($filter) && 'admin-created' == $filter) {
             $metaTableName = getEnquiryMetaTable();
             $sql = "SELECT enquiry_id FROM $metaTableName WHERE meta_key = '_admin_quote_created'";
             $columnName = 'enquiry_id';
@@ -365,22 +364,37 @@ class QuoteupQuotesList extends Abstracts\QuoteupList
     */
     public function displayTotal($item)
     {
-            return ($item['total'] == null || empty($item['total']))  ? '-' : wc_price($item['total']);
+        $total = ($item['total'] == null || empty($item['total']))  ? '-' : wc_price($item['total']);
+        $total = apply_filters('quote_total_on_enquiry_list', $total, $item);
+        return $total;
     }
 
     /**
     * Returns the url to the order id of enquiry.
     * @param array $item Enquiry details
-    * @return string $orderid url to the order id.
+    * @return string $orderid Return url to the order id.
     */
     public function displayOrderNumber($item)
     {
-            $orderid = \Includes\QuoteupOrderQuoteMapping::getOrderIdOfQuote($item['enquiry_id']);
-            if ($orderid == '0' || $orderid == null) {
-                $orderid = '-';
-            } else {
-                $orderid = '<a href="'.admin_url('post.php?post='.absint($orderid).'&action=edit').'" >'.$orderid.'</a>';
-            }
+        $enquiryid = $item['enquiry_id'];
+        $orderid   = \Includes\QuoteupOrderQuoteMapping::getOrderIdOfQuote($enquiryid);
+        if ('0' == $orderid ||  null == $orderid) {
+            $orderid = '-';
+        }
+ 
+        /**
+         * Use this filter to modify the order Id associate with quote.
+         *
+         * @param int $orderid      Order Id.
+         * @param int $enquiryid    Enquiry Id.
+         */
+        $orderid = apply_filters('order_id_ass_with_quote_on_enq_list', $orderid, $enquiryid);
+
+        if (empty($orderid) || '-' == $orderid) {
             return $orderid;
+        }
+
+        $orderid = '<a href="'.admin_url('post.php?post='.absint($orderid).'&action=edit').'" >'.$orderid.'</a>';
+        return $orderid;
     }
 }

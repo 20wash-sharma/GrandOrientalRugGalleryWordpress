@@ -1,12 +1,14 @@
 <?php
 namespace Wisdmforms;
 
-class Address {
+class Address
+{
 
-    public function control_button() {
+    public function control_button()
+    {
         ob_start();
         ?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" for="Address">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" for="Address">
             <span class="lfi lfi-name"></span> Address 
             <a title="Address" rel="Address" class="add" data-template='Address' href="#"><i class="glyphicon glyphicon-plus-sign pull-right ttipf" title=""></i></a>
     </li>
@@ -16,10 +18,11 @@ class Address {
         return ob_get_clean();
     }
 
-    public function field_settings($fieldindex, $fieldid, $field_infos) {
+    public function field_settings($fieldindex, $fieldid, $field_infos)
+    {
         ob_start();
-?>
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
+        ?>
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_<?php echo $fieldindex; ?>">
             <input type="hidden" name="contact[fields][<?php echo $fieldindex ?>]" value="<?php echo $fieldid; ?>">
             <span id="label_<?php echo $fieldindex; ?>"><?php echo $field_infos[$fieldindex]['label'] ?>:</span>
             <a href="#" rel="field_<?php echo $fieldindex; ?>" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
@@ -52,8 +55,8 @@ class Address {
                         </div>
                     </div>
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings",$fieldindex, $fieldid, $field_infos); ?>
-                <?php do_action("form_field_settings",$fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings", $fieldindex, $fieldid, $field_infos); ?>
+                <?php do_action("form_field_settings", $fieldindex, $fieldid, $field_infos); ?>
             </div>
             <div class="field-preview">
                 <?php     
@@ -69,7 +72,8 @@ class Address {
         return ob_get_clean();
     }
 
-    public function field_preview_html($params = array()) {
+    public function field_preview_html($params = array())
+    {
         ob_start();
         ?>
         <div class='form-group'>
@@ -107,7 +111,8 @@ class Address {
         return ob_get_clean();
     }
 
-    public function field_render_html($params = array()) {
+    public function field_render_html($params = array())
+    {
         ob_start();
 
         $locations_file = file_get_contents(WF_BASE_DIR . '/libs/locations.json');
@@ -203,11 +208,12 @@ class Address {
         return ob_get_clean();
     }
 
-    public function configuration_template() {
+    public function configuration_template()
+    {
         ob_start();
         ?>
     <script type="text/x-mustache" id="template-Address">
-        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\","",__CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
+        <li class="list-group-item" data-type="<?php echo str_replace("Wisdmforms\\", "", __CLASS__) ?>" id="field_{{ID}}"><input type="hidden" name="contact[fields][{{ID}}]" value="{{value}}">
             <span id="label_{{ID}}">{{title}}</span>
             <a href="#" rel="field_{{ID}}" class="remove"><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
             <a href="#" class="cog-trigger" rel="#cog_{{ID}}"><i class="glyphicon glyphicon-cog pull-right button-buffer-right"></i></a>
@@ -226,7 +232,7 @@ class Address {
                     </div>
                     <?php getConfTempRequiredDiv(); ?>
                 </fieldset>
-                <?php do_action("form_field_".str_replace("Wisdmforms\\","",__CLASS__)."_settings_template"); ?>
+                <?php do_action("form_field_".str_replace("Wisdmforms\\", "", __CLASS__)."_settings_template"); ?>
                 <?php do_action("form_field_settings_template"); ?>
             </div>
             <div class="field-preview">
@@ -240,7 +246,8 @@ class Address {
         return ob_get_clean();
     }
 
-    function process_field() {
+    function process_field()
+    {
         
     }
 

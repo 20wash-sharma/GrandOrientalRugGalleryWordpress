@@ -1,7 +1,7 @@
 /*
 *  If enable price is checked then only provide option of Add to Cart.
 */
-jQuery(window).load(function () {
+jQuery(window).on("load", function () {
 // On Product page in dashborad checkbox of enable price.
     var enable_price_meta_on_load = jQuery("input[name='_enable_price']");
     if ( enable_price_meta_on_load.length && !enable_price_meta_on_load.is(":checked") ) {

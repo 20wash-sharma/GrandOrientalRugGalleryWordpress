@@ -379,12 +379,12 @@ jQuery(function ($) {
     });
 
     $('.req').each(function () {
-        if ($(this).attr('checked') == 'checked')
+        if (true == $(this).prop('checked'))
             $(this).parent().next('.req-params').slideDown();
         //return false;
     });
     $('.cond').each(function () {
-        if ($(this).attr('checked') == 'checked')
+        if (true == $(this).prop('checked'))
             $(this).parent().next('.cond-params').slideDown();
         //return false;
     });
@@ -521,7 +521,7 @@ jQuery(function ($) {
        } else {
           $(this).parent().parent().find('.icon-code-div').addClass('hide');
           $(this).parent().parent().find('.icon-code').val('');
-          $(this).parent().parent().find('.icon-code').find('option[value="no icon"]').attr('selected', 'selected');
+          $(this).parent().parent().find('.icon-code').find('option[value="no icon"]').prop('selected', true);
           $cur_icon = $(this).parent().parent().find('.icon-code').val();
           var chn_prv = '<input type="' + 'text"' + ' disabled="' + 'disabled"' + ' name="' + 'submitform[]"' + ' class="' + 'form-control"' + ' aria-describedby="' + '""' + ' value="' + '">';
           $cur_prv = $(this).parent().parent().parent().parent().parent().find('.field-preview').html(chn_prv);
@@ -576,7 +576,7 @@ jQuery(document).ready(function($){
         else {
             $(this).children().each(function(){
                 if ($(this).attr('value') == preselected_var)
-                    $(this).attr('selected', 'selected');
+                    $(this).prop('selected', true);
             });
         }
     });
@@ -623,7 +623,7 @@ jQuery(document).ready(function($){
             else {
                 $(this).children().each(function(){
                     if ($(this).attr('value') == preselected_var)
-                        $(this).attr('selected', 'selected');
+                        $(this).prop('selected', true);
                 });
             }
         });
@@ -635,7 +635,7 @@ jQuery(document).ready(function($){
          $(this).parent().parent().find('.icon-code-div').addClass('hide');
 
      }else {
-         $(this).find('option[value="' + selop + '"]').attr('selected', 'selected');
+         $(this).find('option[value="' + selop + '"]').prop('selected', true);
          $(this).parent().parent().find('.icon-code-div').removeClass('hide');
          
      }
@@ -643,7 +643,7 @@ jQuery(document).ready(function($){
 
   $('.icon-code').each(function() {
        var selop = $(this).attr('data-selection');
-         $(this).find('option[value="' + selop + '"]').attr('selected', 'selected');
+         $(this).find('option[value="' + selop + '"]').prop('selected', true);
      
   });
 

@@ -3,10 +3,6 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-$getDataFromDb = \Licensing\WdmLicense::checkLicenseAvailiblity('pep', false);
-if ($getDataFromDb != 'available') {
-    return;
-}
 
 //This abstract class for privacy functionality
 require_once QUOTEUP_PLUGIN_DIR.'/includes/privacy/class-abstract-quoteup-privacy.php';
@@ -50,28 +46,43 @@ require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-send-enquiry-mai
 //Include file which handles Ajax File Upload
 require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-upload-attach-files.php';
 
+//Include file which handles view of enquiry cart
+require_once QUOTEUP_PLUGIN_DIR.'/templates/public/class-quoteup-handle-enquiry-cart-view.php';
+
 /*
  * Frontend Files
  */
-if (!is_admin() && !defined('DOING_CRON')) {
-//Include file which handles view of approval and rejecton of quote
+/**
+ * Return a boolean value to determine whether to include the frontend files.
+ * 
+ * This filter can be used to include the frontend files when these files are not included.
+ * For example, in the case of Ajax requests, these frontend files are not included.
+ *
+ * @since 6.4.2
+ *
+ * @param bool      Whether to include the frontend files. Default false.
+ *
+ * @return bool     Return boolean value. If true is returned, frontend files are included.
+ */
+$shouldIncFrontendFiles = apply_filters('quoteup_include_frontend_files', false);
+
+if ((!is_admin() && !defined('DOING_CRON')) || $shouldIncFrontendFiles) {
+    //Include file which handles view of approval and rejecton of quote
     require_once QUOTEUP_PLUGIN_DIR.'/templates/public/class-quoteup-handle-quote-approval-rejection-view.php';
 
-//Include file which handles view of enquiry cart
-    require_once QUOTEUP_PLUGIN_DIR.'/templates/public/class-quoteup-handle-enquiry-cart-view.php';
-
-//Include file which displays add to quote button
+    //Include file which displays add to quote button
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-display-quote-button.php';
 
-//Include file which displays bubble on the frontend after adding product into the cart
+    //Include file which displays bubble on the frontend after adding product into the cart
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-display-enquiry-cart-bubble.php';
 
-//Include file which handles approval and rejecton of quote
+    //Include file which handles approval and rejecton of quote
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-handle-quote-approval-rejection.php';
-//Include file which handles enquiry cart
+    
+    //Include file which handles enquiry cart
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-handle-enquiry-cart.php';
 
-//Include file which handles enquiry button shortcode
+    //Include file which handles enquiry button shortcode
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-quoteup-enquiry-button-shortcode.php';
 
     // Include shortcode file.
@@ -84,6 +95,9 @@ if (!is_admin() && !defined('DOING_CRON')) {
     require_once QUOTEUP_PLUGIN_DIR.'/includes/class-quoteup-display-history.php';
 
 if (is_admin()) {
+    // Display links such as Settings, documentation, support on plugin list page.
+    require_once QUOTEUP_PLUGIN_DIR.'/includes/admin/class-quoteup-admin-plugin-links.php';
+    
     //Display meta box on single product page to Enable/Disable Enquiry/Quote button
     require_once QUOTEUP_PLUGIN_DIR.'/includes/admin/class-quoteup-enable-disable-quoteup-button.php';
 
@@ -139,6 +153,11 @@ if (is_admin()) {
 
     //Include file which handles Admin Notices for MPE Cart Page
     require_once QUOTEUP_PLUGIN_DIR.'/includes/admin/class-quoteup-admin-notices.php';
+
+    // Include file if CSP plugin is active and its version is >= 4.5.0.
+    if (quoteupIsCSPActive()) {
+        require_once QUOTEUP_PLUGIN_DIR.'/includes/csp/class-quoteup-csp-pricing.php';
+    }
 }
 
 if (defined('DOING_AJAX')) {
@@ -147,4 +166,9 @@ if (defined('DOING_AJAX')) {
 
     // Include file to get the particular quote data to be added in the modal.
     require_once QUOTEUP_PLUGIN_DIR.'/includes/public/class-add-popup-modal.php';
+
+    // Include file if CSP plugin is active and its version is >= 4.5.0.
+    if (quoteupIsCSPActive()) {
+        require_once QUOTEUP_PLUGIN_DIR.'/includes/csp/class-quoteup-csp.php';
+    }
 }

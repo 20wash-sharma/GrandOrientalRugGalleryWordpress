@@ -6,9 +6,10 @@ if (!defined('ABSPATH')) {
 }
 
 /**
-* Displays the multi product enquiry button.
+ * Displays the multi product enquiry button.
+ *
  * @static $instance object of class
-*/
+ */
 class QuoteupMultiproductQuoteButton
 {
     /**
@@ -31,8 +32,8 @@ class QuoteupMultiproductQuoteButton
     }
 
     /**
-    * Action to add a hidden field before variation form
-    */
+     * Action to add a hidden field before variation form
+     */
     protected function __construct()
     {
         add_action('woocommerce_before_variations_form', array($this, 'quoteupAddVariationID'));
@@ -51,6 +52,7 @@ class QuoteupMultiproductQuoteButton
 
     /**
      * This function is used to decide to display button or message
+     *
      * @param string $calledFrom Page type from which it is called.
      */
     public function decideDisplayButtonOrMessage($calledFrom)
@@ -85,9 +87,10 @@ class QuoteupMultiproductQuoteButton
      * Checks the settings .
      * Gets the Manual Css settings if checked by user.
      * Gets the Custom css if any specified by the user.
-     * @param  INT $prod_id                      Product ID
-     * @param  string $btn_class single_add_to_cart_button button alt wdm_enquiry
-     * @param  object $QuoteUpDisplayQuoteButtonObj QuoteUp button object
+     *
+     * @param INT    $prod_id                      Product ID
+     * @param string $btn_class                    single_add_to_cart_button button alt wdm_enquiry
+     * @param object $QuoteUpDisplayQuoteButtonObj QuoteUp button object
      */
     public function displayQuoteButton($prod_id, $btn_class, $QuoteUpDisplayQuoteButtonObj)
     {
@@ -100,7 +103,7 @@ class QuoteupMultiproductQuoteButton
             }
         }
 
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array('after_add_cart' => 1,
         'button_CSS' => 0,
         'pos_radio' => 0,
         'show_powered_by_link' => 0,
@@ -129,6 +132,7 @@ class QuoteupMultiproductQuoteButton
 
     /**
      * This function is used to display quote button
+     *
      * @param  [type] $btn_class                    [description]
      * @param  [type] $manual_css                   [description]
      * @param  [type] $form_data                    [description]
@@ -154,16 +158,20 @@ class QuoteupMultiproductQuoteButton
      * Gets manual css and apply inline styling likewise.
      * If yes display corresponding HTML if not.
      * Check variable product or not and display corresponding HTML.
-     * @param  Array $form_data                    Settings stored in database
+     *
+     * @param  Array  $form_data                    Settings stored in database
      * @param  String $manual_css                   Used as flag
-     * @param  int $prod_id                      Product ID
-     * @param  string $btn_class quoteup button class
+     * @param  int    $prod_id                      Product ID
+     * @param  string $btn_class                    quoteup button class
      * @param  object $QuoteUpDisplayQuoteButtonObj object of class displayquotebutton
      * @return [type]                               [description]
      */
     private function showAddToQuoteButton($form_data, $manual_css, $prod_id, $btn_class, $QuoteUpDisplayQuoteButtonObj)
     {
-        global $product;
+        global $product, $wpdb;
+
+        $btn_class = apply_filters('qouteup_enquiry_btn_class', $btn_class, $product, $QuoteUpDisplayQuoteButtonObj);
+
         if ($product->get_type() == 'variable') {
             if (isset($form_data[ 'show_button_as_link' ]) && $form_data[ 'show_button_as_link' ] == 1) {
                 ?>
@@ -191,12 +199,12 @@ class QuoteupMultiproductQuoteButton
                     <?php
                 } else {
                     ?>
-                    <button type="button" class="<?php echo $btn_class ?>" id="wdm-quoteup-trigger-<?php echo $prod_id ?>"  data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal" disabled
+                    <button type="button" class="<?php echo esc_attr($btn_class); ?>" id="wdm-quoteup-trigger-<?php echo esc_attr($prod_id); ?>"  data-toggle="wdm-quoteup-modal" data-target="#wdm-quoteup-modal" 
                     <?php
                     if ($manual_css == 1) {
                         echo getManualCSS($form_data);
                     }
-                    ?>>
+                    ?> disabled>
                     <?php echo $QuoteUpDisplayQuoteButtonObj->returnButtonText($form_data); ?>
                     </button>
                     <?php
@@ -226,13 +234,13 @@ class QuoteupMultiproductQuoteButton
                 <?php
             }
         }
-        global $wpdb;
+
         $query = "select user_email from {$wpdb->posts} as p join {$wpdb->users} as u on p.post_author=u.ID where p.ID=%d";
         $uemail = $wpdb->get_var($wpdb->prepare($query, $prod_id));
         $wdmLocale = getCurrentLocale();
         ?>
-        <input type='hidden' name='author_email' id='author_email' value='<?php echo $uemail ?>'>
-        <input type='hidden' name='wdmLocale' id='wdmLocale' value='<?php echo $wdmLocale ?>'>
+        <input type='hidden' name='author_email' id='author_email' value='<?php echo $uemail; ?>'>
+        <input type='hidden' name='wdmLocale' id='wdmLocale' value='<?php echo $wdmLocale; ?>'>
         <?php
     }
 }

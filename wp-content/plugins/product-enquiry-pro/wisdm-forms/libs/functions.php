@@ -3,8 +3,11 @@
 function required($reqparams) {
     $str = '';
     if (isset($reqparams['required'])) {
-        $msg = ($reqparams['reqmsg'] != '') ? __(pll__($reqparams['reqmsg']), QUOTEUP_TEXT_DOMAIN) : __(pll__('Please fill out this field'), QUOTEUP_TEXT_DOMAIN);
-        $str .= " required='required' data-msg-required='{$msg}' ";
+        $fieldId  = $reqparams['id'];
+        $msg      = ($reqparams['reqmsg'] != '') ? $reqparams['reqmsg'] : 'Please fill out this field';
+        $msg      = apply_filters('quoteup_change_cf_req_msg_'.$fieldId, $msg);
+        $msg      = __($msg, QUOTEUP_TEXT_DOMAIN);
+        $str      .= " required='required' data-msg-required='{$msg}' ";
     }
 
     if (isset($reqparams['validation'])) {
@@ -201,7 +204,7 @@ function paginate_form($formsetting, $field_defs) {
         $prev_part = $part_number - 1;
         $parent_part = $part_number;
         $back_button_html = "<a id='goto_part_{$prev_part}' data-parent='form_part_{$parent_part}' data-next='form_part_{$prev_part}' class='btn pull-left change-part'><< Back</a>";
-        $submit_button_html = "<button ".$css. "type='submit' id='$buttonID' class='submit-btn btn pull-right change-part button' data-parent='form_part_{$parent_part}'>" . ((isset($formsetting_raw['buttontext']) == false || $formsetting_raw['buttontext'] == '') ? __("Submit", QUOTEUP_TEXT_DOMAIN) : __($formsetting_raw['buttontext'], QUOTEUP_TEXT_DOMAIN)). "</button>";
+        $submit_button_html = "<button " . $css . " type='submit' id='$buttonID' class='submit-btn btn pull-right change-part button' data-parent='form_part_{$parent_part}'>" . ((isset($formsetting_raw['buttontext']) == false || $formsetting_raw['buttontext'] == '') ? "Submit" : $formsetting_raw['buttontext']). "</button>";
         $submit_section_html = "<div class='row'>" . ($part_number > 0 ? "<div class='col-md-6'>{$back_button_html}</div><div class='col-md-6'>" : "<div class='col-md-12'>") . $submit_button_html . "</div></div>";
         $enable_mc = '';
         if (isset($quoteupSettings[ 'enable_custom_send_mail_copy' ])) {

@@ -19,7 +19,7 @@ function stylingOptionsSection($form_data)
     ?>
     <fieldset>
         <?php echo '<legend>'.__('Styling Options ', QUOTEUP_TEXT_DOMAIN).'</legend>';
-    ?>
+        ?>
         <div class='fd'>
             <div class='left_div'>
                 <label >
@@ -103,7 +103,7 @@ function quoteupShowDisableBootstrapSetting($form_data)
         <div class='left_div'>
             <label for="disable_bootstrap"> <?php _e('Disable Bootstrap on frontend', QUOTEUP_TEXT_DOMAIN) ?> </label>
         </div>
-        <div class='right_div'>
+        <div class='right_div help-doc-link-checkbox'>
             <?php
             $helptip = __('You can disable bootstrap if your theme already has it.', QUOTEUP_TEXT_DOMAIN);
             echo \quoteupHelpTip($helptip, true);
@@ -111,6 +111,9 @@ function quoteupShowDisableBootstrapSetting($form_data)
             <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($form_data[ 'disable_bootstrap' ]) ? $form_data[ 'disable_bootstrap' ] : 0);
     ?> id="disable-bootstrap" /> 
             <input type="hidden" name="wdm_form_data[disable_bootstrap]" value="<?php echo isset($form_data[ 'disable_bootstrap' ]) && $form_data[ 'disable_bootstrap' ] == 1 ? $form_data[ 'disable_bootstrap' ] : 0 ?>" />
+        </div>
+        <div class="help-doc-link">
+            <a href="<?php echo esc_url('https://wisdmlabs.com/docs/article/wisdm-product-enquiry-pro/pep-user-guide/settings-display-tab/#disable-bootstrap-on-frontend'); ?>" target="_blank"><i><?php echo esc_html(__('Help', QUOTEUP_TEXT_DOMAIN)); ?></i></a>
         </div>
         <div class='clear'></div>
     </div>
@@ -343,7 +346,8 @@ function dialogTextColor($form_data)
  * @param [array] $form_data [Settings stored previously in database]
  *
  */
-function quoteupShowEnqCartIconPositionSetting($form_data) {
+function quoteupShowEnqCartIconPositionSetting($form_data)
+{
     $iconPos = '';
     if (isset($form_data['ec_icon_pos'])) {
         $iconPos = $form_data['ec_icon_pos'];
@@ -458,7 +462,8 @@ function quoteupShowIconColorsSettings($form_data)
  * @param string $labelFor String containing the setting label.
  * @param string $classForSettingField Class for setting field.
  */
-function quoteupRenderColorSetting($form_data, $key, $default, $settingLabel, $classForSettingField) {
+function quoteupRenderColorSetting($form_data, $key, $default, $settingLabel, $classForSettingField)
+{
     ?>
     <div class="fd <?php echo $classForSettingField; ?>">
         <div class='left_div'>

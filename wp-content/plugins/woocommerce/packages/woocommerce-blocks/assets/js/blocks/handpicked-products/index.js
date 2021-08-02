@@ -3,24 +3,26 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { DEFAULT_COLUMNS } from '@woocommerce/block-settings';
+import { getSetting } from '@woocommerce/settings';
+import { Icon, widgets } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
 import Block from './block';
-import { deprecatedConvertToShortcode } from '../../utils/deprecations';
-import { IconWidgets } from '../../components/icons';
 
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woocommerce' ),
 	icon: {
-		src: <IconWidgets />,
+		src: <Icon srcElement={ widgets } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
-	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],
+	keywords: [
+		__( 'Handpicked Products', 'woocommerce' ),
+		__( 'WooCommerce', 'woocommerce' ),
+	],
 	description: __(
 		'Display a selection of hand-picked products in a grid.',
 		'woocommerce'
@@ -28,6 +30,11 @@ registerBlockType( 'woocommerce/handpicked-products', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
+	},
+	example: {
+		attributes: {
+			isPreview: true,
+		},
 	},
 	attributes: {
 		/**
@@ -42,7 +49,7 @@ registerBlockType( 'woocommerce/handpicked-products', {
 		 */
 		columns: {
 			type: 'number',
-			default: DEFAULT_COLUMNS,
+			default: getSetting( 'default_columns', 3 ),
 		},
 
 		/**
@@ -89,47 +96,20 @@ registerBlockType( 'woocommerce/handpicked-products', {
 			type: 'boolean',
 			default: false,
 		},
-	},
 
-	deprecated: [
-		{
-			// Deprecate shortcode save method in favor of dynamic rendering.
-			attributes: {
-				align: {
-					type: 'string',
-				},
-				columns: {
-					type: 'number',
-					default: DEFAULT_COLUMNS,
-				},
-				editMode: {
-					type: 'boolean',
-					default: true,
-				},
-				contentVisibility: {
-					type: 'object',
-					default: {
-						title: true,
-						price: true,
-						rating: true,
-						button: true,
-					},
-				},
-				orderby: {
-					type: 'string',
-					default: 'date',
-				},
-				products: {
-					type: 'array',
-					default: [],
-				},
-			},
-			save: deprecatedConvertToShortcode( 'woocommerce/handpicked-products' ),
+		/**
+		 * Are we previewing?
+		 */
+		isPreview: {
+			type: 'boolean',
+			default: false,
 		},
-	],
+	},
 
 	/**
 	 * Renders and manages the block.
+	 *
+	 * @param {Object} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Block { ...props } />;

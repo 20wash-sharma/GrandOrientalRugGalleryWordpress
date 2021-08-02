@@ -132,8 +132,10 @@ class QuoteupVendorSettings
             $this->renderCompatibilitySetting($formData);
             $this->renderExportCapabilitySetting($formData);
             $this->renderSendQuotationSetting($formData);
+            $this->renderEnableVendorReminderEmailSetting($formData);
+            $this->renderEnableAdminReminderEmailSetting($formData);
             $this->renderAutoSetDeadlineSetting($formData);
-            $this->renderSetDeadlineAfterHoursSetting($formData);
+            $this->renderSetDeadlineAfterDaysSetting($formData);
             ?>
         </fieldset>
         <?php
@@ -184,7 +186,7 @@ class QuoteupVendorSettings
             </div>
             <div class="right_div">
                 <?php
-                $helptip = __('Enable this setting if quotation should be sent automatically when all vendors update the product\'s prices.', QUOTEUP_TEXT_DOMAIN);
+                $helptip = __('Enable this setting if quotation should be sent automatically after all vendors have updated the products\' prices or after admin has generated the quote. The quote would be sent on the \'Quote Send Deadline\' date.', QUOTEUP_TEXT_DOMAIN);
                 echo \quoteupHelpTip($helptip, true);
                 ?>
                 <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($formData['enable_auto_send_quotation_vendor']) ? $formData[ 'enable_auto_send_quotation_vendor' ] : 0); ?> id="enable_auto_send_quotation_vendor" />
@@ -224,6 +226,62 @@ class QuoteupVendorSettings
     }
 
     /**
+     * This function will render setting to enable/ disable vendor reminder
+     * email.
+     * @param [array] $formData [Settings stored previously in database]
+     */
+    public function renderEnableVendorReminderEmailSetting($formData)
+    {
+        ?>
+        <div class="fd enable-comp-vendors-depended">
+            <div class="left_div">
+                <label for="enable_vendor_reminder_email">
+                    <?php _e('Enable Vendor Reminder Email', QUOTEUP_TEXT_DOMAIN) ?>
+                </label>
+
+            </div>
+            <div class="right_div">
+                <?php
+                $helptip = __('Enable this setting if reminder email should be sent to the vendor. The vendor reminder email is sent two days before to \'Quote Send Deadline\' date.', QUOTEUP_TEXT_DOMAIN);
+                echo \quoteupHelpTip($helptip, true);
+                ?>
+                <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($formData['enable_vendor_reminder_email']) ? $formData[ 'enable_vendor_reminder_email' ] : 1); ?> id="enable_vendor_reminder_email" />
+                <input type="hidden" name="wdm_form_data[enable_vendor_reminder_email]" value="<?php echo isset($formData[ 'enable_vendor_reminder_email' ]) ? $formData[ 'enable_vendor_reminder_email' ] : 1 ?>" />
+            </div>
+            <div class="clear"></div>
+        </div>
+        <?php
+    }
+
+    /**
+     * This function will render setting to enable/ disable admin reminder
+     * email.
+     * @param [array] $formData [Settings stored previously in database]
+     */
+    public function renderEnableAdminReminderEmailSetting($formData)
+    {
+        ?>
+        <div class="fd enable-comp-vendors-depended">
+            <div class="left_div">
+                <label for="enable_admin_reminder_email">
+                    <?php _e('Enable Admin Reminder Email', QUOTEUP_TEXT_DOMAIN) ?>
+                </label>
+
+            </div>
+            <div class="right_div">
+                <?php
+                $helptip = __('Enable this setting if reminder email should be sent to the admin. The admin reminder email is sent one day before to \'Quote Send Deadline\' date.', QUOTEUP_TEXT_DOMAIN);
+                echo \quoteupHelpTip($helptip, true);
+                ?>
+                <input type="checkbox" class="wdm_wpi_input wdm_wpi_checkbox" value="1" <?php checked(1, isset($formData['enable_admin_reminder_email']) ? $formData[ 'enable_admin_reminder_email' ] : 1); ?> id="enable_admin_reminder_email" />
+                <input type="hidden" name="wdm_form_data[enable_admin_reminder_email]" value="<?php echo isset($formData[ 'enable_admin_reminder_email' ]) ? $formData[ 'enable_admin_reminder_email' ] : 1 ?>" />
+            </div>
+            <div class="clear"></div>
+        </div>
+        <?php
+    }
+
+    /**
      * This function will render setting (checkbox) to enable and disable
      * the 'Auto Set Deadline' functionality.
      * @param [array] $formData [Settings stored previously in database]
@@ -253,25 +311,26 @@ class QuoteupVendorSettings
 
     /**
      * This function will render setting (number) to set/ configure
-     * auto set deadline period/ hours.
+     * auto set quote send deadline period in terms of days.
      * @param [array] $formData [Settings stored previously in database]
      */
-    public function renderSetDeadlineAfterHoursSetting($formData)
+    public function renderSetDeadlineAfterDaysSetting($formData)
     {
         ?>
         <div class="fd enable-comp-vendors-depended enable-auto-set-dl-depended">
             <div class="left_div">
-                <label for="set_deadline_after_hours">
+                <label for="set_deadline_after_days">
                     <?php _e('Auto Set Quotation Deadline After', QUOTEUP_TEXT_DOMAIN); ?>
                 </label>
 
             </div>
             <div class="right_div">
                 <?php
-                $helptip = __('Quote should be sent before set hours.', QUOTEUP_TEXT_DOMAIN);
+                $helptip = __('Quote should be sent before set days.', QUOTEUP_TEXT_DOMAIN);
                 echo \quoteupHelpTip($helptip, true);
                 ?>
-                <input type="number" class="wdm_wpi_input wdm_wpi_number" name="wdm_form_data[set_deadline_after_hours]" id="set_deadline_after_hours" value="<?php echo empty($formData[ 'set_deadline_after_hours' ]) ? 96 : $formData[ 'set_deadline_after_hours' ]; ?>" />
+                <input type="number" class="wdm_wpi_input wdm_wpi_number" name="wdm_form_data[set_deadline_after_days]" id="set_deadline_after_days" value="<?php echo empty($formData[ 'set_deadline_after_days' ]) ? 4 : $formData[ 'set_deadline_after_days' ]; ?>" />
+                <?php echo '<em>'.__('Days', QUOTEUP_TEXT_DOMAIN).'</em>'; ?>
             </div>
             <div class="clear"></div>
         </div>

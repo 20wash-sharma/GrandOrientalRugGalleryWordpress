@@ -115,7 +115,13 @@ class Select {
         $name = $params['label'];
         ?>
         <div id="<?php echo $params['id'] ?>" class='form-group <?php echo isset($params['conditioned']) ? " conditioned hide " : ''?>' data-cond-fields="<?php echo $condition_fields ?>" data-cond-action="<?php echo $cond_action.':'.$cond_boolean ?>" >
-            <label for='field' ><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+            <?php
+            if (quoteupCFFieldsLabel(true, $params['id'])) {
+                ?>
+                <label for='field' ><?php echo quoteupReturnCustomFormFieldLabel($params['label']); ?></label>
+                <?php 
+            }
+            ?>
             <select name='submitform[<?php echo $name ?>]' <?php echo isset($params['multi'])?'multiple':'' ?> <?php echo required($params); ?>  class='wdm-select'>
                 <option selected='selected' value=''><?php _e('Please Select', QUOTEUP_TEXT_DOMAIN); ?></option>
             <?php

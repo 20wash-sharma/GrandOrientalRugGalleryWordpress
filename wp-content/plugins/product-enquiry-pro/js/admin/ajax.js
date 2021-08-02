@@ -251,7 +251,7 @@
 
               //Get all variations
               if ( "undefined" != typeof jQuery('#variation-id-' + rowNumber).val() ) {
-                if ( !jQuery('#variation-id-' + rowNumber).val()) {
+                if ( !jQuery('#variation-id-' + rowNumber).val() || 0 == jQuery('#variation-id-' + rowNumber).val()) {
                   var message = quote_data.invalid_variation + " " + jQuery('#product-title-' + rowNumber).text();
                   processQutationSaveFailure(message);
                   jQuery("#PdfLoad").css("visibility", "hidden");
@@ -707,4 +707,14 @@
     jQuery('.wdm-quote-modal').modal();
   })
 
+  // Remove 'If pdf not ...' text when PDF is loaded succesfully.
+  jQuery('.wdm-pdf-iframe').on('load', function() {
+    jQuery('#pdf-preview-reload-wrapper').remove();
+  });
+
+  // Modify the 'src' attribute of the iframe when an user clicks on the 'Here'
+  // button shown on the PDF preview modal.
+  jQuery('#pdf-preview-reload').click(function() {
+      jQuery('.wdm-pdf-iframe').attr('src', jQuery('.wdm-pdf-iframe').attr('src'));
+  });
 });

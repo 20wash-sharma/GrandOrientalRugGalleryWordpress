@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Handle the view of approval and Rejection of Quote
+ *
  * @static $instance object of class
  */
 
@@ -33,11 +34,14 @@ class QuoteupHandleEnquiryCartView
     }
 
     /**
-    * Action to display quote cart view.
-    */
+     * Action to display quote cart view.
+     */
     protected function __construct()
     {
         add_action('quoteup_enquiry_cart_content', array($this, 'enquiryCartView'));
+        add_action('wp_footer', array($this, 'loadMiniCart'));
+        add_action('wp_ajax_quoteup_get_cart', array($this, 'miniCartItemsHtml'));
+        add_action('wp_ajax_nopriv_quoteup_get_cart', array($this, 'miniCartItemsHtml'));
     }
 
     /**
@@ -51,8 +55,8 @@ class QuoteupHandleEnquiryCartView
 
         if (quoteupIsMPEEnabled($form_data) && $prodCount > 0) {
             // When MPE is enabled.
-            wp_enqueue_script('quoteup-quote-cart', QUOTEUP_PLUGIN_URL.'/js/public/quote-cart.js', array('jquery', 'jquery-ui-draggable'), time(), true);
-            wp_enqueue_script('quoteup-cart-responsive', QUOTEUP_PLUGIN_URL.'/js/public/responsive-table.js', array('jquery', 'jquery-ui-draggable'), time(), true);
+            wp_enqueue_script('quoteup-quote-cart', QUOTEUP_PLUGIN_URL.'/js/public/quote-cart.js', array('jquery', 'jquery-ui-draggable'), QUOTEUP_VERSION, true);
+            wp_enqueue_script('quoteup-cart-responsive', QUOTEUP_PLUGIN_URL.'/js/public/responsive-table.js', array('jquery', 'jquery-ui-draggable'), QUOTEUP_VERSION, true);
 
             $redirect_url = $quoteup->displayQuoteButton->getRedirectUrl($form_data);
 
@@ -68,17 +72,23 @@ class QuoteupHandleEnquiryCartView
             if (!quoteupIsCustomFormEnabled($form_data) && isset($form_data['enable_google_captcha']) && $form_data['enable_google_captcha'] == 1) {
                 // If default form and captcha is enabled.
                 if (quoteupIsCaptchaVersion3($form_data)) {
-                    $siteKey = isset($form_data['google_site_key']) ? $form_data['google_site_key'] : false;
+                    $siteKey        = isset($form_data['google_site_key']) ? $form_data['google_site_key'] : false;
+                    $lang_query_var = quoteupIsWpmlActive() ? '&hl='.ICL_LANGUAGE_CODE : '';
+
                     // If reCaptcha version 3.
-                    wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey, array(), QUOTEUP_VERSION, true);
+                    wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js?render='.$siteKey.$lang_query_var, array(), QUOTEUP_VERSION, true);
                     wp_enqueue_script('quoteup-google-captcha');
-                    wp_localize_script('quoteup-google-captcha', 'quoteup_captcha_data', array(
+                    wp_localize_script(
+                        'quoteup-google-captcha', 'quoteup_captcha_data', array(
                         'captcha_version'   => 'v3',
                         'site_key'          =>  $siteKey,
-                    ));
+                        )
+                    );
                 } else {
+                    $lang_query_var = quoteupIsWpmlActive() ? '?hl='.ICL_LANGUAGE_CODE : '';
+
                     // If reCaptcha version 2.
-                    wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js', array(), QUOTEUP_VERSION);
+                    wp_register_script('quoteup-google-captcha', 'https://www.google.com/recaptcha/api.js'.$lang_query_var, array(), QUOTEUP_VERSION);
                     wp_enqueue_script('quoteup-google-captcha');
                 }
             }
@@ -87,6 +97,7 @@ class QuoteupHandleEnquiryCartView
 
     /**
      * This function is used to get css settings
+     *
      * @param  [array] $form_data [settings stored in database]
      * @return [int]            [1 if manual css is selected]
      */
@@ -102,6 +113,7 @@ class QuoteupHandleEnquiryCartView
 
     /**
      * This function is used to get image URL
+     *
      * @param  Array $product product details in cart session
      * @return String          Image URL
      */
@@ -124,8 +136,9 @@ class QuoteupHandleEnquiryCartView
     /**
      * This function is used to get total price to be displayed
      * Returns '-' if enable price is disabled
+     *
      * @param  String $current_status 'yes' if price is enabled
-     * @param  Array $product        Product details in cart page
+     * @param  Array  $product        Product details in cart page
      * @return String                 price to be displayed
      */
     public function getTotalPrice($current_status, $product)
@@ -144,7 +157,58 @@ class QuoteupHandleEnquiryCartView
     }
 
     /**
+     * This function is used to get price to be displayed.
+     * Returns '-' if enable price is disabled
+     *
+     * @param  String $current_status 'yes' if price is enabled
+     * @param  Array  $product        Product details in cart page
+     * @return String                 price to be displayed
+     */
+    public function getPrice($product, $ignoreEnablePrice = false, $html = true)
+    {
+        $current_status = get_post_meta($product[ 'id' ], '_enable_price', true);
+        if ($current_status == 'yes' || $ignoreEnablePrice) {
+            $price = $product['price'];
+            if (empty($price) || $price == null) {
+                $price = 0;
+            }
+            if ($html) {
+                $price = wc_price($price);
+            }
+        } else {
+            $price = '-';
+        }
+
+        return $price;
+    }
+
+    public function getEnquiryCartTotal($ignoreEnablePrice = false, $html = true)
+    {
+        global $quoteup;
+        $products = $quoteup->wcCartSession->get('wdm_product_info');
+        if (empty($products)) {
+            return wc_price(0);
+        }
+        $total = 0;
+        $priceHidden = false;
+        foreach ($products as $product) {
+            $price = $quoteup->quoteupEnquiryCart->getPrice($product, $ignoreEnablePrice, false);
+            if ($price == '-') {
+                $priceHidden = true;
+                continue;
+            } else {
+                $total += floatval($price)*floatval($product['quant']);
+            }
+        }
+        if ($priceHidden) {
+            return wc_price($total).'+';
+        }
+        return wc_price($total);
+    }
+
+    /**
      * This function is used to get placehoder for remarks textarea
+     *
      * @param  Array $form_data Settings stored in database
      * @return String            Placeholder to be displayed
      */
@@ -162,7 +226,7 @@ class QuoteupHandleEnquiryCartView
         $this->enqueueScripts();
 
         $shopPageUrl = get_permalink(get_option('woocommerce_shop_page_id'));
-        $default_vals = array('show_after_summary' => 1,
+        $default_vals = array('after_add_cart' => 1,
             'button_CSS' => 0,
             'pos_radio' => 0,
             'show_powered_by_link' => 0,
@@ -186,6 +250,96 @@ class QuoteupHandleEnquiryCartView
         
         //This loads the template for Enquiry Cart
         quoteupGetPublicTemplatePart('enquiry-cart/enquiry-cart', '', $args);
+    }
+
+    public function loadMiniCart()
+    {
+        $form_data = quoteupSettings();
+        if (!isset($form_data[ 'enable_disable_mpe' ]) || $form_data[ 'enable_disable_mpe' ] != 1 || !isset($form_data[ 'enable_disable_mini_cart' ]) || $form_data[ 'enable_disable_mini_cart' ] != 1) {
+            return;
+        }
+
+        $scriptDebug  = apply_filters('quotuep_load_minified_mini_cart_scripts', true);
+        $loadMinified = '.min';    
+        if (!$scriptDebug) {
+            $loadMinified = '';
+        }
+
+        wp_enqueue_style('quoteup-mini-cart-css', QUOTEUP_PLUGIN_URL.'/css/public/mini-cart'.$loadMinified.'.css');
+
+        /*
+           If current page is enquiry cart page, return from the method.
+           Don't generate the HTML for mini-cart and don't enqueue the JS
+           script for mini-cart.
+        */
+        if(quoteupIsEnquiryCartPage()) {
+            return;
+        }
+
+        wp_register_script('quoteup-mini-cart-js', QUOTEUP_PLUGIN_URL.'/js/public/mini-cart'.$loadMinified.'.js', array(), QUOTEUP_VERSION, true);
+        wp_enqueue_script('quoteup-mini-cart-js');
+
+        $data = array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+        );
+
+        wp_localize_script('quoteup-mini-cart-js', 'mini_cart', $data);
+
+        $args = array(
+            'form_data' => $form_data,
+        );
+        //This loads the template for Enquiry Cart
+        quoteupGetPublicTemplatePart('mini-cart/mini-cart', '', $args);
+    }
+
+    /**
+     * Callback function to 'quoteup_get_cart' Ajax request.
+     * Outputs mini-cart HTML as Ajax response.
+     *
+     * @since 6.4.0
+     */
+    public function miniCartItemsHtml()
+    {
+        global $quoteup;
+        $cart = array(
+            'html' => 0,
+            'count' => 0,
+            'total' => 0,
+        );
+
+        ob_start();
+        $items = $quoteup->wcCartSession->get('wdm_product_info');
+        $args = array(
+            'items' => $items,
+        );
+        if (!empty($items)) {
+            quoteupGetPublicTemplatePart('mini-cart/mini-cart-items', '', $args);
+        }
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        $cart['html']        = $output;
+        $cart['count']       = $quoteup->wcCartSession->get('wdm_product_count');
+        $cart['total']       = $this->getEnquiryCartTotal();
+        $cart['totalString'] = $this->getMiniCartTotalText($cart['total']);
+        $cart                = apply_filters('quoteup_mini_cart_items_html', $cart, $items);
+
+        echo json_encode($cart);
+        wp_die();
+    }
+
+    /**
+     * Return the 'Total' text shown on the mini cart.
+     *
+     * @param string  WooCommerce Price HTML containing total price.
+     *
+     * @return string  Return a 'Total' text showing the total price.
+     */
+    public function getMiniCartTotalText($totalHTML)
+    {
+        $totalText = sprintf(__('Total : %s', QUOTEUP_TEXT_DOMAIN), $totalHTML);
+        $totalText = apply_filters('quoteup_mini_cart_total_text', $totalText, $totalHTML);
+        return $totalText;
     }
 }
 

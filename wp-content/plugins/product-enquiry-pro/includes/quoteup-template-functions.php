@@ -2,6 +2,7 @@
 
 /**
  * This function adds extra arguments required for cart table row
+ *
  * @param  array $args    previous arguments
  * @param  array $product product information
  * @return array          array with added arguments
@@ -29,6 +30,7 @@ function generateCartRowArguments($args, $product)
 
 /**
  * This function adds extra arguments required for default enquiry form
+ *
  * @param  array $args previous arguments
  * @return array          array with added arguments
  */
@@ -58,6 +60,7 @@ function generateDefaultFormArguments($args)
 
 /**
  * This function adds extra arguments required for default enquiry form
+ *
  * @param  array $args previous arguments
  * @return array       array with added arguments
  */
@@ -79,6 +82,7 @@ function generateEmptyEnquiryCartArguments($args)
 
 /**
  * This function returns boolean to display send me a copy
+ *
  * @param  array $form_data settings
  * @return boolean            true to display send me a copy
  */
@@ -97,7 +101,6 @@ function checkEnquiryCartSendCopy($form_data)
  * cart.
  *
  * @param array $quoteupSettings Quoteup settings.
- *
  */
 function quoteupReturnColSpanEnqCartUpdateButton($quoteupSettings)
 {
@@ -116,7 +119,8 @@ function quoteupReturnColSpanEnqCartUpdateButton($quoteupSettings)
 
 /**
  * This function is used to display title of the form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function displayTitle($args)
 {
@@ -126,7 +130,8 @@ function displayTitle($args)
 
 /**
  * This function is used to render hidden fields in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function renderHiddenFields($args)
 {
@@ -136,7 +141,8 @@ function renderHiddenFields($args)
 
 /**
  * This function is used to render nonce div in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function renderNonceErrorDiv($args)
 {
@@ -146,7 +152,8 @@ function renderNonceErrorDiv($args)
 
 /**
  * This function is used to render send me a copy in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function displaySendMeCopy($args)
 {
@@ -156,7 +163,8 @@ function displaySendMeCopy($args)
 
 /**
  * This function is used to render captcha in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function displayCaptcha($args)
 {
@@ -166,7 +174,8 @@ function displayCaptcha($args)
 
 /**
  * This function is used to render send button in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function displaysendButton($args)
 {
@@ -176,7 +185,8 @@ function displaysendButton($args)
 
 /**
  * This function is used to render error div in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function displayErrorDiv($args)
 {
@@ -187,7 +197,8 @@ function displayErrorDiv($args)
 /**
  * This function adds required arguments for success message
  * It also calls template to display success message
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function pepSuccessMessage($args)
 {
@@ -206,13 +217,18 @@ function pepSuccessMessage($args)
     $args['thankyou'] = $thankyou;
     $args['returnToShop'] = $returnToShop;
     $args['shopPageUrl'] = $shopPageUrl;
+
+    // @since 6.4.0
+    $args = apply_filters('quoteup_enquiry_cart_success_arguments', $args);
+
     //This loads the template for success message
     quoteupGetPublicTemplatePart('enquiry-cart/success-message', '', $args);
 }
 
 /**
  * This function is used to render enquiry cart table in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function enquiryCartTable($args)
 {
@@ -222,7 +238,8 @@ function enquiryCartTable($args)
 
 /**
  * This function is used to render enquiry cart empty div in form
- * @param  array $args arguments for template
+ *
+ * @param array $args arguments for template
  */
 function enquriyCartEmpty($args)
 {
@@ -236,8 +253,9 @@ function enquriyCartEmpty($args)
 
 /**
  * This function starts modal render
- * @param  array $args required arguments(product id, price,
- * button class, object)
+ *
+ * @param array $args required arguments(product id, price,
+ *                    button class, object)
  */
 function displayModal($args)
 {
@@ -299,6 +317,7 @@ function displayModal($args)
 
 /**
  * This function starts rendering modal
+ *
  * @param  array $args required arguments
  * @return [type]       [description]
  */
@@ -320,13 +339,17 @@ function displaySuccessDiv($args)
 
     $args['thankyou'] = $thankyou;
 
+    // @since 6.4.0
+    $args = apply_filters('quoteup_enquiry_modal_success_arguments', $args);
+
     //This loads the template for success message on single product
     quoteupGetPublicTemplatePart('enquiry-modal/success-message', '', $args);
 }
 
 /**
  * This function renders enquiry form header in modal
- * @param  array $args required arguments
+ *
+ * @param array $args required arguments
  */
 function enquiryModalFormHeader($args)
 {
@@ -335,7 +358,8 @@ function enquiryModalFormHeader($args)
 
 /**
  * This function renders enquiry form body in modal
- * @param  array $args required arguments
+ *
+ * @param array $args required arguments
  */
 function enquiryModalFormBody($args)
 {
@@ -344,7 +368,8 @@ function enquiryModalFormBody($args)
 
 /**
  * This function renders enquiry form footer in modal
- * @param  array $args required arguments
+ *
+ * @param array $args required arguments
  */
 function enquiryModalFormFooter($args)
 {

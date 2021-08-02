@@ -28,7 +28,9 @@
                     <div class="btn-group btn-breadcrumb">
                         <?php if (count($form_parts_names) > 1) { ?>
                             <?php foreach ($form_parts_names as $index => $crumb_text) { ?>
-                                <li id='<?php echo $index . "_crumb" ?>' class='btn btn-default <?php if ($index == "form_part_0") echo "active visited" ?>' data-part="<?php echo $index ?>"><a disabled='disabled' class="breadcrumbs" href="" onclick='return false'><?php echo $crumb_text ?></a></li>
+                                <li id='<?php echo $index . "_crumb" ?>' class='btn btn-default <?php if ($index == "form_part_0") {
+                                    echo "active visited";
+                                        } ?>' data-part="<?php echo $index ?>"><a disabled='disabled' class="breadcrumbs" href="" onclick='return false'><?php echo $crumb_text ?></a></li>
                             <?php } ?>
                         <?php } ?>
                     </div>
@@ -78,8 +80,8 @@
             // telErrMsg  - telephone field invalid error message.
             let nameErrMsg, telErrMsg;
 
-            nameErrMsg = typeof wdm_data.valid_name != "undefined" ? wdm_data.valid_name : "Please Enter Valid Name";
-            telErrMsg = typeof wdm_data.tel_err != "undefined" ? wdm_data.tel_err : "Please enter valid phone number";
+            nameErrMsg = quoteup_cf_err_msg.name;
+            telErrMsg  = quoteup_cf_err_msg.tel_err;
 
             $(document).ready(function() { //code
                 // Show hard form partitions
@@ -114,6 +116,15 @@
                         }
                     }
                 });
+
+                jQuery.extend( jQuery.validator.messages, {
+                        email: quoteup_cf_err_msg.email,
+                        url: quoteup_cf_err_msg.url,
+                        date: quoteup_cf_err_msg.date,
+                        dateISO: quoteup_cf_err_msg.dateISO,
+                        number: quoteup_cf_err_msg.number,
+                    }
+                );
 
                 jQuery.validator.addMethod("validateName", function (value, element) {
                     var validation = new RegExp('^([^0-9@#$%^&*()+{}:;\//"<>,.?*~`]*)$');
@@ -420,7 +431,7 @@
                         }
                     } else {
                         msgs = new Array();
-                        msgs.push(err_string == '' ? 'validation error' : err_string);
+                        msgs.push(err_string == '' ? quoteup_cf_err_msg.validation_err_msg : err_string);
                         if (jQuery('.g-recaptcha').length > 0){
                             grecaptcha.reset();
                         }
@@ -674,33 +685,33 @@
                         test = objs.closest('#form_part_0').find('#'+cmp_value+' :input');
                     }
                     
-                    for(let objsElement of objs) {
+                    $.each(objs, function(obsIndex, objsElement) {
                         comp_res = false;
                         $cmp1 = $(objsElement).val();
-                        for(let testElement of test) {
+                        $.each(test, function(testIndex, testElement) {
                             $cmp2 = $(testElement).val();
                             if ($cmp1 != $cmp2) {
                                 comp_res = true;
                                 // return;
                             } else if(areOperandsCb) {
                                 comp_res = false;
-                                break;
+                                return false;
                             }
-                        }
+                        });
 
                         if(areOperandsCb && true == comp_res) {
-                            break;
+                            return false;
                         }
-                    }
+                    });
                     break;
                 case 'less-than':
                     $(objs).each(function(){
                         // Return if current element is non-relevant input field inside 'Rating' field.
-                        if ('undefined' != typeof $(this).attr('id') && 'Rating_' != $(this).attr('id').match(/^Rating_/) && $(this).closest('div[id^=Rating_]')) {
+                        if ('undefined' != typeof $(this).attr('id') && 'Rating_' != $(this).attr('id').match(/^Rating_/) && $(this).closest('div[id^=Rating_]').length > 0) {
                             return;
                         }
 
-			// if cmp_value is number, convert it into number type data.
+                        // if cmp_value is number, convert it into number type data.
                         if (!isNaN(cmp_value)) {
                             cmp_value = Number(cmp_value);
                         }
@@ -712,7 +723,7 @@
                     break;
                 case 'greater-than':
                     $(objs).each(function(){
-			// if cmp_value is number, convert it into number type data.
+                    // if cmp_value is number, convert it into number type data.
                         if (!isNaN(cmp_value)) {
                             cmp_value = Number(cmp_value);
                         }
@@ -794,6 +805,14 @@
             });
 
         }
+
+        // if (!String.prototype.startsWith) {
+        //     String.prototype.startsWith = function(searchString, position) {
+        //         position = position || 0;
+        //         return this.indexOf(searchString, position) === position;
+        //     };
+        // }
+        
         });
     </script>
 

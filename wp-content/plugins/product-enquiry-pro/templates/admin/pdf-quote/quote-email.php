@@ -3,7 +3,7 @@ $heading = __('QUOTATION', QUOTEUP_TEXT_DOMAIN);
 do_action('woocommerce_email_header', $heading, null);
 ?>
         <div id="message">
-            <p><?php echo esc_html($args['quote_message']); ?></p><br><br>
+            <p><?php echo $args['quote_message']; ?></p><br><br>
         </div>
         <div id="head">
             <h2 class="quote-heading">

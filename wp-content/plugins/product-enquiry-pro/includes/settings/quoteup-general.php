@@ -20,6 +20,7 @@ function generalSettings($form_data)
     require_once 'general/quoteup-migrate-enquiries.php';
     require_once 'general/quoteup-redirection-page-url.php';
     require_once 'general/quoteup-form-options.php';
+    require_once 'general/quoteup-other-options.php';
     do_action('quoteup_general_settings', $form_data);
     ?>
 </div>

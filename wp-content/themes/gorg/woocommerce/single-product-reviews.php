@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.6.0
+ * @version 4.3.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -51,8 +51,8 @@ if ( ! comments_open() ) {
 					apply_filters(
 						'woocommerce_comment_pagination_args',
 						array(
-							'prev_text' => '&larr;',
-							'next_text' => '&rarr;',
+							'prev_text' => is_rtl() ? '&rarr;' : '&larr;',
+							'next_text' => is_rtl() ? '&larr;' : '&rarr;',
 							'type'      => 'list',
 						)
 					)

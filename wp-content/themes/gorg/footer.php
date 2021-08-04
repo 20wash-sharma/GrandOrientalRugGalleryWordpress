@@ -41,8 +41,7 @@
                         <a href="<?php echo home_url('/');?>"><img alt="logo" src="<?php echo $footer_logo; ?>"></a>
                         <?php endif;?>
                     </div>
-                    <p><?php if(!empty($footer_text)): echo __($footer_text,'gorg'); endif;?></p>
-
+                    <p><?php if(!empty($footer_text)): echo pll__($footer_text,'gorg'); endif;?></p>
                     <h6><?php echo pll__('Follow Us', 'gorg');?></h6>
                     <ul class="list_none footer_social">
                         <?php if($facebook): ?>

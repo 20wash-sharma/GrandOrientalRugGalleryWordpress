@@ -119,19 +119,7 @@ $gorg_youtube = $gorg_settings['gorg_social_youtube'];
                     <img class="logo_default" src="<?php if($default_logo_url): echo $default_logo_url; endif;?>"
                         alt="Gorg logo" />
                 </a>
-                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="ion-android-menu"></span> </button> -->
-                <!-- <div class=" navbar-collapse justify-content-end" id="navbarSupportedContent"> -->
                 <?php ubermenu( 'main' , array( 'theme_location' => 'menu-1' ) ); ?>
-                <?php 
-                // wp_nav_menu(array(
-                //     'theme_location'    => 'primary',
-                //     'menu'              =>'Main Menu',
-                //     'container'         =>'',
-                //     'items_wrap'        => '<ul class="navbar-nav">%3$s</ul>',
-                //     'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
-                //     'walker'          => new WP_Bootstrap_Navwalker(),
-                // )); ?>
-                <!-- </div> -->
                 <ul class="navbar-nav attr-nav align-items-center">
                     <li><a href="javascript:void(0);" class="nav-link search_trigger"><i
                                 class="ion-ios-search-strong"></i></a>
